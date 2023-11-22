@@ -7,8 +7,8 @@ app_ui <- function(request) {
   shiny::tagList(
     golem_add_external_resources(),
     shiny::fluidPage(
-      shiny::actionButton("auth", "Authenticate"),
-      shiny::uiOutput("select_project")
+      mod_authenticate_ui("authenticate"),
+      mod_select_project_ui("select_project")
     )
   )
 }
