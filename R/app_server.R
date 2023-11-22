@@ -7,10 +7,7 @@ app_server <- function(input, output, session) {
   authenticated <- shiny::reactiveVal(FALSE)
 
   # Set up reactive values ----
-  r <- shiny::reactiveValues(
-    authenticated = FALSE,
-    template_and_options = NULL
-  )
+  r <- shiny::reactiveValues()
 
   # Authenticate ----
   mod_authenticate_server("authenticate", r)

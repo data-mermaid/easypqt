@@ -18,7 +18,6 @@ mod_select_project_server <- function(id, r) {
   moduleServer(id, function(input, output, session) {
     ns <- session$ns
 
-
     # Once authenticated, get a list of projects to choose from ----
     shiny::observe({
       shiny::req(r$authenticated)
@@ -28,6 +27,8 @@ mod_select_project_server <- function(id, r) {
 
     # Create project selection dropdown based on user's projects ----
     output$select_project <- shiny::renderUI({
+      shiny::req(r$projects)
+
       projects <- setNames(r$projects$id, r$projects$name)
 
       shinyWidgets::pickerInput(
@@ -51,19 +52,13 @@ mod_select_project_server <- function(id, r) {
     # At this point, will get an error if they are not an admin
     shiny::observeEvent(input$project, {
       template_and_options <- safely_get_template_and_options(input$project, "benthicpqt")
-      is_project_admin <- check_project_admin(template_and_options)
 
-      if (!is_project_admin) {
-        project_name <- projects() %>%
-          dplyr::filter(id == input$project) %>%
-          dplyr::pull(name)
+      r$is_project_admin <- check_project_admin(template_and_options)
 
-        shiny::showModal(
-          shiny::modalDialog(
-            title = glue::glue("Unable to ingest into project {project_name}"),
-            "You are not an admin in this project and will not be able to ingest until added as one"
-          )
-        )
+      if (!r$is_project_admin) {
+        show_not_project_admin_modal(r)
+      } else {
+        r$template_and_options <- template_and_options$result
       }
     })
   })
@@ -74,8 +69,6 @@ mod_select_project_server <- function(id, r) {
 
 ## To be copied in the server
 # mod_select_project_server("select_project", r)
-
-
 
 safely_get_template_and_options <- purrr::safely(mermaidr::mermaid_import_get_template_and_options)
 
@@ -89,4 +82,17 @@ check_project_admin <- function(response) {
   } else {
     TRUE
   }
+}
+
+show_not_project_admin_modal <- function(r) {
+  project_name <- r$projects %>%
+    dplyr::filter(id == r$project) %>%
+    dplyr::pull(name)
+
+  shiny::showModal(
+    shiny::modalDialog(
+      title = glue::glue("Unable to ingest into project {project_name}"),
+      "You are not an admin in this project and will not be able to ingest until added as one"
+    )
+  )
 }
