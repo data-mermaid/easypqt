@@ -10,10 +10,13 @@ Description: What the package does (one paragraph).
 License: What license is it under?
 Imports: 
     config (>= 0.3.2),
+    dplyr,
+    glue,
     golem (>= 0.4.1),
     magrittr,
     mermaidr (>= 1.0.0),
-    shiny (>= 1.7.5.1)
+    shiny (>= 1.7.5.1),
+    shinyWidgets
 Remotes: data-mermaid/mermaidr
 Encoding: UTF-8
 LazyData: true

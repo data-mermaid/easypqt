@@ -15,4 +15,13 @@ app_server <- function(input, output, session) {
   # Get projects ----
   # This will also get the project template/options, and flag if they are not an admin of the selected project
   mod_select_project_server("select_project", r)
+
+  # Upload CoralNet data ----
+  # (only once confirmed that they are a project admin)
+  mod_upload_coralnet_data_server("upload_coralnet_data", r)
+
+  # Check CoralNet mapping ----
+  mod_check_coralnet_mermaid_mapping_server("check_mapping", r)
+
+  # Check auxiliary fields ----
 }

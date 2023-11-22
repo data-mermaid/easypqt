@@ -46,11 +46,12 @@ mod_select_project_server <- function(id, r) {
     })
 
     # Update r$project with selected project ----
-    shiny::observe(r$project <- input$project)
+    shiny::observe(r$project <- input$project) %>%
+      shiny::bindEvent(input$project)
 
     # Get project template/options ----
     # At this point, will get an error if they are not an admin
-    shiny::observeEvent(input$project, {
+    shiny::observe({
       template_and_options <- safely_get_template_and_options(input$project, "benthicpqt")
 
       r$is_project_admin <- check_project_admin(template_and_options)
@@ -60,15 +61,12 @@ mod_select_project_server <- function(id, r) {
       } else {
         r$template_and_options <- template_and_options$result
       }
-    })
+    }) %>%
+      shiny::bindEvent(input$project)
   })
 }
 
-## To be copied in the UI
-# mod_select_project_ui("select_project")
-
-## To be copied in the server
-# mod_select_project_server("select_project", r)
+# Utils ----
 
 safely_get_template_and_options <- purrr::safely(mermaidr::mermaid_import_get_template_and_options)
 
