@@ -7,8 +7,7 @@
 #' @noRd
 mod_check_coralnet_mermaid_mapping_ui <- function(id) {
   ns <- NS(id)
-
-  rhandsontable::rHandsontableOutput(ns("mapping_table"))
+  shiny::tagList()
 }
 
 #' check_coralnet_mermaid_mapping Server Functions
@@ -19,7 +18,6 @@ mod_check_coralnet_mermaid_mapping_server <- function(id, r) {
     ns <- session$ns
 
     # Check uploaded mapping (r$coralnet_upload) against `coralnet_mermaid_attributes` ----
-
     coralnet_mermaid_mapping <- shiny::reactive({
       shiny::req(r$is_project_admin)
 
@@ -31,8 +29,8 @@ mod_check_coralnet_mermaid_mapping_server <- function(id, r) {
     }) %>%
       shiny::bindEvent(r$coralnet_upload, r$is_project_admin)
 
+    # Create an editable table to be shown -----
     output$mapping_table <- rhandsontable::renderRHandsontable({
-      # Create an editable table to be shown
       coralnet_mermaid_mapping() %>%
         # coralnet_mermaid_mapping %>%
         rhandsontable::rhandsontable(
@@ -58,5 +56,39 @@ mod_check_coralnet_mermaid_mapping_server <- function(id, r) {
     # If there is no mapping, make them select from a MERMAID attribute
 
     # Should there be an option at this point to save the data with the MERMAID attribute - so if they re-upload later on, they won't have to go through this process again? And it could check for MERMAID specific columns? Is that too complicated?
+
+    # Put the editable table in a modal ----
+    shiny::observe({
+      shiny::req(coralnet_mermaid_mapping())
+      shiny::showModal(
+        shiny::modalDialog(
+          rhandsontable::rHandsontableOutput(ns("mapping_table")),
+          easyClose = FALSE,
+          footer = shinyjs::disabled(shiny::modalButton("Save mapping"))
+        )
+      )
+    })
+
+    # Enable closing of mapping widget ----
+    # Closing disabled unless all of `mermaid_attribute` are not NA
+    # If none of `mermaid_attribute` are NA, then enable exiting the widget
+    # Flag that the mapping is valid, and save the final mapping
+    shiny::observe({
+      # The data in the table is named after the output, so it's input$mapping_table
+      # Need to convert it to an R data frame using rhandsontable::hot_to_r()
+      shiny::req(input$mapping_table)
+
+      edited_coralnet_mermaid_mapping <- rhandsontable::hot_to_r(input$mapping_table)
+
+      mapping_valid <- edited_coralnet_mermaid_mapping %>%
+        dplyr::filter(is.na(mermaid_attribute)) %>%
+        nrow() == 0
+
+      if (mapping_valid) {
+        shinyjs::enable(selector = ".modal-footer button:disabled")
+        r$mapping_valid <- TRUE
+        r$coralnet_mermaid_mapping <- edited_coralnet_mermaid_mapping
+      }
+    })
   })
 }
