@@ -21,13 +21,15 @@ mod_check_coralnet_mermaid_mapping_server <- function(id, r) {
     # Check uploaded mapping (r$coralnet_upload) against `coralnet_mermaid_attributes` ----
 
     coralnet_mermaid_mapping <- shiny::reactive({
+      shiny::req(r$is_project_admin)
+
       r$coralnet_upload %>%
         dplyr::left_join(coralnet_mermaid_attributes, by = "coralnet_label") %>%
         dplyr::select(coralnet_label, mermaid_attribute) %>%
         dplyr::mutate(mermaid_attribute = forcats::fct_expand(mermaid_attribute, coralnet_mermaid_attributes[["mermaid_attribute"]]))
       # Convert mermaid_attribute to a factor, because factors automatically get set to dropdown in rhandsontable, with the choices specified by level and allowInvalid set to FALSE
     }) %>%
-      shiny::bindEvent(r$coralnet_upload)
+      shiny::bindEvent(r$coralnet_upload, r$is_project_admin)
 
     output$mapping_table <- rhandsontable::renderRHandsontable({
       # Create an editable table to be shown
