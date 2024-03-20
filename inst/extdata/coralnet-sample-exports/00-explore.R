@@ -9,6 +9,8 @@ library(readr)
 library(mermaidr)
 library(lubridate)
 
+# Read in annotations to understand structure ----
+
 files <- fs::dir_ls(here::here("inst", "extdata", "coralnet-sample-exports"), glob = "*.csv")
 
 types <- basename(files) %>%
@@ -52,17 +54,35 @@ identical(annotation_optional_field_names[["all_optional"]] %>% sort(), all_name
 # OR, we can tell them to only export those fields - that might be easier
 # Otherwise they may mistakenly have a field that they think will get used?
 
-aux_annotations <- annotations[["image_metadata_date_and_auxiliary"]]
+# Keep desired annotations ----
 
-# Match labels to MERMAID mappings
+annotations <- annotations[["image_metadata_date_and_auxiliary"]]
 
-aux_annotations %>%
+# Match labels to MERMAID mappings ----
+
+latest_mapping <- read_csv(here::here("inst", "extdata", "mapping", "latest_mapping-2024-03-08.csv"))
+
+# Keep relevant cols
+
+latest_mapping <- latest_mapping %>%
+  select(CoralNetID, CoralNetName, `Default short code`, `Functional group`, MERMAID_BA)
+
+mapped_labels <- annotations %>%
   distinct(Label) %>%
-  left_join(mermaidrcoralnet::coralnet_mermaid_attributes, by = c("Label" = "coralnet_label"))
+  left_join(latest_mapping, by = c("Label" = "Default short code"))
 
-# This one has none.... but pretend there were some?
+mapped_labels %>%
+  mutate(mapped = !is.na(CoralNetName)) %>%
+  count(mapped)
 
-# Reshape the data
+# 8 mapped, 18 not - so they would have to select a BA for each of those
+
+# Attach the MERMAID label mapping to the annotations - for this exercise, just keep the ones that do map
+
+annotations_with_mapping <- annotations %>%
+  inner_join(latest_mapping, by = c("Label" = "Default short code"))
+
+# Reshape the data ----
 
 # Understand shape that the data needs to take:
 
@@ -97,13 +117,13 @@ names(template)
 
 # For now, just treat Name (image) as unique
 
-aux_annotations_renamed <- aux_annotations %>%
+annotations_with_mapping <- annotations_with_mapping %>%
   rename(
     `Site *` = Aux1, `Management *` = Aux2, `Transect number *` = Aux3,
-    `Benthic attribute *` = Label
-  ) # This one is bad because it doesn't actually map yet - but just to get an idea of the form
+    `Benthic attribute *` = MERMAID_BA
+  )
 
-quadrat_numbers <- aux_annotations_renamed %>%
+quadrat_numbers <- annotations_with_mapping %>%
   distinct(Name) %>%
   mutate(`Quadrat *` = row_number())
 
@@ -111,7 +131,7 @@ number_of_quadrats <- nrow(quadrat_numbers)
 
 quadrat_number_start <- 1
 
-aux_annotations_summarized <- aux_annotations_renamed %>%
+annotations_with_mapping_summarised <- annotations_with_mapping %>%
   left_join(quadrat_numbers, by = "Name") %>%
   group_by(`Site *`, `Management *`, `Transect number *`, Date, `Quadrat *`) %>%
   mutate(`Number of points per quadrat *` = n()) %>%
@@ -123,10 +143,11 @@ aux_annotations_summarized <- aux_annotations_renamed %>%
 # Derive date fields
 # Just for now, put in a fake date, since there aren't any
 # Question - what format does this have to be in CoralNet? Free, or calendar picker?
-aux_annotations_summarized <- aux_annotations_summarized %>%
+annotations_with_mapping_summarised <- annotations_with_mapping_summarised %>%
   mutate(Date = as.Date("2024-01-01"))
 
-aux_annotations_summarized <- aux_annotations_summarized %>% mutate(
+annotations_with_mapping_summarised <- annotations_with_mapping_summarised %>%
+  mutate(
   `Sample date: Year *` = year(Date),
   `Sample date: Month *` = month(Date),
   `Sample date: Day *` = day(Date)
@@ -134,7 +155,7 @@ aux_annotations_summarized <- aux_annotations_summarized %>% mutate(
 
 # What's left?
 
-setdiff(names(template), names(aux_annotations_summarized))
+setdiff(names(template), names(annotations_with_mapping_summarised))
 
 #  [1] "Sample time"                "Depth *"
 #  [3] "Transect label"             "Transect length surveyed *"
@@ -155,7 +176,7 @@ setdiff(names(template), names(aux_annotations_summarized))
 empty_template <- template %>%
   slice(0)
 
-annotations_with_all_fields <- aux_annotations_summarized %>%
+annotations_with_mapping_summarised_all_fields <- annotations_with_mapping_summarised %>%
   # NOTE - the template comes through with all of these as character, but does the API care how they are ingested? This might cause an issue
   mutate_all(as.character) %>%
   bind_rows(empty_template) %>%
