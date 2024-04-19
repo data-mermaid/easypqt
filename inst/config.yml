@@ -1,3 +1,14 @@
+required_annotations_columns:
+  - Name
+  - Date
+  - Aux1
+  - Aux2
+  - Aux3
+  - Aux4
+  - Aux5
+  - Row
+  - Column
+  - Label
 upload_annotations_missing_img_path: www/coralnet_annotations_export.png
 copy:
   not_admin: Unable to ingest into project {project_name}.\n\n You are not an admin

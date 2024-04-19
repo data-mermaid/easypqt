@@ -31,7 +31,7 @@ mod_upload_annotations_server <- function(id, r) {
       cols <- names(cols)
 
       # Find columns that are required but not in data
-      r$missing_cols <- setdiff(required_cols, cols)
+      r$missing_cols <- setdiff(get_config("required_annotations_columns"), cols)
 
       if (length(r$missing_cols) == 0) {
         r$contains_required_cols <- TRUE
@@ -70,30 +70,5 @@ mod_upload_annotations_server <- function(id, r) {
       r$annotations <- readr::read_csv(input$annotations$datapath, show_col_types = FALSE, col_select = required_cols)
     }) %>%
       shiny::bindEvent(r$contains_required_cols)
-
-
-    # I don't have data yet - so I'll just fake a data set that has some right/wrong
-    # shiny::observe({ # TODO - needs to depend on input$annotations later
-    #   shiny::req(r$is_project_admin)
-    #   r$project
-    #
-    #   r$coralnet_upload <- fake_data
-    # })
   })
 }
-
-fake_data <- dplyr::tribble(
-  ~coralnet_label,
-  "psa",
-  "Anem",
-  "cyp",
-  "SC",
-  "por",
-  "test"
-)
-
-# TODO - move to config? or at least data-raw
-required_cols <- c(
-  "Name", "Date", "Aux1", "Aux2", "Aux3", "Aux4", "Aux5", "Row",
-  "Column", "Label"
-)

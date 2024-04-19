@@ -1,5 +1,5 @@
 get_config <- function(key) {
-  yaml::read_yaml(app_sys("copy.yml"))[[key]]
+  yaml::read_yaml(app_sys("config.yml"))[[key]]
 }
 
 get_copy <- function(key) {
