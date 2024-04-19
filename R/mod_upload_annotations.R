@@ -48,12 +48,12 @@ mod_upload_annotations_server <- function(id, r) {
 
       shiny::showModal(
         shiny::modalDialog(
-          shiny::div(read_copy("upload_annotations_missing_pretext")),
+          shiny::div(get_copy("upload_annotations_missing_pretext")),
           shiny::div(missing_cols_list),
-          shiny::div(read_copy("upload_annotations_missing_instructions")),
+          shiny::div(get_copy("upload_annotations_missing_instructions")),
           shiny::tags$img(
-            src = read_copy("upload_annotations_missing_img_path"),
-            alt = read_copy("upload_annotations_missing_img_alt"),
+            src = get_config("upload_annotations_missing_img_path"),
+            alt = get_copy("upload_annotations_missing_img_alt"),
             style = "width: 100%"
           ),
           footer = close_button,

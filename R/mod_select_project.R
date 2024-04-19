@@ -89,7 +89,7 @@ show_not_project_admin_modal <- function(r) {
 
   shiny::showModal(
     shiny::modalDialog(
-      glue::glue(read_copy("not_admin"), .envir = list(project_name = project_name)),
+      glue::glue(get_copy("not_admin"), .envir = list(project_name = project_name)),
       footer = close_button
     )
   )
