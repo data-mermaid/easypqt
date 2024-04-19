@@ -89,8 +89,8 @@ show_not_project_admin_modal <- function(r) {
 
   shiny::showModal(
     shiny::modalDialog(
-      title = glue::glue("Unable to ingest into project {project_name}"),
-      "You are not an admin in this project and will not be able to ingest until added as one"
+      glue::glue(read_copy("not_admin"), .envir = list(project_name = project_name)),
+      footer = close_button
     )
   )
 }

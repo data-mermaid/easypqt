@@ -1,0 +1,12 @@
+not_admin: Unable to ingest into project {project_name}.\n\n You are not an admin
+  in this project and will not be able to ingest until added as one.
+upload_annotations_missing_pretext: 'The uploaded annotations is missing the columns:'
+upload_annotations_missing_instructions: To get the correct data from CoralNet, export
+  the annotations as a CSV with the optional columns "Image metadata - date and auxiliary
+  fields" checked, as shown below.
+upload_annotations_missing_img_path: www/coralnet_annotations_export.png
+upload_annotations_missing_img_alt: 'A screen shot of the "Image Actions" screen in
+  CoralNet, showing the Action: "Export Annotations, CSV" for these images: "All N
+  image results". The instructions read "Export annotations for these images in CSV
+  format - one row per annotation". There is a section to select Optional Columns,
+  and the option "Image metadata - date and auxiliary fields" is checked.'

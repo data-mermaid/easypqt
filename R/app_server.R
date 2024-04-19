@@ -18,7 +18,7 @@ app_server <- function(input, output, session) {
 
   # Upload CoralNet data ----
   # (only once confirmed that they are a project admin)
-  mod_upload_coralnet_data_server("upload_coralnet_data", r)
+  mod_upload_annotations_server("upload_annotations", r)
 
   # Check CoralNet mapping ----
   mod_check_coralnet_mermaid_mapping_server("check_mapping", r)

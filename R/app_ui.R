@@ -9,7 +9,7 @@ app_ui <- function(request) {
     shiny::fluidPage(
       mod_authenticate_ui("authenticate"),
       mod_select_project_ui("select_project"),
-      mod_upload_coralnet_data_ui("upload_coralnet_data"),
+      mod_upload_annotations_ui("upload_annotations"),
       mod_check_coralnet_mermaid_mapping_ui("check_mapping")
     )
   )

@@ -20,6 +20,7 @@ mod_check_coralnet_mermaid_mapping_server <- function(id, r) {
     # Check uploaded mapping (r$coralnet_upload) against `coralnet_mermaid_attributes` ----
     coralnet_mermaid_mapping <- shiny::reactive({
       shiny::req(r$is_project_admin)
+      shiny::req(r$coralnet_upload)
 
       r$coralnet_upload %>%
         dplyr::left_join(coralnet_mermaid_attributes, by = "coralnet_label") %>%
