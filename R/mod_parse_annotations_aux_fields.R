@@ -9,6 +9,7 @@
 #' @importFrom shiny NS tagList
 mod_parse_annotations_aux_fields_ui <- function(id) {
   ns <- NS(id)
+  # TODO - styling etc - in a modal?
   shiny::column(width = 6, shiny::uiOutput(ns("map_aux_fields")))
 }
 
@@ -60,7 +61,7 @@ mod_parse_annotations_aux_fields_server <- function(id, r) {
     # Observe each dropdown, and disable an Aux field in other dropdowns if it's already selected - because an auxiliary field cannot map to more than one of Site, Management, or Transect Number
 
     # Update list of mapped columns
-    purrr:::walk(
+    purrr::walk(
       names(get_config("auxiliary_columns_map")),
       \(x)
       shiny::observeEvent(input[[x]], {
