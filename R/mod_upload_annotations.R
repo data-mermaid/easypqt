@@ -31,7 +31,7 @@ mod_upload_annotations_server <- function(id, r) {
       cols <- names(cols)
 
       # Find columns that are required but not in data
-      r$missing_cols <- setdiff(get_config("required_annotations_columns"), cols)
+      r$missing_cols <- setdiff(r$required_annotations_columns, cols)
 
       if (length(r$missing_cols) == 0) {
         r$contains_required_cols <- TRUE
@@ -67,7 +67,7 @@ mod_upload_annotations_server <- function(id, r) {
     # If it does contain the correct columns, read in the data and proceed
     shiny::observe({
       # Only read in the required columns
-      r$annotations <- readr::read_csv(input$annotations$datapath, show_col_types = FALSE, col_select = required_cols)
+      r$annotations <- readr::read_csv(input$annotations$datapath, show_col_types = FALSE, col_select = r$required_annotations_columns)
     }) %>%
       shiny::bindEvent(r$contains_required_cols)
   })

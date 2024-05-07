@@ -7,9 +7,14 @@ app_ui <- function(request) {
   shiny::tagList(
     golem_add_external_resources(),
     shiny::fluidPage(
+      # Authenticate ----
       mod_authenticate_ui("authenticate"),
+      # Get projects ----
       mod_select_project_ui("select_project"),
+      # Upload CoralNet annotations ----
       mod_upload_annotations_ui("upload_annotations"),
+      # Parse CoralNet annotations auxiliary fields ----
+      mod_parse_annotations_aux_fields_ui("parse_annotations_aux_fields"),
       mod_check_coralnet_mermaid_mapping_ui("check_mapping")
     )
   )
