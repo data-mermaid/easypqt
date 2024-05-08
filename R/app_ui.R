@@ -15,7 +15,10 @@ app_ui <- function(request) {
       mod_upload_annotations_ui("upload_annotations"),
       # Parse CoralNet annotations auxiliary fields ----
       mod_parse_annotations_aux_fields_ui("parse_annotations_aux_fields"),
-      mod_check_coralnet_mermaid_mapping_ui("check_mapping")
+      # Check valid values of fields ----
+      mod_parse_annotations_check_valid_ui("site"),
+      mod_parse_annotations_check_valid_ui("management"),
+      mod_parse_annotations_check_valid_ui("transect_number")
     )
   )
 }

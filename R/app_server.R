@@ -13,15 +13,6 @@ app_server <- function(input, output, session) {
     auxiliary_columns_map = get_config("auxiliary_columns_map")
   )
 
-  shiny::observe({
-    r$auxiliary_columns_mapping <- purrr::map(
-      r$auxiliary_columns_map,
-      \(x) {
-        NULL
-      }
-    )
-  })
-
   # Authenticate ----
   mod_authenticate_server("authenticate", r)
 
@@ -36,8 +27,26 @@ app_server <- function(input, output, session) {
   # Parse CoralNet annotations auxiliary fields ----
   mod_parse_annotations_aux_fields_server("parse_annotations_aux_fields", r)
 
+  # Pull down project template with valid values of fields ----
+  shiny::observe({
+    shiny::req(r$aux_mapped)
+
+    template_and_options <- mermaidr::mermaid_import_get_template_and_options(r$project, "benthicpqt")
+
+    r$template <- template_and_options$Template
+
+    r$valid_values <- template_and_options[unlist(r$auxiliary_columns_map %>% purrr::map("column"))] %>%
+      purrr::compact() %>%
+      purrr::map("choices")
+  })
+
+  # Check valid values of fields ----
+  mod_parse_annotations_check_valid_server("site", r)
+  mod_parse_annotations_check_valid_server("management", r)
+  mod_parse_annotations_check_valid_server("transect_number", r)
+
   # Check CoralNet mapping ----
-  mod_check_coralnet_mermaid_mapping_server("check_mapping", r)
+  # mod_check_coralnet_mermaid_mapping_server("check_mapping", r)
 
   # Check auxiliary fields ----
 }
