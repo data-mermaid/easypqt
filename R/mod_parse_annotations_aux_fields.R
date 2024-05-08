@@ -31,7 +31,7 @@ mod_parse_annotations_aux_fields_server <- function(id, r) {
 
     # Generate input UI ----
     output$map_aux_fields <- shiny::renderUI({
-      shiny::req(r$annotations)
+      # shiny::req(r$annotations)
 
       inputs <- purrr::imap(
         r$auxiliary_columns_map,
@@ -73,18 +73,13 @@ mod_parse_annotations_aux_fields_server <- function(id, r) {
     purrr::walk(
       names(get_config("auxiliary_columns_map")),
       \(x)
-      shiny::observeEvent(
-        input[[x]],
-        ignoreNULL = FALSE,
-        {
-          r$auxiliary_columns_mapping[x] <- list(input[[x]])
-        }
+      shiny::observe(
+        r$auxiliary_columns_mapping[x] <- list(input[[x]])
       )
     )
 
     # Go through each and disable other columns' aux fields ----
-    shiny::observeEvent(r$auxiliary_columns_mapping,
-      ignoreInit = TRUE,
+    shiny::observe(
       {
         # Go through each, and disable the other selected options
         purrr::walk(
@@ -115,7 +110,6 @@ mod_parse_annotations_aux_fields_server <- function(id, r) {
 
     # Enable "confirm" button once all of the columns have been mapped to an auxiliary field ----
     shiny::observe({
-      # browser()
       cols_mapped <- r$auxiliary_columns_mapping %>% purrr::compact()
       all_cols_mapped <- length(cols_mapped) == length(r$auxiliary_columns_mapping)
 
