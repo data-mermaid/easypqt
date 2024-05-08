@@ -10,9 +10,17 @@ app_server <- function(input, output, session) {
   r <- shiny::reactiveValues(
     required_annotations_columns = get_config("required_annotations_columns"),
     auxiliary_columns = get_config("auxiliary_columns"),
-    auxiliary_columns_map = get_config("auxiliary_columns_map"),
-    auxiliary_columns_mapping = list(site = NULL, management = NULL, transect_number = NULL)
+    auxiliary_columns_map = get_config("auxiliary_columns_map")
   )
+
+  shiny::observe({
+    r$auxiliary_columns_mapping <- purrr::map(
+      r$auxiliary_columns_map,
+      \(x) {
+        NULL
+      }
+    )
+  })
 
   # Authenticate ----
   mod_authenticate_server("authenticate", r)

@@ -120,7 +120,11 @@ mod_parse_annotations_aux_fields_server <- function(id, r) {
 
     # Rename columns in data according to auxiliary fields mapping ----
     shiny::observe({
-      mapped_cols_names <- paste0(unname(r$auxiliary_columns_map), get_config("auxiliary_columns_suffix"))
+      # TODO - add * later on - it's nice to keep it off for now so that checking valid values of site/management is easier, and can continue to display "Site" and "Management" to user without *
+      mapped_cols_names <-
+        # paste0(unname(
+        r$auxiliary_columns_map
+      # ), get_config("auxiliary_columns_suffix"))
       mapped_cols <- setNames(unlist(r$auxiliary_columns_mapping), mapped_cols_names)
 
       r$annotations <- r$annotations %>%
@@ -129,7 +133,8 @@ mod_parse_annotations_aux_fields_server <- function(id, r) {
       # Remove auxiliary fields that were not mapped
       extra_aux_fields <- setdiff(r$auxiliary_columns, mapped_cols)
 
-      r$annotations <- r$annotations %>% dplyr::select(-tidyselect::all_of(extra_aux_fields))
+      r$annotations <- r$annotations %>%
+        dplyr::select(-tidyselect::all_of(extra_aux_fields))
     }) %>%
       shiny::bindEvent(input$confirm)
   })

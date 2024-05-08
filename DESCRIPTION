@@ -22,6 +22,7 @@ Imports:
     shiny (>= 1.7.5.1),
     shinyjs,
     shinyWidgets,
+    tidyselect,
     yaml
 Remotes: data-mermaid/mermaidr
 Encoding: UTF-8
