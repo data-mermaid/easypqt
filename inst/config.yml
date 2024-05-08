@@ -16,10 +16,18 @@ auxiliary_columns:
   - Aux4
   - Aux5
 auxiliary_columns_map:
-  site: Site
-  management: Management
-  transect_number: Transect Number
-auxiliary_columns_suffix: " *"
+  site:
+    label: Site
+    column: Site *
+    value: ~
+  management:
+    label: Management
+    column: Management *
+    value: ~
+  transect_number:
+    label: Transect Number
+    column: Transect Number *
+    value: ~
 upload_annotations_missing_img_path: www/coralnet_annotations_export.png
 copy:
   not_admin: Unable to ingest into project {project_name}.\n\n You are not an admin

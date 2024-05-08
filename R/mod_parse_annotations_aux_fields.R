@@ -34,13 +34,14 @@ mod_parse_annotations_aux_fields_server <- function(id, r) {
       shiny::req(r$annotations)
 
       inputs <- purrr::imap(
-        r$auxiliary_columns_map,
+        # Just do this once, do not listen to changes in the mapping
+        shiny::isolate(r$auxiliary_columns_map),
         \(x, y) {
           shiny::fluidRow(
             shiny::column(
               width = 6,
               # TODO: Vertically align with input
-              shiny::tags$b(x)
+              shiny::tags$b(x$label)
             ),
             shiny::column(
               width = 6,
@@ -73,18 +74,22 @@ mod_parse_annotations_aux_fields_server <- function(id, r) {
     purrr::walk(
       names(get_config("auxiliary_columns_map")),
       \(x)
-      shiny::observe(
-        r$auxiliary_columns_mapping[x] <- list(input[[x]])
-      )
+      shiny::observe({
+        shiny::req(r$annotations)
+        r$auxiliary_columns_map[[x]]["value"] <- list(input[[x]])
+      })
     )
 
     # Go through each and disable other columns' aux fields ----
     shiny::observe({
+      shiny::req(r$annotations)
+
       # Go through each, and disable the other selected options
       purrr::walk(
-        names(r$auxiliary_columns_mapping),
+        names(r$auxiliary_columns_map),
         \(x) {
-          disable_options <- r$auxiliary_columns_mapping[names(r$auxiliary_columns_mapping) != x] %>%
+          disable_options <- r$auxiliary_columns_map[names(r$auxiliary_columns_map) != x] %>%
+            purrr::map("value") %>%
             purrr::compact() %>%
             unlist(use.names = FALSE)
           disabled_options <- r$auxiliary_columns %in% disable_options
@@ -108,8 +113,13 @@ mod_parse_annotations_aux_fields_server <- function(id, r) {
 
     # Enable "confirm" button once all of the columns have been mapped to an auxiliary field ----
     shiny::observe({
-      cols_mapped <- r$auxiliary_columns_mapping %>% purrr::compact()
-      all_cols_mapped <- length(cols_mapped) == length(r$auxiliary_columns_mapping)
+      shiny::req(r$annotations)
+
+      cols_mapped <- r$auxiliary_columns_map %>%
+        purrr::map("value") %>%
+        purrr::compact()
+
+      all_cols_mapped <- length(cols_mapped) == length(r$auxiliary_columns_map)
 
       if (all_cols_mapped) {
         shinyjs::enable("confirm")
@@ -120,21 +130,23 @@ mod_parse_annotations_aux_fields_server <- function(id, r) {
 
     # Rename columns in data according to auxiliary fields mapping ----
     shiny::observe({
-      # TODO - add * later on - it's nice to keep it off for now so that checking valid values of site/management is easier, and can continue to display "Site" and "Management" to user without *
-      mapped_cols_names <-
-        # paste0(unname(
-        r$auxiliary_columns_map
-      # ), get_config("auxiliary_columns_suffix"))
-      mapped_cols <- setNames(unlist(r$auxiliary_columns_mapping), mapped_cols_names)
+      mapped_cols_names <- r$auxiliary_columns_map %>%
+        purrr::map("column")
+      mapped_cols_aux <- r$auxiliary_columns_map %>%
+        purrr::map("value")
+      mapped_cols <- setNames(mapped_cols_aux, mapped_cols_names) %>%
+        unlist()
 
       r$annotations <- r$annotations %>%
         dplyr::rename(mapped_cols)
 
       # Remove auxiliary fields that were not mapped
-      extra_aux_fields <- setdiff(r$auxiliary_columns, mapped_cols)
+      extra_aux_fields <- setdiff(r$auxiliary_columns, mapped_cols_aux)
 
       r$annotations <- r$annotations %>%
         dplyr::select(-tidyselect::all_of(extra_aux_fields))
+
+      r$aux_mapped <- TRUE
     }) %>%
       shiny::bindEvent(input$confirm)
   })
