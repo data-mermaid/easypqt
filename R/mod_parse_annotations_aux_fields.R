@@ -31,7 +31,7 @@ mod_parse_annotations_aux_fields_server <- function(id, r) {
 
     # Generate input UI ----
     output$map_aux_fields <- shiny::renderUI({
-      # shiny::req(r$annotations)
+      shiny::req(r$annotations)
 
       inputs <- purrr::imap(
         r$auxiliary_columns_map,
@@ -79,34 +79,32 @@ mod_parse_annotations_aux_fields_server <- function(id, r) {
     )
 
     # Go through each and disable other columns' aux fields ----
-    shiny::observe(
-      {
-        # Go through each, and disable the other selected options
-        purrr::walk(
-          names(r$auxiliary_columns_mapping),
-          \(x) {
-            disable_options <- r$auxiliary_columns_mapping[names(r$auxiliary_columns_mapping) != x] %>%
-              purrr::compact() %>%
-              unlist(use.names = FALSE)
-            disabled_options <- r$auxiliary_columns %in% disable_options
+    shiny::observe({
+      # Go through each, and disable the other selected options
+      purrr::walk(
+        names(r$auxiliary_columns_mapping),
+        \(x) {
+          disable_options <- r$auxiliary_columns_mapping[names(r$auxiliary_columns_mapping) != x] %>%
+            purrr::compact() %>%
+            unlist(use.names = FALSE)
+          disabled_options <- r$auxiliary_columns %in% disable_options
 
-            shinyWidgets::updatePickerInput(
-              session,
-              x,
-              choices = r$auxiliary_columns,
-              selected = input[[x]],
-              choicesOpt = list(
-                disabled = disabled_options,
-                style = ifelse(disabled_options,
-                  yes = "color: rgba(119, 119, 119, 0.5);",
-                  no = ""
-                )
+          shinyWidgets::updatePickerInput(
+            session,
+            x,
+            choices = r$auxiliary_columns,
+            selected = input[[x]],
+            choicesOpt = list(
+              disabled = disabled_options,
+              style = ifelse(disabled_options,
+                yes = "color: rgba(119, 119, 119, 0.5);",
+                no = ""
               )
             )
-          }
-        )
-      }
-    )
+          )
+        }
+      )
+    })
 
     # Enable "confirm" button once all of the columns have been mapped to an auxiliary field ----
     shiny::observe({
@@ -121,9 +119,17 @@ mod_parse_annotations_aux_fields_server <- function(id, r) {
     })
 
     # Rename columns in data according to auxiliary fields mapping ----
-
     shiny::observe({
-      browser()
+      mapped_cols_names <- paste0(unname(r$auxiliary_columns_map), get_config("auxiliary_columns_suffix"))
+      mapped_cols <- setNames(unlist(r$auxiliary_columns_mapping), mapped_cols_names)
+
+      r$annotations <- r$annotations %>%
+        dplyr::rename(mapped_cols)
+
+      # Remove auxiliary fields that were not mapped
+      extra_aux_fields <- setdiff(r$auxiliary_columns, mapped_cols)
+
+      r$annotations <- r$annotations %>% dplyr::select(-tidyselect::all_of(extra_aux_fields))
     }) %>%
       shiny::bindEvent(input$confirm)
   })
