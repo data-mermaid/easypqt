@@ -43,8 +43,7 @@ mod_upload_annotations_server <- function(id, r) {
 
     # If it does not contain the correct columns, show a modal and do not allow them to continue
     shiny::observe({
-      missing_cols_list <- purrr::map(c(r$missing_cols), shiny::tags$li) %>%
-        shiny::tags$ul()
+      missing_cols_list <- make_formatted_listc(r$missing_cols)
 
       shiny::showModal(
         shiny::modalDialog(
@@ -68,12 +67,7 @@ mod_upload_annotations_server <- function(id, r) {
     shiny::observe({
       shiny::req(r$is_project_admin)
       if (r$dev) {
-        r$annotations <- switch(r$dev_scenario,
-          empties = empties,
-          wrong_values = wrong_values,
-          good_data = good_data,
-          some_good_some_wrong = some_good_some_wrong
-        )
+        r$annotations <- get(r$dev_scenario)
       } else {
         shiny::req(r$contains_required_cols)
         # Only read in the required columns

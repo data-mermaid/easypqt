@@ -14,8 +14,9 @@ app_server <- function(input, output, session) {
     dev = TRUE,
     # dev_scenario = "empties"
     # dev_scenario = "wrong_values"
-    dev_scenario = "good_data"
+    # dev_scenario = "good_data"
     # dev_scenario = "some_good_some_wrong"
+    dev_scenario = "transect_decimal"
   )
 
   # Authenticate ----

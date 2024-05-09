@@ -48,7 +48,7 @@ mod_parse_annotations_check_nonempty_server <- function(id, r) {
 
       if (length(empty_fields) > 0) {
         empty_fields_skeleton <- get_copy("non_empty_fields")
-        empty_fields_list <- shiny::tags$ul(purrr::map(empty_fields, shiny::tags$li))
+        empty_fields_list <- make_formatted_list(empty_fields)
 
         all_fields <- check_fields %>%
           purrr::map("label") %>%

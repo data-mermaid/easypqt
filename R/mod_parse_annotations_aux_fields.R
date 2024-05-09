@@ -145,6 +145,7 @@ mod_parse_annotations_aux_fields_server <- function(id, r) {
 
     # Rename columns in data according to auxiliary fields mapping ----
     shiny::observe({
+
       mapped_cols_names <- r$auxiliary_columns_map %>%
         purrr::map("column")
       mapped_cols_aux <- r$auxiliary_columns_map %>%

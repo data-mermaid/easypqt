@@ -17,3 +17,29 @@ show_modal <- function(...) {
     )
   )
 }
+
+make_formatted_list <- function(x) {
+  shiny::tags$ul(
+    purrr::map(x, shiny::tags$li)
+  )
+}
+
+open_file <- function(file) {
+  usethis::use_r(file)
+}
+
+open_server <- function() {
+  open_file("app_server")
+}
+
+open_ui <- function() {
+  open_file("app_ui")
+}
+
+open_utils <- function() {
+  open_file("utils")
+}
+
+open_config <- function() {
+  usethis::edit_file("inst/config.yml")
+}

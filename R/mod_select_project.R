@@ -60,7 +60,11 @@ mod_select_project_server <- function(id, r) {
       if (!r$is_project_admin) {
         show_not_project_admin_modal(r)
       } else {
-        r$template_and_options <- template_and_options$result
+        template_and_options <- template_and_options$result
+        r$template <- template_and_options$Template
+        r$template_choices <- template_and_options[names(template_and_options) != "Template"] %>%
+          purrr::map("choices") %>%
+          purrr::compact()
       }
     }) %>%
       shiny::bindEvent(input$project)
