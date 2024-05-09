@@ -9,3 +9,5 @@ $run_dev.*
 ^.here$
 ^\.httr-oauth$
 ^.*\.csv
+^app\.R$
+^rsconnect$

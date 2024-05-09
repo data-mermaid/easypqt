@@ -136,10 +136,10 @@ mod_parse_annotations_aux_fields_server <- function(id, r) {
 
     shiny::observe({
       if (r$dev) {
-        shiny::req(input$s)
-        r$confirm <- TRUE
+        shiny::req(input$site)
+        r$confirm_map_aux_fields <- TRUE
       } else {
-        r$confirm <- input$confirm
+        r$confirm_map_aux_fields <- input$confirm
       }
     })
 
@@ -163,7 +163,7 @@ mod_parse_annotations_aux_fields_server <- function(id, r) {
 
       r$aux_mapped <- TRUE
     }) %>%
-      shiny::bindEvent(r$confirm)
+      shiny::bindEvent(r$confirm_map_aux_fields)
   })
 }
 

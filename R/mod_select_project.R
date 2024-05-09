@@ -88,10 +88,5 @@ show_not_project_admin_modal <- function(r) {
     dplyr::filter(id == r$project) %>%
     dplyr::pull(name)
 
-  shiny::showModal(
-    shiny::modalDialog(
-      glue::glue(get_copy("not_admin"), .envir = list(project_name = project_name)),
-      footer = close_button
-    )
-  )
+  show_modal(glue::glue(get_copy("not_admin"), .envir = list(project_name = project_name)))
 }

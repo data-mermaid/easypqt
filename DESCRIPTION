@@ -16,6 +16,7 @@ Imports:
     golem (>= 0.4.1),
     magrittr,
     mermaidr (>= 1.0.0),
+    pkgload,
     purrr,
     readr,
     rhandsontable,

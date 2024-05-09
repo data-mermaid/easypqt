@@ -8,3 +8,12 @@ get_copy <- function(key) {
 }
 
 close_button <- shiny::modalButton("Close")
+
+show_modal <- function(...) {
+  shiny::showModal(
+    shiny::modalDialog(
+      ...,
+      footer = close_button
+    )
+  )
+}

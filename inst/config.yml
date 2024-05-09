@@ -1,20 +1,20 @@
 required_annotations_columns:
-  - Name
-  - Date
-  - Aux1
-  - Aux2
-  - Aux3
-  - Aux4
-  - Aux5
-  - Row
-  - Column
-  - Label
+- Name
+- Date
+- Aux1
+- Aux2
+- Aux3
+- Aux4
+- Aux5
+- Row
+- Column
+- Label
 auxiliary_columns:
-  - Aux1
-  - Aux2
-  - Aux3
-  - Aux4
-  - Aux5
+- Aux1
+- Aux2
+- Aux3
+- Aux4
+- Aux5
 auxiliary_columns_map:
   site:
     label: Site
@@ -28,6 +28,10 @@ auxiliary_columns_map:
     label: Transect Number
     column: Transect Number *
     value: ~
+additional_columns_map:
+  date:
+    label: Date
+    column: Date
 upload_annotations_missing_img_path: www/coralnet_annotations_export.png
 copy:
   not_admin: Unable to ingest into project {project_name}.\n\n You are not an admin
@@ -41,3 +45,6 @@ copy:
     N image results". The instructions read "Export annotations for these images in
     CSV format - one row per annotation". There is a section to select Optional Columns,
     and the option "Image metadata - date and auxiliary fields" is checked.'
+  non_empty_fields: "{fields} cannot contain empty values. The following fields contain
+    empty values: {list} \n\n Please update the data directly in CoralNet then begin
+    the import process again."
