@@ -35,6 +35,7 @@ mod_select_project_server <- function(id, r) {
         ns("project"),
         "Select a project to ingest for",
         choices = projects,
+        selected = ifelse(r$dev, "4d23d2a1-774f-4ccf-b567-69f95e4ff572", NULL),
         multiple = TRUE,
         options = shinyWidgets::pickerOptions(
           liveSearch = TRUE,
@@ -45,13 +46,13 @@ mod_select_project_server <- function(id, r) {
       )
     })
 
-    # Update r$project with selected project ----
-    shiny::observe(r$project <- input$project) %>%
-      shiny::bindEvent(input$project)
-
-    # Get project template/options ----
-    # At this point, will get an error if they are not an admin
     shiny::observe({
+
+      # Update r$project with selected project ----
+      r$project <- input$project
+
+      # Get project template/options ----
+      # At this point, will get an error if they are not an admin
       template_and_options <- safely_get_template_and_options(input$project, "benthicpqt")
 
       r$is_project_admin <- check_project_admin(template_and_options)

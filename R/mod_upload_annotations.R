@@ -66,9 +66,14 @@ mod_upload_annotations_server <- function(id, r) {
 
     # If it does contain the correct columns, read in the data and proceed
     shiny::observe({
-      # Only read in the required columns
-      r$annotations <- readr::read_csv(input$annotations$datapath, show_col_types = FALSE, col_select = r$required_annotations_columns)
-    }) %>%
-      shiny::bindEvent(r$contains_required_cols)
+      shiny::req(r$is_project_admin)
+      if (r$dev) {
+        r$annotations <- upload
+      } else {
+        shiny::req(r$contains_required_cols)
+        # Only read in the required columns
+        r$annotations <- readr::read_csv(input$annotations$datapath, show_col_types = FALSE, col_select = r$required_annotations_columns)
+      }
+    })
   })
 }

@@ -37,6 +37,7 @@ mod_parse_annotations_aux_fields_server <- function(id, r) {
         # Just do this once, do not listen to changes in the mapping
         shiny::isolate(r$auxiliary_columns_map),
         \(x, y) {
+          selected <- ifelse(r$dev, glue::glue("Aux{number}", number = which(names(shiny::isolate(r$auxiliary_columns_map)) == y)), NULL)
           shiny::fluidRow(
             shiny::column(
               width = 6,
@@ -49,6 +50,7 @@ mod_parse_annotations_aux_fields_server <- function(id, r) {
                 inputId = ns(y),
                 label = NULL,
                 choices = r$auxiliary_columns,
+                selected = selected,
                 multiple = TRUE,
                 # TODO, CSS styling for this to look like single selection, e.g. darker highlighting and not a check mark
                 options = shinyWidgets::pickerOptions(
@@ -74,15 +76,20 @@ mod_parse_annotations_aux_fields_server <- function(id, r) {
     purrr::walk(
       names(get_config("auxiliary_columns_map")),
       \(x)
-      shiny::observe({
+      shiny::observe(priority = 1, {
         shiny::req(r$annotations)
+        if (r$dev) {
+          shiny::req(input$site)
+        }
         r$auxiliary_columns_map[[x]]["value"] <- list(input[[x]])
+        r$aux_mapping_ui_created <- TRUE
       })
     )
 
     # Go through each and disable other columns' aux fields ----
     shiny::observe({
       shiny::req(r$annotations)
+      shiny::req(r$aux_mapping_ui_created)
 
       # Go through each, and disable the other selected options
       purrr::walk(
@@ -93,7 +100,6 @@ mod_parse_annotations_aux_fields_server <- function(id, r) {
             purrr::compact() %>%
             unlist(use.names = FALSE)
           disabled_options <- r$auxiliary_columns %in% disable_options
-
           shinyWidgets::updatePickerInput(
             session,
             x,
@@ -128,6 +134,15 @@ mod_parse_annotations_aux_fields_server <- function(id, r) {
       }
     })
 
+    shiny::observe({
+      if (r$dev) {
+        shiny::req(input$s)
+        r$confirm <- TRUE
+      } else {
+        r$confirm <- input$confirm
+      }
+    })
+
     # Rename columns in data according to auxiliary fields mapping ----
     shiny::observe({
       mapped_cols_names <- r$auxiliary_columns_map %>%
@@ -148,7 +163,7 @@ mod_parse_annotations_aux_fields_server <- function(id, r) {
 
       r$aux_mapped <- TRUE
     }) %>%
-      shiny::bindEvent(input$confirm)
+      shiny::bindEvent(r$confirm)
   })
 }
 
