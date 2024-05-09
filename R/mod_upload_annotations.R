@@ -68,7 +68,12 @@ mod_upload_annotations_server <- function(id, r) {
     shiny::observe({
       shiny::req(r$is_project_admin)
       if (r$dev) {
-        r$annotations <- upload
+        r$annotations <- switch(r$dev_scenario,
+          empties = empties,
+          wrong_values = wrong_values,
+          good_data = good_data,
+          some_good_some_wrong = some_good_some_wrong
+        )
       } else {
         shiny::req(r$contains_required_cols)
         # Only read in the required columns

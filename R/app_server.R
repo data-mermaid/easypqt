@@ -11,7 +11,11 @@ app_server <- function(input, output, session) {
     required_annotations_columns = get_config("required_annotations_columns"),
     auxiliary_columns = get_config("auxiliary_columns"),
     auxiliary_columns_map = get_config("auxiliary_columns_map"),
-    dev = TRUE
+    dev = TRUE,
+    dev_scenario = "empties"
+    # dev_scenario = "wrong_values"
+    # dev_scenario = "good_data"
+    # dev_scenario = "some_good_some_wrong"
   )
 
   # Authenticate ----
