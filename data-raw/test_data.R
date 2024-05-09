@@ -44,4 +44,3 @@ transect_decimal <- data %>%
   filter_data("transect_decimal")
 
 usethis::use_data(transect_decimal, overwrite = TRUE)
-

@@ -4,7 +4,6 @@
 #'     DO NOT REMOVE.
 #' @noRd
 app_ui <- function(request) {
-
   shiny::tagList(
     golem_add_external_resources(),
     shiny::fluidPage(

@@ -11,10 +11,10 @@ mod_parse_annotations_aux_fields_ui <- function(id) {
   ns <- NS(id)
   # TODO - styling etc - in a modal?
   shiny::fluidRow(
-  shiny::column(
-    width = 6,
-    shiny::uiOutput(ns("map_aux_fields"))
-  )
+    shiny::column(
+      width = 6,
+      shiny::uiOutput(ns("map_aux_fields"))
+    )
   )
 }
 
@@ -147,7 +147,6 @@ mod_parse_annotations_aux_fields_server <- function(id, r) {
 
     # Rename columns in data according to auxiliary fields mapping ----
     shiny::observe({
-
       mapped_cols_names <- r$auxiliary_columns_map %>%
         purrr::map("column")
       mapped_cols_aux <- r$auxiliary_columns_map %>%

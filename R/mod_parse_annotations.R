@@ -7,7 +7,7 @@
 #' @noRd
 #'
 #' @importFrom shiny NS tagList
-mod_parse_annotations_ui <- function(id){
+mod_parse_annotations_ui <- function(id) {
   ns <- NS(id)
   tagList(
     # Parse CoralNet annotations auxiliary fields ----
@@ -24,8 +24,8 @@ mod_parse_annotations_ui <- function(id){
 #' parse_annotations Server Functions
 #'
 #' @noRd
-mod_parse_annotations_server <- function(id, r){
-  moduleServer( id, function(input, output, session){
+mod_parse_annotations_server <- function(id, r) {
+  moduleServer(id, function(input, output, session) {
     ns <- session$ns
 
     # Map auxiliary fields ----
@@ -60,7 +60,6 @@ mod_parse_annotations_server <- function(id, r){
     # mod_check_coralnet_mermaid_mapping_server("check_mapping", r)
 
     # Check auxiliary fields ----
-
   })
 }
 
