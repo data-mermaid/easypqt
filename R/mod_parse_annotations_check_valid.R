@@ -7,23 +7,21 @@
 #' @noRd
 #'
 #' @importFrom shiny NS tagList
-mod_parse_annotations_check_valid_ui <- function(id){
+mod_parse_annotations_check_valid_ui <- function(id) {
   ns <- NS(id)
-  tagList(
-
-  )
+  tagList()
 }
 
 #' parse_annotations_check_valid Server Functions
 #'
 #' @noRd
-mod_parse_annotations_check_valid_server <- function(id, r){
-  moduleServer( id, function(input, output, session){
+mod_parse_annotations_check_valid_server <- function(id, r) {
+  moduleServer(id, function(input, output, session) {
     ns <- session$ns
 
     # Check that site/management are ones already entered in the project ----
     shiny::observe({
-      shiny::req(r$valid_values)
+      shiny::req(r$aux_mapped)
       shiny::req(id %in% c("site", "management"))
 
       options_lookup <- r$auxiliary_columns_map[[id]][["column"]]
@@ -39,18 +37,31 @@ mod_parse_annotations_check_valid_server <- function(id, r){
 
     # Check that transect number is an integer ----
     shiny::observe({
-      shiny::req(r$valid_values)
+      shiny::req(r$aux_mapped)
       shiny::req(id %in% c("transect_number"))
 
-      # If all are integers, show transect numbers
-      # If some are integers, show ones that ARE NOT and ones that are
-      # If none are integers, show ones that ARE NOT
-    })
+      values <- r$annotations[r$auxiliary_columns_map[[id]][["column"]]]
+      names(values) <- "value"
 
-    # Check that dates are all not empty ----
-    shiny::observe({
-      shiny::req(r$valid_values)
-      shiny::req(id %in% c("date"))
+      values_with_numeric <- values %>%
+        dplyr::mutate(numeric_value = as.integer(value) %>% suppressWarnings())
+
+      invalid_values <- values_with_numeric %>%
+        dplyr::filter(is.na(numeric_value))
+
+      if (nrow(invalid_values) > 0) {
+        # Show the invalid ones only
+
+        transect_number_invalid_skeleton <- get_copy("transect_number_not_integer")
+        invalid_values <- make_formatted_list(invalid_values[["value"]])
+
+        show_modal(
+          glue::glue(transect_number_invalid_skeleton, .envir = list(invalid_values = invalid_values))
+        )
+      } else {
+        show_modal("transect numbers good")
+        # TODO
+      }
     })
   })
 }
