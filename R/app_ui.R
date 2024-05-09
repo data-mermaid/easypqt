@@ -13,12 +13,7 @@ app_ui <- function(request) {
       mod_select_project_ui("select_project"),
       # Upload CoralNet annotations ----
       mod_upload_annotations_ui("upload_annotations"),
-      # Parse CoralNet annotations auxiliary fields ----
-      mod_parse_annotations_aux_fields_ui("parse_annotations_aux_fields"),
-      # Check valid values of fields ----
-      mod_parse_annotations_check_valid_ui("site"),
-      mod_parse_annotations_check_valid_ui("management"),
-      mod_parse_annotations_check_valid_ui("transect_number")
+      mod_parse_annotations_ui("parse_annotations")
     )
   )
 }
