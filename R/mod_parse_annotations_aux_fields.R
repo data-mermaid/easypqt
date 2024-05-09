@@ -10,9 +10,11 @@
 mod_parse_annotations_aux_fields_ui <- function(id) {
   ns <- NS(id)
   # TODO - styling etc - in a modal?
+  shiny::fluidRow(
   shiny::column(
     width = 6,
     shiny::uiOutput(ns("map_aux_fields"))
+  )
   )
 }
 

@@ -25,7 +25,8 @@ make_formatted_list <- function(x) {
 }
 
 skeleton_to_text <- function(skeleton, envir) {
-  glue::glue(skeleton, .envir = envir)
+  glue::glue(skeleton, .envir = envir) %>%
+    shiny::HTML()
 }
 
 open_file <- function(file) {
