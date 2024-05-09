@@ -48,3 +48,5 @@ copy:
   non_empty_fields: "{fields} cannot contain empty values. The following fields contain
     empty values: {list} \n\n Please update the data directly in CoralNet then begin
     the import process again."
+  transect_number_not_integer: 'Transect Number must be an integer. The following
+    are invalid: {invalid_values}'

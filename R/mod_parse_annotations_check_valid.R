@@ -47,7 +47,8 @@ mod_parse_annotations_check_valid_server <- function(id, r) {
         dplyr::mutate(numeric_value = as.integer(value) %>% suppressWarnings())
 
       invalid_values <- values_with_numeric %>%
-        dplyr::filter(is.na(numeric_value))
+        dplyr::filter(is.na(numeric_value) |
+          as.character(numeric_value) != value) # Handles decimals
 
       if (nrow(invalid_values) > 0) {
         # Show the invalid ones only
