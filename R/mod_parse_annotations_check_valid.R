@@ -9,7 +9,9 @@
 #' @importFrom shiny NS tagList
 mod_parse_annotations_check_valid_ui <- function(id) {
   ns <- NS(id)
-  tagList()
+  shiny::fluidRow(
+    shiny::uiOutput(ns("check_results"))
+  )
 }
 
 #' parse_annotations_check_valid Server Functions
@@ -26,13 +28,30 @@ mod_parse_annotations_check_valid_server <- function(id, r) {
 
       options_lookup <- r$auxiliary_columns_map[[id]][["column"]]
 
-      valid_values <- r$valid_values[[options_lookup]][["value"]] # TODO, "value" in config?
+      valid_values <- r$template_choices[[options_lookup]][["value"]] # TODO, "value" in config?
       actual_values <- unique(r$annotations[[options_lookup]])
 
-      # Check if values match
-      # If all match, list values in data, and values in project?
-      # If some match, list values that DO NOT match in data, values that do, and values in project
-      # If none match, list values in data, and values in project
+      invalid_values <- setdiff(actual_values, valid_values)
+
+      if (length(invalid_values) > 0) {
+        invalid_values_skeleton <- get_copy("invalid_values")
+        invalid_values <- make_formatted_list(invalid_values)
+        valid_values <- make_formatted_list(valid_values)
+
+        invalid_values_envir <- list(
+          label = r$auxiliary_columns_map[[id]][["label"]],
+          invalid_values = invalid_values,
+          valid_values = valid_values
+        )
+
+        # show_modal(
+        output$check_results <- skeleton_to_text(invalid_values_skeleton, invalid_values_envir) %>%
+          shiny::renderUI()
+        # )
+      } else {
+        show_modal(glue::glue("{id} values good"))
+        # TODO
+      }
     })
 
     # Check that transect number is an integer ----
@@ -56,9 +75,10 @@ mod_parse_annotations_check_valid_server <- function(id, r) {
         transect_number_invalid_skeleton <- get_copy("transect_number_not_integer")
         invalid_values <- make_formatted_list(invalid_values[["value"]])
 
-        show_modal(
-          glue::glue(transect_number_invalid_skeleton, .envir = list(invalid_values = invalid_values))
-        )
+        # show_modal(
+        output$check_results <- skeleton_to_text(transect_number_invalid_skeleton, list(invalid_values = invalid_values)) %>%
+          shiny::renderUI()
+        # )
       } else {
         show_modal("transect numbers good")
         # TODO

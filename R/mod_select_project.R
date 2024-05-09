@@ -47,7 +47,6 @@ mod_select_project_server <- function(id, r) {
     })
 
     shiny::observe({
-
       # Update r$project with selected project ----
       r$project <- input$project
 
@@ -92,5 +91,5 @@ show_not_project_admin_modal <- function(r) {
     dplyr::filter(id == r$project) %>%
     dplyr::pull(name)
 
-  show_modal(glue::glue(get_copy("not_admin"), .envir = list(project_name = project_name)))
+  show_modal(skeleton_to_text(get_copy("not_admin"), list(project_name = project_name)))
 }

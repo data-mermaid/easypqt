@@ -24,6 +24,10 @@ make_formatted_list <- function(x) {
   )
 }
 
+skeleton_to_text <- function(skeleton, envir) {
+  glue::glue(skeleton, .envir = envir)
+}
+
 open_file <- function(file) {
   usethis::use_r(file)
 }

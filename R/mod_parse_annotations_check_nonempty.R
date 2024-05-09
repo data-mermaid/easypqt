@@ -56,7 +56,7 @@ mod_parse_annotations_check_nonempty_server <- function(id, r) {
 
         empty_fields_glue <- list(fields = all_fields, list = empty_fields_list)
 
-        empty_fields_text <- glue::glue(empty_fields_skeleton, .envir = empty_fields_glue)
+        empty_fields_text <- skeleton_to_text(empty_fields_skeleton, empty_fields_glue)
 
         show_modal(empty_fields_text)
       }

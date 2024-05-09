@@ -50,3 +50,5 @@ copy:
     the import process again."
   transect_number_not_integer: 'Transect Number must be an integer. The following
     are invalid: {invalid_values}'
+  invalid_values: 'The annotations contain invalid values of {label}. The following
+    are invalid: {invalid_values} \n\n Valid values of {label} are: {valid_values}'
