@@ -8,6 +8,7 @@
 #'
 mod_select_project_ui <- function(id) {
   ns <- NS(id)
+
   shiny::uiOutput(ns("select_project"))
 }
 
@@ -31,18 +32,25 @@ mod_select_project_server <- function(id, r) {
 
       projects <- setNames(r$projects$id, r$projects$name)
 
-      shinyWidgets::pickerInput(
+      selected_project <- null_if_dev(r$dev, "4d23d2a1-774f-4ccf-b567-69f95e4ff572")
+
+      input <- shinyWidgets::pickerInput(
         ns("project"),
-        "Select a project to ingest for",
+        label = NULL,
         choices = projects,
-        selected = ifelse(r$dev, "4d23d2a1-774f-4ccf-b567-69f95e4ff572", NULL),
+        selected = selected_project,
         multiple = TRUE,
         options = shinyWidgets::pickerOptions(
           liveSearch = TRUE,
           size = 10,
           maxOptions = 1,
-          noneSelectedText = "Search project..."
+          noneSelectedText = "Select a project"
         )
+      )
+
+      shiny::tagList(
+        shiny::h2("Project"),
+        indent_input(input)
       )
     })
 

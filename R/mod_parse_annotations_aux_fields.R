@@ -33,13 +33,14 @@ mod_parse_annotations_aux_fields_server <- function(id, r) {
 
     # Generate input UI ----
     output$map_aux_fields <- shiny::renderUI({
+
       shiny::req(r$annotations)
 
       inputs <- purrr::imap(
         # Just do this once, do not listen to changes in the mapping
         shiny::isolate(r$auxiliary_columns_map),
         \(x, y) {
-          selected <- ifelse(r$dev, glue::glue("Aux{number}", number = which(names(shiny::isolate(r$auxiliary_columns_map)) == y)), NULL)
+          selected <- null_if_dev(r$dev, glue::glue("Aux{number}", number = which(names(shiny::isolate(r$auxiliary_columns_map)) == y)))
           shiny::fluidRow(
             shiny::column(
               width = 6,
@@ -66,7 +67,6 @@ mod_parse_annotations_aux_fields_server <- function(id, r) {
       )
 
       shiny::tagList(
-        shiny::h4("Map columns to auxiliary fields"),
         inputs,
         shinyjs::disabled(shiny::actionButton(ns("confirm"), "Confirm"))
       )

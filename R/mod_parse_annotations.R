@@ -10,6 +10,7 @@
 mod_parse_annotations_ui <- function(id) {
   ns <- NS(id)
   tagList(
+    shiny::h2("Map CoralNet annotations"),
     # Parse CoralNet annotations auxiliary fields ----
     mod_parse_annotations_aux_fields_ui(ns("parse_annotations_aux_fields")),
     # Show date/site/management, confirm and continue ----

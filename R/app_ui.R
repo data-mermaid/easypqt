@@ -6,7 +6,12 @@
 app_ui <- function(request) {
   shiny::tagList(
     golem_add_external_resources(),
-    shiny::fluidPage(
+    bslib::page_fixed(
+      theme = bslib::bs_theme(version = 5, primary = "#174B82"),
+      title = "EasyPQT",
+      lang = "en",
+      shiny::h1("EasyPQT"),
+      shiny::hr(),
       # Authenticate ----
       mod_authenticate_ui("authenticate"),
       # Get projects ----

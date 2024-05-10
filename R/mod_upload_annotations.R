@@ -22,7 +22,12 @@ mod_upload_annotations_server <- function(id, r) {
     output$upload <- shiny::renderUI({
       shiny::req(r$is_project_admin)
 
-      shiny::fileInput(ns("annotations"), "Upload CoralNet annotations", accept = ".csv")
+      input <- shiny::fileInput(ns("annotations"), label = NULL, accept = ".csv")
+
+      shiny::tagList(
+        shiny::h2("Upload CoralNet annotations"),
+        input
+      )
     })
 
     # Check the file contains the correct columns

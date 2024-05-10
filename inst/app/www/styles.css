@@ -1,0 +1,92 @@
+/* Styles */
+
+:root {
+  --16px: 1rem;
+  --18px: 1.125rem;
+  --20px: 1.25rem;
+  --24px: 1.5rem;
+  --28px: 1.75rem;
+  --32px: 2rem;
+  --color-grey-00: #fff;
+  --color-grey-10: #f8f8f8;
+  --color-grey-20: #dfdfdf;
+  --color-grey-30: #c5c5c5;
+  --color-grey-40: #acacac;
+  --color-grey-50: #929292;
+  --color-grey-60: #797979;
+  --color-grey-70: #5f5f5f;
+  --color-grey-80: #464646;
+  --color-grey-90: #2c2c2c;
+  --color-grey-100: #131313;
+  --color-black: #282828;
+  --color-primary: rgb(23, 75, 130);
+}
+
+html {
+  font-family: "Open Sans", "Helvetica Neue", "Helvetica", "Arial", "sans-serif";
+  font-size: 16px !important;
+  color: var(--color-black);
+}
+
+/* Sizing */
+
+h1 {
+  margin-top: 1.5rem;
+  margin-bottom: 0;
+  font-size: var(--32px);
+}
+
+h2 {
+  font-size: var(--24px);
+  font-weight: 400;
+  margin: 1rem 0;
+}
+
+h3 {
+  font-size: var(--24px);
+}
+
+h4 {
+  font-size: var(--20px);
+  font-weight: bold;
+}
+
+h5 {
+  font-size: var(--20px);
+}
+
+hr {
+  color: var(--color-grey-50);
+  margin: 2rem 0;
+}
+
+/* Spacing */
+
+.indent-input {
+  margin-left: 1rem;
+}
+
+/* Colours */
+
+/* Inputs */
+
+.bttn-simple.bttn-primary {
+  background: var(--color-primary);
+  padding: 0.5rem 1rem;
+}
+
+/* Small devices */
+@media (max-width: 768px) {
+  /* Smaller sizing */
+  html {
+    font-size: 14px !important;
+  }
+
+  h1 {
+    font-size: var(--28px);
+  }
+
+  h2 {
+    font-size: var(--24px);
+  }
+}

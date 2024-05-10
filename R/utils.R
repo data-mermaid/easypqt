@@ -48,3 +48,15 @@ open_utils <- function() {
 open_config <- function() {
   usethis::edit_file("inst/config.yml")
 }
+
+null_if_dev <- function(dev, non_null) {
+  if (dev) {
+    non_null
+  } else {
+    NULL
+  }
+}
+
+indent_input <- function(input) {
+  shiny::div(class = "indent-input", input)
+}
