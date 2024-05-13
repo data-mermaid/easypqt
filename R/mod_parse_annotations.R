@@ -15,7 +15,9 @@ mod_parse_annotations_ui <- function(id) {
     # Show date/site/management, confirm and continue ----
     # TODO
     # Check valid values of fields ----
-    mod_parse_annotations_check_valid_ui(ns("check_valid"))
+    mod_parse_annotations_check_valid_ui(ns("check_valid")),
+    # Map labelsets ----
+    mod_map_coralnet_labels_to_mermaid_ui(ns("map_coralnet_labels"))
   )
 }
 
@@ -49,13 +51,11 @@ mod_parse_annotations_server <- function(id, r) {
     # Check that fields are not empty ----
     mod_parse_annotations_check_nonempty_server("check_nonempty", r)
 
-    # Check valid values of fields ----
+    # Check valid values of auxiliary fields ----
     mod_parse_annotations_check_valid_server("check_valid", r)
 
-    # Check CoralNet mapping ----
-    # mod_check_coralnet_mermaid_mapping_server("check_mapping", r)
-
-    # Check auxiliary fields ----
+    # Map CoralNet labelsets to MERMAID ----
+    mod_map_coralnet_labels_to_mermaid_server(ns("map_coralnet_labels"), r)
   })
 }
 

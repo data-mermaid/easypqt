@@ -9,7 +9,7 @@
 #'
 #' @noRd
 app_sys <- function(...) {
-  system.file(..., package = "mermaidrcoralnet")
+  system.file(..., package = "easypqt")
 }
 #' Read App Config
 #'

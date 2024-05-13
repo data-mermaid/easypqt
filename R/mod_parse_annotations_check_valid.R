@@ -33,12 +33,12 @@ mod_parse_annotations_check_valid_server <- function(id, r) {
       transect_number_ui <- check_integer_values(r, "transect_number")
 
       if (site_ui[["valid"]] & management_ui[["valid"]] & transect_number_ui[["valid"]]) {
-        r$all_valid <- TRUE
+        r$all_aux_fields_valid <- TRUE
       } else {
-        r$all_valid <- FALSE
+        r$all_aux_fields_valid <- FALSE
       }
 
-      valid_messaging <- ifelse(r$all_valid, "", "Please fix invalid values in CoralNet before continuing.")
+      valid_messaging <- ifelse(r$all_aux_fields_valid, "", "Please fix invalid values in CoralNet before continuing.")
 
       show_modal(
         title = "Validating fields",
@@ -80,7 +80,7 @@ check_valid_values <- function(r, lookup) {
 
     res <- skeleton_to_text(invalid_values_skeleton, invalid_values_envir)
   } else {
-    res <- usethis::ui_done("{lookup} values good")
+    res <- glue::glue("{lookup} values good")
     # TODO
   }
 
@@ -115,7 +115,7 @@ check_integer_values <- function(r, lookup) {
 
     res <- skeleton_to_text(transect_number_invalid_skeleton, list(invalid_values = invalid_values))
   } else {
-    res <- usethis::ui_done("{lookup} numbers good")
+    res <- glue::glue("{lookup} numbers good")
     # TODO
   }
 
