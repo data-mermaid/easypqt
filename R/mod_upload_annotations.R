@@ -48,7 +48,7 @@ mod_upload_annotations_server <- function(id, r) {
 
     # If it does not contain the correct columns, show a modal and do not allow them to continue
     shiny::observe({
-      missing_cols_list <- make_formatted_listc(r$missing_cols)
+      missing_cols_list <- make_formatted_list(r$missing_cols)
 
       shiny::showModal(
         shiny::modalDialog(
