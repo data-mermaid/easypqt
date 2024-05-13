@@ -194,7 +194,6 @@ mod_parse_annotations_aux_fields_server <- function(id, r) {
 # mod_parse_annotations_server("parse_annotations_1")
 
 make_mapping_dropdown_ui <- function(auxiliary_column_map, auxiliary_column, r, ns) {
-
   selected <- null_if_dev(r$dev, glue::glue("Aux{number}", number = which(names(shiny::isolate(r$auxiliary_columns_map)) == auxiliary_column)))
 
   shiny::fluidRow(
