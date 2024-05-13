@@ -24,6 +24,7 @@ mod_parse_annotations_check_valid_server <- function(id, r) {
     # Check that site/management are ones already entered in the project ----
     shiny::observe({
       shiny::req(r$aux_mapped)
+      shiny::req(r$no_empty_fields)
       shiny::req(id %in% c("site", "management"))
 
       options_lookup <- r$auxiliary_columns_map[[id]][["column"]]
@@ -57,6 +58,7 @@ mod_parse_annotations_check_valid_server <- function(id, r) {
     # Check that transect number is an integer ----
     shiny::observe({
       shiny::req(r$aux_mapped)
+      shiny::req(r$no_empty_fields)
       shiny::req(id %in% c("transect_number"))
 
       values <- r$annotations[r$auxiliary_columns_map[[id]][["column"]]]

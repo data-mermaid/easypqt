@@ -66,6 +66,7 @@ mod_parse_annotations_aux_fields_server <- function(id, r) {
         }
       )
 
+      # TODO - move into modal and then have option to "edit" afterwards
       shiny::tagList(
         inputs,
         shinyjs::disabled(shiny::actionButton(ns("confirm"), "Confirm"))

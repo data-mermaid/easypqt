@@ -47,6 +47,7 @@ mod_parse_annotations_check_nonempty_server <- function(id, r) {
         purrr::compact()
 
       if (length(empty_fields) > 0) {
+        r$no_empty_fields <- FALSE
         empty_fields_skeleton <- get_copy("non_empty_fields")
         empty_fields_list <- make_formatted_list(empty_fields)
 
@@ -59,6 +60,8 @@ mod_parse_annotations_check_nonempty_server <- function(id, r) {
         empty_fields_text <- skeleton_to_text(empty_fields_skeleton, empty_fields_glue)
 
         show_modal(empty_fields_text)
+      } else {
+        r$any_empty_fields <- TRUE
       }
     }) %>%
       shiny::bindEvent(r$aux_mapped)
