@@ -32,13 +32,20 @@ mod_parse_annotations_check_valid_server <- function(id, r) {
       # Check that transect number is an integer ----
       transect_number_ui <- check_integer_values(r, "transect_number")
 
+      if (site_ui[["valid"]] & management_ui[["valid"]] & transect_number_ui[["valid"]]) {
+        r$all_valid <- TRUE
+      } else {
+        r$all_valid <- FALSE
+      }
+
+      valid_messaging <- ifelse(r$all_valid, "", "Please fix invalid values in CoralNet before continuing.")
+
       show_modal(
         title = "Validating fields",
-        shiny::tagList(
-          site_ui,
-          management_ui,
-          transect_number_ui
-        )
+        site_ui[["ui"]],
+        management_ui[["ui"]],
+        transect_number_ui[["ui"]],
+        valid_messaging
       )
     })
   })
@@ -58,7 +65,9 @@ check_valid_values <- function(r, lookup) {
 
   invalid_values <- setdiff(actual_values, valid_values)
 
-  if (length(invalid_values) > 0) {
+  all_valid <- length(invalid_values) == 0
+
+  if (!all_valid) {
     invalid_values_skeleton <- get_copy("invalid_values")
     invalid_values <- make_formatted_list(invalid_values)
     valid_values <- make_formatted_list(valid_values)
@@ -75,9 +84,13 @@ check_valid_values <- function(r, lookup) {
     # TODO
   }
 
-  shiny::tagList(
-    shiny::h3(r$auxiliary_columns_map[[lookup]][["label"]]),
-    res
+  list(
+    valid = all_valid,
+    ui =
+      shiny::tagList(
+        shiny::h3(r$auxiliary_columns_map[[lookup]][["label"]]),
+        res
+      )
   )
 }
 
@@ -92,7 +105,9 @@ check_integer_values <- function(r, lookup) {
     dplyr::filter(is.na(numeric_value) |
       as.character(numeric_value) != value) # Handles decimals
 
-  if (nrow(invalid_values) > 0) {
+  all_valid <- nrow(invalid_values) == 0
+
+  if (!all_valid) {
     # Show the invalid ones only
 
     transect_number_invalid_skeleton <- get_copy("transect_number_not_integer")
@@ -104,8 +119,12 @@ check_integer_values <- function(r, lookup) {
     # TODO
   }
 
-  shiny::tagList(
-    shiny::h3(r$auxiliary_columns_map[[lookup]][["label"]]),
-    res
+  list(
+    valid = all_valid,
+    ui =
+      shiny::tagList(
+        shiny::h3(r$auxiliary_columns_map[[lookup]][["label"]]),
+        res
+      )
   )
 }
