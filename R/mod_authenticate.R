@@ -8,10 +8,9 @@
 #' @importFrom shiny NS moduleServer
 mod_authenticate_ui <- function(id) {
   ns <- NS(id)
-  shinyWidgets::actionBttn(ns("auth"),
-    "Authenticate to MERMAID",
-    color = "primary",
-    style = "simple"
+  primary_button(
+    ns("auth"),
+    "Authenticate to MERMAID"
   )
 }
 

@@ -9,13 +9,27 @@ get_copy <- function(key) {
 
 close_button <- shiny::modalButton("Close")
 
-show_modal <- function(...) {
+confirm_button <- function(id) {
+  shiny::actionButton(id, "Confirm")
+}
+
+modal <- function(..., title = NULL, footer, size = "m") {
   shiny::showModal(
     shiny::modalDialog(
       ...,
-      footer = close_button
+      title = title,
+      footer = footer,
+      size = size
     )
   )
+}
+
+show_modal <- function(...) {
+  modal(..., footer = close_button)
+}
+
+confirm_modal <- function(..., title, footer_id, size = "l") {
+  modal(..., title = title, footer = confirm_button(footer_id), size = size)
 }
 
 make_formatted_list <- function(x) {
@@ -59,4 +73,12 @@ null_if_dev <- function(dev, non_null) {
 
 indent_input <- function(input) {
   shiny::div(class = "indent-input", input)
+}
+
+primary_button <- function(id, label) {
+  shinyWidgets::actionBttn(id,
+    label,
+    color = "primary",
+    style = "simple"
+  )
 }

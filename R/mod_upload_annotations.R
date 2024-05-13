@@ -77,6 +77,7 @@ mod_upload_annotations_server <- function(id, r) {
         shiny::req(r$contains_required_cols)
         # Only read in the required columns
         r$annotations <- readr::read_csv(input$annotations$datapath, show_col_types = FALSE, col_select = r$required_annotations_columns)
+        r$ready_to_map_aux <- TRUE
       }
     })
   })
