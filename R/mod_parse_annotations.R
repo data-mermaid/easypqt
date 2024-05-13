@@ -15,9 +15,7 @@ mod_parse_annotations_ui <- function(id) {
     # Show date/site/management, confirm and continue ----
     # TODO
     # Check valid values of fields ----
-    mod_parse_annotations_check_valid_ui(ns("site")),
-    mod_parse_annotations_check_valid_ui(ns("management")),
-    mod_parse_annotations_check_valid_ui(ns("transect_number"))
+    mod_parse_annotations_check_valid_ui(ns("check_valid"))
   )
 }
 
@@ -52,9 +50,7 @@ mod_parse_annotations_server <- function(id, r) {
     mod_parse_annotations_check_nonempty_server("check_nonempty", r)
 
     # Check valid values of fields ----
-    mod_parse_annotations_check_valid_server("site", r)
-    mod_parse_annotations_check_valid_server("management", r)
-    mod_parse_annotations_check_valid_server("transect_number", r)
+    mod_parse_annotations_check_valid_server("check_valid", r)
 
     # Check CoralNet mapping ----
     # mod_check_coralnet_mermaid_mapping_server("check_mapping", r)

@@ -61,7 +61,7 @@ mod_parse_annotations_check_nonempty_server <- function(id, r) {
 
         show_modal(empty_fields_text)
       } else {
-        r$any_empty_fields <- TRUE
+        r$no_empty_fields <- TRUE
       }
     }) %>%
       shiny::bindEvent(r$aux_mapped)

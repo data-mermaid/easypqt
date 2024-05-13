@@ -141,7 +141,7 @@ mod_parse_annotations_aux_fields_server <- function(id, r) {
       if (r$dev) {
         shiny::req(input$site)
         r$confirm_map_aux_fields <- TRUE
-        # shiny::removeModal()
+        shiny::removeModal()
       } else {
         r$confirm_map_aux_fields <- input$confirm
         # Close modal too
