@@ -72,11 +72,12 @@ mod_upload_annotations_server <- function(id, r) {
     shiny::observe({
       shiny::req(r$is_project_admin)
       if (r$dev) {
-        r$annotations <- get(r$dev_scenario)
+        r$annotations_raw <- get(r$dev_scenario)
+        r$ready_to_map_aux <- TRUE
       } else {
         shiny::req(r$contains_required_cols)
         # Only read in the required columns
-        r$annotations <- readr::read_csv(input$annotations$datapath, show_col_types = FALSE, col_select = r$required_annotations_columns)
+        r$annotations_raw <- readr::read_csv(input$annotations$datapath, show_col_types = FALSE, col_select = r$required_annotations_columns)
         r$ready_to_map_aux <- TRUE
       }
     })

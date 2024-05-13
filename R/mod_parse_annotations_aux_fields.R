@@ -33,22 +33,21 @@ mod_parse_annotations_aux_fields_server <- function(id, r) {
 
     # Use a dropdown for each rather than radio buttons - just a bit more complicated to disable etc and to work within a data table
 
-    # It would be nice to allow them to optionally preview the data in here to remind themselves which of the auxliary columns is which?
+    # It would be nice to allow them to optionally preview the data in here to remind themselves which of the auxiliary columns is which?
 
     output$map_aux_fields_title <- shiny::renderUI({
       shiny::h2("Map CoralNet annotation fields")
     })
 
-    # Show modal with input UI when annotations are uploaded ----
-
+    # Show the modal with dropdown UI when annotations are uploaded ----
     shiny::observe({
       confirm_modal(title = "Map auxiliary fields", shiny::uiOutput(ns("map_aux_fields")), footer_id = ns("confirm"))
     }) %>%
-      shiny::bindEvent(r$ready_to_map_aux)
+      shiny::bindEvent(r$annotations_raw)
 
     # Generate input UI ----
     output$map_aux_fields <- shiny::renderUI({
-      shiny::req(r$annotations)
+      shiny::req(r$annotations_raw)
 
       purrr::imap(
         # Just do this once, do not listen to changes in the mapping
@@ -88,7 +87,7 @@ mod_parse_annotations_aux_fields_server <- function(id, r) {
       names(get_config("auxiliary_columns_map")),
       \(x)
       shiny::observe(priority = 1, {
-        shiny::req(r$annotations)
+        shiny::req(r$annotations_raw)
         if (r$dev) {
           shiny::req(input$site)
         }
@@ -99,7 +98,7 @@ mod_parse_annotations_aux_fields_server <- function(id, r) {
 
     # Go through each and disable other columns' aux fields ----
     shiny::observe({
-      shiny::req(r$annotations)
+      shiny::req(r$annotations_raw)
       shiny::req(r$aux_mapping_ui_created)
 
       # Go through each, and disable the other selected options
@@ -130,7 +129,7 @@ mod_parse_annotations_aux_fields_server <- function(id, r) {
 
     # Enable "confirm" button once all of the columns have been mapped to an auxiliary field ----
     shiny::observe({
-      shiny::req(r$annotations)
+      shiny::req(r$annotations_raw)
 
       cols_mapped <- r$auxiliary_columns_map %>%
         purrr::map("value") %>%
@@ -149,6 +148,7 @@ mod_parse_annotations_aux_fields_server <- function(id, r) {
       if (r$dev) {
         shiny::req(input$site)
         r$confirm_map_aux_fields <- TRUE
+        shiny::removeModal()
       } else {
         r$confirm_map_aux_fields <- input$confirm
         # Close modal too
@@ -165,7 +165,7 @@ mod_parse_annotations_aux_fields_server <- function(id, r) {
       mapped_cols <- setNames(mapped_cols_aux, mapped_cols_names) %>%
         unlist()
 
-      r$annotations <- r$annotations %>%
+      r$annotations <- r$annotations_raw %>%
         dplyr::rename(mapped_cols)
 
       # Remove auxiliary fields that were not mapped
@@ -186,11 +186,11 @@ mod_parse_annotations_aux_fields_server <- function(id, r) {
       shinyjs::show("edit_map_aux_fields")
     })
 
-    shiny::observe({
-      confirm_modal(title = "Map auxiliary fields", shiny::uiOutput(ns("map_aux_fields")), footer_id = ns("confirm"))
-      # TODO - this needs to actually contain the mapped ones, not the original unmapped fields
-    }) %>%
-      shiny::bindEvent(input$edit_map_aux_fields)
+    # # TODO - this needs to actually contain the mapped ones, not the original unmapped fields
+    # shiny::observe({
+    #   confirm_modal(title = "Map auxiliary fields", shiny::uiOutput(ns("map_aux_fields")), footer_id = ns("confirm"))
+    # }) %>%
+    #   shiny::bindEvent(input$edit_map_aux_fields)
   })
 }
 
