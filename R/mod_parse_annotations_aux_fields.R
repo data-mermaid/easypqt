@@ -46,16 +46,27 @@ mod_parse_annotations_aux_fields_server <- function(id, r) {
       shiny::bindEvent(r$annotations_raw)
 
     # Generate input UI ----
-    output$map_aux_fields_original <- shiny::renderUI({
+    output$map_aux_fields <- shiny::renderUI({
       shiny::req(r$annotations_raw)
 
-      purrr::imap(
+      data_preview <- r$annotations_raw %>%
+        dplyr::select(dplyr::all_of(r$auxiliary_columns)) %>%
+        DT::datatable(rownames = FALSE, options = list(dom = "tp"))
+
+      inputs <- purrr::imap(
         # Just do this once, do not listen to changes in the mapping
         # TODO - unless we want it to listen to changes in the mapping, so that the "edit" works?
         shiny::isolate(r$auxiliary_columns_map),
         \(x, y) {
           make_mapping_dropdown_ui(x, y, r, ns)
         }
+      )
+
+      shiny::tagList(
+        shiny::h3("Data preview"),
+        data_preview,
+        shiny::h3("Map fields"),
+        inputs
       )
     })
 
@@ -130,7 +141,7 @@ mod_parse_annotations_aux_fields_server <- function(id, r) {
       if (r$dev) {
         shiny::req(input$site)
         r$confirm_map_aux_fields <- TRUE
-        shiny::removeModal()
+        # shiny::removeModal()
       } else {
         r$confirm_map_aux_fields <- input$confirm
         # Close modal too
