@@ -46,36 +46,15 @@ mod_parse_annotations_aux_fields_server <- function(id, r) {
       shiny::bindEvent(r$annotations_raw)
 
     # Generate input UI ----
-    output$map_aux_fields <- shiny::renderUI({
+    output$map_aux_fields_original <- shiny::renderUI({
       shiny::req(r$annotations_raw)
 
       purrr::imap(
         # Just do this once, do not listen to changes in the mapping
+        # TODO - unless we want it to listen to changes in the mapping, so that the "edit" works?
         shiny::isolate(r$auxiliary_columns_map),
         \(x, y) {
-          selected <- null_if_dev(r$dev, glue::glue("Aux{number}", number = which(names(shiny::isolate(r$auxiliary_columns_map)) == y)))
-          shiny::fluidRow(
-            shiny::column(
-              width = 6,
-              # TODO: Vertically align with input
-              shiny::tags$b(x$label)
-            ),
-            shiny::column(
-              width = 6,
-              shinyWidgets::pickerInput(
-                inputId = ns(y),
-                label = NULL,
-                choices = r$auxiliary_columns,
-                selected = selected,
-                multiple = TRUE,
-                # TODO, CSS styling for this to look like single selection, e.g. darker highlighting and not a check mark
-                options = shinyWidgets::pickerOptions(
-                  maxOptions = 1,
-                  noneSelectedText = "Select an auxiliary field"
-                )
-              )
-            )
-          )
+          make_mapping_dropdown_ui(x, y, r, ns)
         }
       )
     })
@@ -109,7 +88,9 @@ mod_parse_annotations_aux_fields_server <- function(id, r) {
             purrr::map("value") %>%
             purrr::compact() %>%
             unlist(use.names = FALSE)
+
           disabled_options <- r$auxiliary_columns %in% disable_options
+
           shinyWidgets::updatePickerInput(
             session,
             x,
@@ -144,6 +125,7 @@ mod_parse_annotations_aux_fields_server <- function(id, r) {
       }
     })
 
+    # Track that auxiliary mapping has been confirmed ----
     shiny::observe({
       if (r$dev) {
         shiny::req(input$site)
@@ -199,3 +181,31 @@ mod_parse_annotations_aux_fields_server <- function(id, r) {
 
 ## To be copied in the server
 # mod_parse_annotations_server("parse_annotations_1")
+
+make_mapping_dropdown_ui <- function(auxiliary_column_map, auxiliary_column, r, ns) {
+
+  selected <- null_if_dev(r$dev, glue::glue("Aux{number}", number = which(names(shiny::isolate(r$auxiliary_columns_map)) == auxiliary_column)))
+
+  shiny::fluidRow(
+    shiny::column(
+      width = 6,
+      # TODO: Vertically align with input
+      shiny::tags$b(auxiliary_column_map[["label"]])
+    ),
+    shiny::column(
+      width = 6,
+      shinyWidgets::pickerInput(
+        inputId = ns(auxiliary_column),
+        label = NULL,
+        choices = r$auxiliary_columns,
+        selected = selected,
+        multiple = TRUE,
+        # TODO, CSS styling for this to look like single selection, e.g. darker highlighting and not a check mark
+        options = shinyWidgets::pickerOptions(
+          maxOptions = 1,
+          noneSelectedText = "Select an auxiliary field"
+        )
+      )
+    )
+  )
+}
