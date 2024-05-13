@@ -9,9 +9,10 @@ Authors@R:
 Description: What the package does (one paragraph).
 License: What license is it under?
 Imports: 
+    bslib,
     config (>= 0.3.2),
     dplyr,
-    forcats,
+    DT,
     glue,
     golem (>= 0.4.1),
     magrittr,
