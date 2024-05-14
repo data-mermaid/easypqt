@@ -69,6 +69,11 @@ hr {
   overflow-y: scroll;
 } */
 
+.ht_master.handsontable > .wtHolder {
+  max-height: 25vh !important;
+  width: auto !important;
+}
+
 /* Spacing */
 
 .indent-input {
@@ -98,4 +103,9 @@ hr {
   h2 {
     font-size: var(--24px);
   }
+
+.ht_master.handsontable > .wtHolder {
+  max-height: 75vh !important;
+  width: auto !important;
+}
 }
