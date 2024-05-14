@@ -41,7 +41,11 @@ mod_parse_annotations_aux_fields_server <- function(id, r) {
 
     # Show the modal with dropdown UI when annotations are uploaded ----
     shiny::observe({
-      confirm_modal(title = "Map auxiliary fields", shiny::uiOutput(ns("map_aux_fields")), footer_id = ns("confirm"))
+      confirm_modal(
+        title = "Map auxiliary fields",
+        shiny::uiOutput(ns("map_aux_fields")),
+        footer_id = ns("confirm")
+      )
     }) %>%
       shiny::bindEvent(r$annotations_raw)
 

@@ -21,7 +21,7 @@ mod_map_coralnet_labels_to_mermaid_server <- function(id, r) {
       shiny::req(r$all_aux_fields_valid)
 
       # Get known mapping from endpoint
-      # TODO, actually get from UI
+      # TODO, actually get from endpoint
       easypqt::coralnet_mermaid_attributes
     })
 
@@ -29,7 +29,6 @@ mod_map_coralnet_labels_to_mermaid_server <- function(id, r) {
       shiny::req(r$all_aux_fields_valid)
 
       # Get other benthic attributes (to show *not* known mappings in dropdown)
-
       mermaidr::mermaid_get_reference("benthicattributes") %>%
         dplyr::filter(status == "Open") %>% # TODO? Ask Kim
         dplyr::pull(name)
@@ -80,7 +79,7 @@ mod_map_coralnet_labels_to_mermaid_server <- function(id, r) {
         rhandsontable::rhandsontable(
           rowHeaders = FALSE, # Remove row numbers
           contextMenu = FALSE, # Disable right clicking
-          overflow = "visible" # So dropdown can extend out of table
+          overflow = "visible", # So dropdown can extend out of table
         ) %>%
         # Make the coralnet label read only
         rhandsontable::hot_col("coralnet_label", readOnly = TRUE) %>%
@@ -113,12 +112,9 @@ mod_map_coralnet_labels_to_mermaid_server <- function(id, r) {
     shiny::observe({
       shiny::req(coralnet_mermaid_mapping())
 
-      shiny::showModal(
-        shiny::modalDialog(
-          rhandsontable::rHandsontableOutput(ns("mapping_table")),
-          easyClose = FALSE,
-          footer = shinyjs::disabled(shiny::modalButton("Save mapping"))
-        )
+      confirm_modal(
+        rhandsontable::rHandsontableOutput(ns("mapping_table")),
+        footer_id = ns("save_mapping")
       )
     })
 
@@ -138,9 +134,11 @@ mod_map_coralnet_labels_to_mermaid_server <- function(id, r) {
         nrow() == 0
 
       if (mapping_valid) {
-        shinyjs::enable(selector = ".modal-footer button:disabled")
+        shinyjs::enable("save_mapping")
         r$mapping_valid <- TRUE
         r$coralnet_mermaid_mapping <- edited_coralnet_mermaid_mapping
+      } else {
+        shinyjs::disable("save_mapping")
       }
     })
   })
