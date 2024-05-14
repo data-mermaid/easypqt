@@ -9,7 +9,7 @@ app_server <- function(input, output, session) {
   # Set up reactive values ----
   r <- shiny::reactiveValues(
     auxiliary_columns_map = get_config("auxiliary_columns_map"),
-    dev = FALSE,
+    dev = TRUE,
     # dev_scenario = "empties"
     # dev_scenario = "wrong_values"
     dev_scenario = "good_data"

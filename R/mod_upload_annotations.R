@@ -89,6 +89,8 @@ mod_upload_annotations_server <- function(id, r) {
       if (r$dev) {
         r$annotations_raw <- get(r$dev_scenario)
         r$ready_to_map_aux <- TRUE
+        r$auxiliary_columns <- get_config("auxiliary_columns_dev")
+        r$required_annotations_columns <- get_config("required_annotations_columns_dev")
       } else {
         shiny::req(r$contains_required_cols)
         # Only read in the required columns

@@ -6,6 +6,23 @@ required_annotations_columns_end:
 - Row
 - Column
 - Label
+required_annotations_columns_dev:
+- Name
+- Date
+- Aux1
+- Aux2
+- Aux3
+- Aux4
+- Aux5
+- Row
+- Column
+- Label
+auxiliary_columns_dev:
+- Aux1
+- Aux2
+- Aux3
+- Aux4
+- Aux5
 auxiliary_columns_map:
   site:
     label: Site
