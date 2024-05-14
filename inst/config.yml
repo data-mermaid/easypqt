@@ -1,20 +1,11 @@
-required_annotations_columns:
+required_annotations_columns_start:
 - Name
 - Date
-- Aux1
-- Aux2
-- Aux3
-- Aux4
-- Aux5
+required_annotations_columns_aux: 5
+required_annotations_columns_end:
 - Row
 - Column
 - Label
-auxiliary_columns:
-- Aux1
-- Aux2
-- Aux3
-- Aux4
-- Aux5
 auxiliary_columns_map:
   site:
     label: Site
@@ -37,8 +28,7 @@ copy:
   not_admin: |-
     Unable to ingest into project {project_name}.
     You are not an admin in this project and will not be able to ingest until added as one.
-  upload_annotations_missing_pretext: 'The uploaded annotations is missing the columns:'
-  upload_annotations_missing_instructions: To get the correct data from CoralNet,
+  upload_annotations_missing_instructions: The uploaded annotations do not contain the required columns. To get the correct data from CoralNet,
     export the annotations as a CSV with the optional columns "Image metadata - date
     and auxiliary fields" checked, as shown below.
   upload_annotations_missing_img_alt: 'A screen shot of the "Image Actions" screen

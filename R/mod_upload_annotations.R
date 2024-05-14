@@ -35,25 +35,40 @@ mod_upload_annotations_server <- function(id, r) {
       cols <- readr::read_csv(input$annotations$datapath, n_max = 0, show_col_types = FALSE)
       cols <- names(cols)
 
-      # Find columns that are required but not in data
-      r$missing_cols <- setdiff(r$required_annotations_columns, cols)
+      # There are required columns, but the auxiliary columns do not actually have to be named Aux1, Aux2, ..., Aux 5
+      # So look for columns in `required_annotations_columns_start`, then # of columns in `required_annotations_columns_aux`, then `required_annotations_columns_end`
 
-      if (length(r$missing_cols) == 0) {
-        r$contains_required_cols <- TRUE
+      required_annotations_columns_start <- get_config("required_annotations_columns_start")
+      required_annotations_columns_end <- get_config("required_annotations_columns_end")
+
+      contains_known_required_columns <- all(c(required_annotations_columns_start, required_annotations_columns_end) %in% cols)
+
+      if (contains_known_required_columns) {
+        last_start_col <- required_annotations_columns_start[length(required_annotations_columns_start)]
+        last_start_col_index <- which(cols == last_start_col)
+        first_end_col <- required_annotations_columns_end[1]
+        first_end_col_index <- which(cols == first_end_col)
+
+        potential_aux_columns <- cols[(last_start_col_index + 1):(first_end_col_index - 1)]
+        contains_n_aux_columns <- length(potential_aux_columns) == get_config("required_annotations_columns_aux")
+
+        if (contains_known_required_columns & contains_n_aux_columns) {
+          r$contains_required_cols <- TRUE
+          r$auxiliary_columns <- potential_aux_columns
+          r$required_annotations_columns <- c(required_annotations_columns_start, r$auxiliary_columns, required_annotations_columns_end)
+        } else {
+          r$does_not_contain_required_cols <- TRUE
+        }
       } else {
-        r$does_not_contain_required_cols <- FALSE
+        r$does_not_contain_required_cols <- TRUE
       }
     }) %>%
       shiny::bindEvent(input$annotations)
 
     # If it does not contain the correct columns, show a modal and do not allow them to continue
     shiny::observe({
-      missing_cols_list <- make_formatted_list(r$missing_cols)
-
       shiny::showModal(
         shiny::modalDialog(
-          shiny::div(get_copy("upload_annotations_missing_pretext")),
-          shiny::div(missing_cols_list),
           shiny::div(get_copy("upload_annotations_missing_instructions")),
           shiny::tags$img(
             src = get_config("upload_annotations_missing_img_path"),
