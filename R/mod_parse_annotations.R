@@ -55,7 +55,7 @@ mod_parse_annotations_server <- function(id, r) {
     mod_parse_annotations_check_valid_server("check_valid", r)
 
     # Map CoralNet labelsets to MERMAID ----
-    mod_map_coralnet_labels_to_mermaid_server(ns("map_coralnet_labels"), r)
+    mod_map_coralnet_labels_to_mermaid_server("map_coralnet_labels", r)
   })
 }
 

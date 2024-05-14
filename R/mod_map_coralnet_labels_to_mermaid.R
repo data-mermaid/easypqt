@@ -7,7 +7,17 @@
 #' @noRd
 mod_map_coralnet_labels_to_mermaid_ui <- function(id) {
   ns <- NS(id)
-  shiny::tagList()
+  shiny::fluidRow(
+    shiny::column(
+      width = 6,
+      shinyjs::hidden(
+        shiny::uiOutput(ns("edit_coralnet_label_mapping_title"))
+      ),
+      shinyjs::hidden(
+        primary_button(ns("edit_coralnet_label_mapping"), "Edit CoralNet label mapping")
+      )
+    )
+  )
 }
 
 #' mod_map_coralnet_labels_to_mermaid Server Functions
@@ -16,6 +26,10 @@ mod_map_coralnet_labels_to_mermaid_ui <- function(id) {
 mod_map_coralnet_labels_to_mermaid_server <- function(id, r) {
   moduleServer(id, function(input, output, session) {
     ns <- session$ns
+
+    output$edit_coralnet_label_mapping_title <- shiny::renderUI({
+      shiny::h2("Map CoralNet Labels to MERMAID Attributes")
+    })
 
     known_mapping <- shiny::reactive({
       shiny::req(r$all_aux_fields_valid)
@@ -80,26 +94,28 @@ mod_map_coralnet_labels_to_mermaid_server <- function(id, r) {
           rowHeaders = FALSE, # Remove row numbers
           contextMenu = FALSE, # Disable right clicking
           overflow = "visible", # So dropdown can extend out of table
+          stretchH = "all",
+          colHeaders = c("CoralNet Label", "MERMAID Benthic Attribute", "MERMAID Growth Form")
         ) %>%
         # Make the coralnet label read only
-        rhandsontable::hot_col("coralnet_label", readOnly = TRUE) %>%
+        rhandsontable::hot_col("CoralNet Label", readOnly = TRUE) %>%
         # Validator is not working - but can potentially use a custom renderer to make a cell red if it needs to be validated?
         # Also, should there be a column to reset the mapping to original? if they changed it?
         # Validate there are no non-NA values of `mermaid_attribute` - turn them red to indicate they need to be filled in
         # rhandsontable::hot_validate_character("mermaid_attribute", benthic_attribute_levels, allowInvalid = FALSE) %>%
         # rhandsontable::hot_validate_character("mermaid_growth_form", growth_form_levels, allowInvalid = TRUE) %>%
         # Make the mermaid_attribute col editable, with dropdown of options from the mapping table
-        rhandsontable::hot_col("mermaid_attribute",
+        rhandsontable::hot_col("MERMAID Benthic Attribute",
           type = "dropdown",
+          # type = "autocomplete",
           source = benthic_attribute_levels,
-          strict = TRUE,
-          allowInvalid = FALSE
+          strict = TRUE
         ) %>%
-        rhandsontable::hot_col("mermaid_growth_form",
+        rhandsontable::hot_col("MERMAID Growth Form",
+          # type = "autocomplete",
           type = "dropdown",
-          source = growth_form_levels,
-          strict = TRUE,
-          allowInvalid = FALSE
+          source = c(NA_character_, growth_form_levels), # To allow it to be empty?
+          strict = TRUE
         )
     })
     # The flow is:
@@ -113,9 +129,16 @@ mod_map_coralnet_labels_to_mermaid_server <- function(id, r) {
       shiny::req(coralnet_mermaid_mapping())
 
       confirm_modal(
-        rhandsontable::rHandsontableOutput(ns("mapping_table")),
+        title = "Map CoralNet labels to MERMAID attributes",
+        rhandsontable::rHandsontableOutput(ns("mapping_table")) %>%
+          shinycssloaders::withSpinner(),
         footer_id = ns("save_mapping")
       )
+    })
+
+    edited_coralnet_mermaid_mapping <- shiny::reactive({
+      shiny::req(input$mapping_table)
+      rhandsontable::hot_to_r(input$mapping_table)
     })
 
     # Enable closing of mapping widget ----
@@ -125,21 +148,31 @@ mod_map_coralnet_labels_to_mermaid_server <- function(id, r) {
     shiny::observe({
       # The data in the table is named after the output, so it's input$mapping_table
       # Need to convert it to an R data frame using rhandsontable::hot_to_r()
-      shiny::req(input$mapping_table)
 
-      edited_coralnet_mermaid_mapping <- rhandsontable::hot_to_r(input$mapping_table)
-
-      mapping_valid <- edited_coralnet_mermaid_mapping %>%
+      mapping_valid <- edited_coralnet_mermaid_mapping() %>%
         dplyr::filter(is.na(mermaid_attribute)) %>%
         nrow() == 0
 
       if (mapping_valid) {
         shinyjs::enable("save_mapping")
         r$mapping_valid <- TRUE
-        r$coralnet_mermaid_mapping <- edited_coralnet_mermaid_mapping
       } else {
         shinyjs::disable("save_mapping")
+        r$mapping_valid <- FALSE
+        r$coralnet_mermaid_mapping <- NULL
       }
     })
+
+    # Close modal ----
+    shiny::observe({
+      r$coralnet_mermaid_mapping <- edited_coralnet_mermaid_mapping()
+
+      shiny::removeModal()
+
+      # Show button to edit mapping
+      shinyjs::show("edit_coralnet_label_mapping_title")
+      shinyjs::show("edit_coralnet_label_mapping")
+    }) %>%
+      shiny::bindEvent(input$save_mapping)
   })
 }

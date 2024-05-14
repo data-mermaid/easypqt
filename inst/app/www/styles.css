@@ -74,6 +74,10 @@ hr {
   width: auto !important;
 }
 
+.handsontable tbody th.ht__active_highlight, .handsontable thead th.ht__active_highlight {
+  background-color: auto;
+}
+
 /* Spacing */
 
 .indent-input {
