@@ -61,9 +61,9 @@ mod_map_coralnet_labels_to_mermaid_server <- function(id, r) {
     annotations_labels <- shiny::reactive({
       shiny::req(r$all_aux_fields_valid)
 
-      r$annotations["Label"] %>%
-        dplyr::rename(coralnet_label = Label) %>%
-        dplyr::arrange(coralnet_label) %>%
+      col <- get_config("coralnet_labelset_column")[["coralnet_col"]]
+
+      r$annotations[col] %>%
         dplyr::distinct()
     })
 
@@ -71,9 +71,13 @@ mod_map_coralnet_labels_to_mermaid_server <- function(id, r) {
     coralnet_mermaid_mapping <- shiny::reactive({
       shiny::req(r$all_aux_fields_valid)
 
+      coralnet_col <- get_config("coralnet_labelset_column")[["coralnet_col"]]
+      mermaid_col <- get_config("coralnet_labelset_column")[["mermaid_join"]]
+
       # Create table of mapping that does exist by left joining annotations' labels to the known mapping
       annotations_labels() %>%
-        dplyr::left_join(known_mapping(), by = "coralnet_label")
+        dplyr::left_join(known_mapping(), by = setNames(mermaid_col, coralnet_col)) %>%
+        dplyr::arrange(!!rlang::sym(coralnet_col))
     }) %>%
       shiny::bindEvent(r$all_aux_fields_valid)
 
@@ -89,29 +93,33 @@ mod_map_coralnet_labels_to_mermaid_server <- function(id, r) {
       # For growth form, it's `growth_forms`
       growth_form_levels <- growth_forms() %>% sort()
 
+      coralnet_label_display <- get_config("coralnet_labelset_column")[["table_label"]]
+      mermaid_benthic_attribute_display <- get_config("mermaid_attributes_columns")[["mermaid_attribute"]][["table_label"]]
+      mermaid_growth_form_display <- get_config("mermaid_attributes_columns")[["mermaid_growth_form"]][["table_label"]]
+
       coralnet_mermaid_mapping() %>%
         rhandsontable::rhandsontable(
           rowHeaders = FALSE, # Remove row numbers
           contextMenu = FALSE, # Disable right clicking
           overflow = "visible", # So dropdown can extend out of table
           stretchH = "all",
-          colHeaders = c("CoralNet Label", "MERMAID Benthic Attribute", "MERMAID Growth Form")
+          colHeaders = c(coralnet_label_display, mermaid_benthic_attribute_display, mermaid_growth_form_display)
         ) %>%
         # Make the coralnet label read only
-        rhandsontable::hot_col("CoralNet Label", readOnly = TRUE) %>%
+        rhandsontable::hot_col(coralnet_label_display, readOnly = TRUE) %>%
         # Validator is not working - but can potentially use a custom renderer to make a cell red if it needs to be validated?
         # Also, should there be a column to reset the mapping to original? if they changed it?
         # Validate there are no non-NA values of `mermaid_attribute` - turn them red to indicate they need to be filled in
         # rhandsontable::hot_validate_character("mermaid_attribute", benthic_attribute_levels, allowInvalid = FALSE) %>%
         # rhandsontable::hot_validate_character("mermaid_growth_form", growth_form_levels, allowInvalid = TRUE) %>%
         # Make the mermaid_attribute col editable, with dropdown of options from the mapping table
-        rhandsontable::hot_col("MERMAID Benthic Attribute",
+        rhandsontable::hot_col(mermaid_benthic_attribute_display,
           type = "dropdown",
           # type = "autocomplete",
           source = benthic_attribute_levels,
           strict = TRUE
         ) %>%
-        rhandsontable::hot_col("MERMAID Growth Form",
+        rhandsontable::hot_col(mermaid_growth_form_display,
           # type = "autocomplete",
           type = "dropdown",
           source = c(NA_character_, growth_form_levels), # To allow it to be empty?
@@ -174,5 +182,18 @@ mod_map_coralnet_labels_to_mermaid_server <- function(id, r) {
       shinyjs::show("edit_coralnet_label_mapping")
     }) %>%
       shiny::bindEvent(input$save_mapping)
+
+    # Create a new version of the annotations with the mapping ----
+    shiny::observe({
+      shiny::req(r$coralnet_mermaid_mapping)
+
+      mermaid_attributes_cols <- get_config("mermaid_attributes_columns") %>%
+        purrr::map("column")
+      mermaid_attributes_cols <- setNames(names(mermaid_attributes_cols), mermaid_attributes_cols)
+
+      r$annotations_mapped <- r$annotations %>%
+        dplyr::left_join(r$coralnet_mermaid_mapping, get_config("coralnet_labelset_column")[["coralnet_col"]]) %>%
+        dplyr::rename(mermaid_attributes_cols)
+    })
   })
 }

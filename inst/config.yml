@@ -33,13 +33,26 @@ auxiliary_columns_map:
     column: Management *
     value: ~
   transect_number:
-    label: Transect Number
-    column: Transect Number *
+    label: Transect number
+    column: Transect number *
     value: ~
 additional_columns_map:
   date:
     label: Date
     column: Date
+coralnet_labelset_column:
+  coralnet_col: Label
+  mermaid_join: coralnet_label
+  table_label: CoralNet label
+mermaid_attributes_columns:
+  mermaid_attribute:
+    table_label: MERMAID Benthic attribute
+    label: Benthic attribute
+    column: Benthic attribute *
+  mermaid_growth_form:
+    table_label: MERMAID Growth form
+    label: Growth form
+    column: Growth form *
 upload_annotations_missing_img_path: www/coralnet_annotations_export.png
 copy:
   not_admin: |-
