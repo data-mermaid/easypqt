@@ -30,5 +30,9 @@ app_server <- function(input, output, session) {
 
   # Parse annotations -----
   # Map and check auxiliary fields
+  # Map CoralNet labels to MERMAID attributes
   mod_parse_annotations_server("parse_annotations", r)
+
+  # Reshape annotations for ingestion
+  mod_reshape_annotations_server("reshape_annotations", r)
 }

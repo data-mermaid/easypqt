@@ -14,7 +14,6 @@ confirm_button <- function(id) {
 }
 
 modal <- function(..., title = NULL, footer, size = "m", disable_footer = FALSE) {
-
   if (disable_footer) {
     footer <- shinyjs::disabled(footer)
   }

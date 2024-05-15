@@ -19,7 +19,9 @@ app_ui <- function(request) {
       # Upload CoralNet annotations ----
       mod_upload_annotations_ui("upload_annotations"),
       # Parse CoralNet annotations ----
-      mod_parse_annotations_ui("parse_annotations")
+      mod_parse_annotations_ui("parse_annotations"),
+      # Reshape annotations ----
+      mod_reshape_annotations_ui("reshape_annotations")
     )
   )
 }
