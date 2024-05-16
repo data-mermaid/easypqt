@@ -21,7 +21,14 @@ app_ui <- function(request) {
       # Parse CoralNet annotations ----
       mod_parse_annotations_ui("parse_annotations"),
       # Reshape annotations ----
-      mod_reshape_annotations_ui("reshape_annotations")
+      mod_reshape_annotations_ui("reshape_annotations"),
+      # Preview ingestion ----
+      mod_ingestion_preview_ui("preview"),
+      # Confirm ingestion ----
+      mod_ingestion_confirm_ui("confirm")
+      # Do ingestion ----
+
+      # Ingestion results -----
     )
   )
 }

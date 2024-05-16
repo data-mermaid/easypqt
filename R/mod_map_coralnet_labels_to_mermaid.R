@@ -166,11 +166,12 @@ mod_map_coralnet_labels_to_mermaid_server <- function(id, r) {
     # When the label mapping has been confirmed ----
     shiny::observe({
       if (r$dev) {
-        shiny::req(input$site)
+        shiny::req(r$auxiliary_columns_map$site$value)
         r$confirm_map_aux_fields <- TRUE
       } else {
         r$confirm_map_aux_fields <- input$confirm
       }
+      r$coralnet_mermaid_mapping <- edited_coralnet_mermaid_mapping()
       # Disable confirm, enable "edit"
       shinyjs::disable("save_mapping")
       shinyjs::enable("edit")
@@ -197,6 +198,7 @@ mod_map_coralnet_labels_to_mermaid_server <- function(id, r) {
       r$annotations_mapped <- r$annotations %>%
         dplyr::left_join(r$coralnet_mermaid_mapping, get_config("coralnet_labelset_column")[["coralnet_col"]]) %>%
         dplyr::rename(mermaid_attributes_cols)
+
     })
   })
 }

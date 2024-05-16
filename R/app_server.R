@@ -10,10 +10,10 @@ app_server <- function(input, output, session) {
   r <- shiny::reactiveValues(
     auxiliary_columns_map = get_config("auxiliary_columns_map"),
     aux_mapped = 0,
-    dev = FALSE,
+    dev = TRUE,
     # dev_scenario = "empties"
-    dev_scenario = "wrong_values"
-    # dev_scenario = "good_data"
+    # dev_scenario = "wrong_values"
+    dev_scenario = "good_data"
     # dev_scenario = "some_good_some_wrong"
     # dev_scenario = "transect_decimal"
   )
@@ -34,6 +34,16 @@ app_server <- function(input, output, session) {
   # Map CoralNet labels to MERMAID attributes
   mod_parse_annotations_server("parse_annotations", r)
 
-  # Reshape annotations for ingestion
+  # Reshape annotations for ingestion ----
   mod_reshape_annotations_server("reshape_annotations", r)
+
+  # Preview ingestion ----
+  mod_ingestion_preview_server("preview", r)
+
+  # Confirm ingestion ----
+  mod_ingestion_confirm_server("confirm", r)
+
+  # Do ingestion ----
+
+  # Ingestion results -----
 }

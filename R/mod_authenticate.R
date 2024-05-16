@@ -27,6 +27,9 @@ mod_authenticate_server <- function(id, r) {
 
       # Flag that authentication is done
       r$authenticated <- TRUE
+
+      # Disable authentication button
+      shinyjs::disable("auth")
     }) %>%
       shiny::bindEvent(input$auth)
   })
