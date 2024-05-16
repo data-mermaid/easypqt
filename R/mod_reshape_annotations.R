@@ -79,25 +79,27 @@ mod_reshape_annotations_server <- function(id, r) {
     }) %>%
       shiny::bindEvent(r$annotations_mapped)
 
-    # Preview and download reshaped data ----
+    # Preview and download reshaped data----
     shiny::observe(priority = 1, {
+
       output$ingestion_table <- DT::datatable(r$ingestion_data, rownames = FALSE, options = list(dom = "tp")) %>%
         DT::renderDT()
       download_ingestion <- shiny::downloadButton(ns("download_ingestion"), "Download reshaped data")
 
       show_modal(
-        # shinycssloaders::withSpinner(
-          DT::DTOutput(ns("ingestion_table")),
-          # ),
+        DT::DTOutput(ns("ingestion_table")),
         download_ingestion,
-        size = "l"
+        ## Confirm continuing (or not) with ingestion ----
+        mod_confirm_continue_ingestion_ui(ns("confirm_options")),
+        size = "l",
+        footer = NULL
       )
     }) %>%
       shiny::bindEvent(r$ingestion_data)
 
     output$download_ingestion <- shiny::downloadHandler(
       filename = function() {
-        "test.csv"
+        "test.csv" # TODO, name of project etc? with date?
       },
       content = function(file) {
         readr::write_csv(r$ingestion_data, file)
@@ -135,6 +137,10 @@ mod_reshape_annotations_server <- function(id, r) {
       r$ingestion_data_with_defaults <- ingestion_data_with_defaults
     }) %>%
       shiny::bindEvent(r$ingestion_data)
+
+
+    ## Confirm continuing (or not) with ingestion ----
+    mod_confirm_continue_ingestion_server("confirm_options", r)
   })
 }
 

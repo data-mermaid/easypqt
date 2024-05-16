@@ -28,8 +28,8 @@ modal <- function(..., title = NULL, footer, size = "m", disable_footer = FALSE)
   )
 }
 
-show_modal <- function(...) {
-  modal(..., footer = close_button)
+show_modal <- function(..., footer = close_button) {
+  modal(..., footer = footer)
 }
 
 confirm_modal <- function(..., footer_id, title = NULL, size = "l") {
