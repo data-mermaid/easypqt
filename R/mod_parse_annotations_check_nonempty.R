@@ -20,7 +20,10 @@ mod_parse_annotations_check_nonempty_server <- function(id, r) {
     ns <- session$ns
 
     # Check that Date, Site, Management, and Transect Number are not empty
+    # This needs to happen any time the mapping is edited AND confirmed, not just when it's confirmed the first time
     shiny::observe({
+      shiny::req(r$aux_mapped > 0)
+
       # Iterate through and check if any values are empty
       check_fields <- append(get_config("additional_columns_map"), r$auxiliary_columns_map)
 

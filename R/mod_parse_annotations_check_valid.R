@@ -19,8 +19,10 @@ mod_parse_annotations_check_valid_server <- function(id, r) {
   moduleServer(id, function(input, output, session) {
     ns <- session$ns
 
+    # Validate fields ----
+    # This needs to happen any time the mapping is edited, not just when it's confirmed the first time
     shiny::observe({
-      shiny::req(r$aux_mapped)
+      shiny::req(r$aux_mapped > 0)
       shiny::req(r$no_empty_fields)
 
       # Check that sites are ones already entered in the project ----
@@ -36,18 +38,17 @@ mod_parse_annotations_check_valid_server <- function(id, r) {
         r$all_aux_fields_valid <- TRUE
       } else {
         r$all_aux_fields_valid <- FALSE
+
+        show_modal(
+          title = "Validating fields",
+          site_ui[["ui"]],
+          management_ui[["ui"]],
+          transect_number_ui[["ui"]],
+          "Please fix invalid values in CoralNet before continuing."
+        )
       }
-
-      valid_messaging <- ifelse(r$all_aux_fields_valid, "", "Please fix invalid values in CoralNet before continuing.")
-
-      show_modal(
-        title = "Validating fields",
-        site_ui[["ui"]],
-        management_ui[["ui"]],
-        transect_number_ui[["ui"]],
-        valid_messaging
-      )
-    })
+    }) %>%
+      shiny::bindEvent(r$aux_mapped)
   })
 }
 

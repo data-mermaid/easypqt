@@ -10,12 +10,7 @@ mod_map_coralnet_labels_to_mermaid_ui <- function(id) {
   shiny::fluidRow(
     shiny::column(
       width = 6,
-      shinyjs::hidden(
-        shiny::uiOutput(ns("edit_coralnet_label_mapping_title"))
-      ),
-      shinyjs::hidden(
-        primary_button(ns("edit_coralnet_label_mapping"), "Edit CoralNet label mapping")
-      )
+      shiny::uiOutput(ns("map_coralnet_labels")),
     )
   )
 }
@@ -26,10 +21,6 @@ mod_map_coralnet_labels_to_mermaid_ui <- function(id) {
 mod_map_coralnet_labels_to_mermaid_server <- function(id, r) {
   moduleServer(id, function(input, output, session) {
     ns <- session$ns
-
-    output$edit_coralnet_label_mapping_title <- shiny::renderUI({
-      shiny::h2("Map CoralNet Labels to MERMAID Attributes")
-    })
 
     known_mapping <- shiny::reactive({
       shiny::req(r$all_aux_fields_valid)
@@ -132,15 +123,16 @@ mod_map_coralnet_labels_to_mermaid_server <- function(id, r) {
 
     # Should there be an option at this point to save the data with the MERMAID attribute - so if they re-upload later on, they won't have to go through this process again? And it could check for MERMAID specific columns? Is that too complicated?
 
-    # Put the editable table in a modal ----
-    shiny::observe({
+    # Put the editable table in a UI ----
+    output$map_coralnet_labels <- shiny::renderUI({
       shiny::req(coralnet_mermaid_mapping())
 
-      confirm_modal(
-        title = "Map CoralNet labels to MERMAID attributes",
+      shiny::tagList(
+        shiny::h2("Map CoralNet Labels to MERMAID Attributes"),
         rhandsontable::rHandsontableOutput(ns("mapping_table")) %>%
           shinycssloaders::withSpinner(),
-        footer_id = ns("save_mapping")
+        shinyjs::disabled(confirm_button(ns("save_mapping"))),
+        shinyjs::disabled(shiny::actionButton(ns("edit"), "Edit"))
       )
     })
 
@@ -171,17 +163,28 @@ mod_map_coralnet_labels_to_mermaid_server <- function(id, r) {
       }
     })
 
-    # Close modal ----
+    # When the label mapping has been confirmed ----
     shiny::observe({
-      r$coralnet_mermaid_mapping <- edited_coralnet_mermaid_mapping()
-
-      shiny::removeModal()
-
-      # Show button to edit mapping
-      shinyjs::show("edit_coralnet_label_mapping_title")
-      shinyjs::show("edit_coralnet_label_mapping")
+      if (r$dev) {
+        shiny::req(input$site)
+        r$confirm_map_aux_fields <- TRUE
+      } else {
+        r$confirm_map_aux_fields <- input$confirm
+      }
+      # Disable confirm, enable "edit"
+      shinyjs::disable("save_mapping")
+      shinyjs::enable("edit")
+      # TODO disable the table
     }) %>%
       shiny::bindEvent(input$save_mapping)
+
+    # Re-enable table when "edit" is clicked
+    shiny::observe({
+      shinyjs::disable("edit")
+      shinyjs::enable("save_mapping")
+      # TODO Enable table again
+    }) %>%
+      shiny::bindEvent(input$edit)
 
     # Create a new version of the annotations with the mapping ----
     shiny::observe({
