@@ -81,14 +81,31 @@ mod_reshape_annotations_server <- function(id, r) {
 
     # Preview and download reshaped data ----
     shiny::observe(priority = 1, {
-      browser()
+      output$ingestion_table <- DT::datatable(r$ingestion_data, rownames = FALSE, options = list(dom = "tp")) %>%
+        DT::renderDT()
+      download_ingestion <- shiny::downloadButton(ns("download_ingestion"), "Download reshaped data")
 
+      show_modal(
+        # shinycssloaders::withSpinner(
+          DT::DTOutput(ns("ingestion_table")),
+          # ),
+        download_ingestion,
+        size = "l"
+      )
     }) %>%
       shiny::bindEvent(r$ingestion_data)
 
+    output$download_ingestion <- shiny::downloadHandler(
+      filename = function() {
+        "test.csv"
+      },
+      content = function(file) {
+        readr::write_csv(r$ingestion_data, file)
+      }
+    )
+
     # Add default fields ----
     shiny::observe(priority = 0, {
-      browser()
 
       ingestion_data_with_defaults <- r$ingestion_data
 
