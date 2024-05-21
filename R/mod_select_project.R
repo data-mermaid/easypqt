@@ -9,7 +9,22 @@
 mod_select_project_ui <- function(id) {
   ns <- NS(id)
 
-  shiny::uiOutput(ns("select_project"))
+  shiny::tagList(
+    shinyjs::hidden(
+      shinyWidgets::pickerInput(
+        ns("project"),
+        label = shiny::h2("Project"),
+        multiple = TRUE,
+        choices = NULL,
+        options = shinyWidgets::pickerOptions(
+          liveSearch = TRUE,
+          size = 10,
+          maxOptions = 1,
+          noneSelectedText = "Select a project"
+        )
+      )
+    )
+  )
 }
 
 #' select_project Server Functions
@@ -26,32 +41,25 @@ mod_select_project_server <- function(id, r) {
       r$projects <- mermaidr::mermaid_get_my_projects()
     })
 
-    # Create project selection dropdown based on user's projects ----
-    output$select_project <- shiny::renderUI({
+    # Update project selection dropdown based on user's projects ----
+
+    shiny::observe({
       shiny::req(r$projects)
 
       projects <- setNames(r$projects$id, r$projects$name)
 
       selected_project <- null_if_dev(r$dev, "4d23d2a1-774f-4ccf-b567-69f95e4ff572")
 
-      input <- shinyWidgets::pickerInput(
-        ns("project"),
-        label = NULL,
-        choices = projects,
-        selected = selected_project,
-        multiple = TRUE,
-        options = shinyWidgets::pickerOptions(
-          liveSearch = TRUE,
-          size = 10,
-          maxOptions = 1,
-          noneSelectedText = "Select a project"
-        )
+      shinyWidgets::updatePickerInput(
+        session = session,
+        inputId = "project", choices = projects, selected = selected_project
       )
 
-      shiny::tagList(
-        shiny::h2("Project"),
-        indent(input)
-      )
+      shinyjs::show("project")
+
+      # shiny::tagList(
+      #   indent(input)
+      # )
     })
 
     shiny::observe({

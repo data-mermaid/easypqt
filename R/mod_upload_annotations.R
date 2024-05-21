@@ -8,7 +8,12 @@
 mod_upload_annotations_ui <- function(id) {
   ns <- NS(id)
 
-  shiny::uiOutput(ns("upload"))
+  shinyjs::hidden(
+    shiny::fileInput(ns("annotations"),
+      label = shiny::h2("Upload CoralNet annotations"),
+      accept = ".csv"
+    )
+  )
 }
 
 #' upload_annotations Server Functions
@@ -19,15 +24,10 @@ mod_upload_annotations_server <- function(id, r) {
     ns <- session$ns
 
     # Show upload form once confirmed they are a project admin
-    output$upload <- shiny::renderUI({
-      shiny::req(r$is_project_admin)
+    shiny::observe({
+      req(r$is_project_admin)
 
-      input <- shiny::fileInput(ns("annotations"), label = NULL, accept = ".csv")
-
-      shiny::tagList(
-        shiny::h2("Upload CoralNet annotations"),
-        indent(input)
-      )
+      shinyjs::show("annotations")
     })
 
     # Check the file contains the correct columns

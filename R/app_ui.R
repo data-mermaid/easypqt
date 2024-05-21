@@ -21,7 +21,7 @@ app_ui <- function(request) {
       # Parse CoralNet annotations ----
       bslib::accordion(
         id = "accordion",
-        multiple = FALSE,
+        multiple = TRUE,
         mod_parse_annotations_ui("parse_annotations"),
         # Reshape annotations ----
         # mod_reshape_annotations_ui("reshape_annotations"),
