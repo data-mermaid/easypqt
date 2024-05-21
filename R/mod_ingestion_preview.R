@@ -28,8 +28,10 @@ mod_ingestion_preview_server <- function(id, r) {
 
       shiny::tagList(
         shiny::h2("Preview ingestion data"),
-        table,
-        download
+        indent(
+          table,
+          download
+        )
       )
     })
 

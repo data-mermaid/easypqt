@@ -26,7 +26,7 @@ mod_upload_annotations_server <- function(id, r) {
 
       shiny::tagList(
         shiny::h2("Upload CoralNet annotations"),
-        input
+        indent(input)
       )
     })
 

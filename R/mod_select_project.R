@@ -50,7 +50,7 @@ mod_select_project_server <- function(id, r) {
 
       shiny::tagList(
         shiny::h2("Project"),
-        indent_input(input)
+        indent(input)
       )
     })
 

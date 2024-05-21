@@ -42,12 +42,14 @@ mod_ingestion_confirm_server <- function(id, r) {
 
       shiny::tagList(
         shiny::h2("Continue to ingestion"),
-        shiny::div("If the data looks correct, click the button below to continue with ingestion"),
-        continue_button,
-        shiny::div("If the data does not look correct, select from the following options to edit the existing mapping, restart the whole process, or get help with ingestion"),
-        incorrect_edit_button,
-        incorrect_reset_button,
-        incorrect_help_button,
+        indent(
+          shiny::div("If the data looks correct, click the button below to continue with ingestion"),
+          continue_button,
+          shiny::div("If the data does not look correct, select from the following options to edit the existing mapping, restart the whole process, or get help with ingestion"),
+          incorrect_edit_button,
+          incorrect_reset_button,
+          incorrect_help_button
+        )
       )
     })
 

@@ -19,13 +19,17 @@ app_ui <- function(request) {
       # Upload CoralNet annotations ----
       mod_upload_annotations_ui("upload_annotations"),
       # Parse CoralNet annotations ----
-      mod_parse_annotations_ui("parse_annotations"),
-      # Reshape annotations ----
-      mod_reshape_annotations_ui("reshape_annotations"),
-      # Preview ingestion ----
-      mod_ingestion_preview_ui("preview"),
-      # Confirm ingestion ----
-      mod_ingestion_confirm_ui("confirm")
+      bslib::accordion(
+        id = "accordion",
+        multiple = FALSE,
+        mod_parse_annotations_ui("parse_annotations"),
+        # Reshape annotations ----
+        # mod_reshape_annotations_ui("reshape_annotations"),
+        # Preview ingestion ----
+        # mod_ingestion_preview_ui("preview"),
+        # Confirm ingestion ----
+        # mod_ingestion_confirm_ui("confirm")
+      )
       # Do ingestion ----
 
       # Ingestion results -----

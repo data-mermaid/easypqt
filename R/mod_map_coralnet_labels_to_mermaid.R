@@ -129,10 +129,12 @@ mod_map_coralnet_labels_to_mermaid_server <- function(id, r) {
 
       shiny::tagList(
         shiny::h2("Map CoralNet Labels to MERMAID Attributes"),
-        rhandsontable::rHandsontableOutput(ns("mapping_table")) %>%
-          shinycssloaders::withSpinner(),
-        shinyjs::disabled(confirm_button(ns("save_mapping"))),
-        shinyjs::disabled(shiny::actionButton(ns("edit"), "Edit"))
+        indent(
+          rhandsontable::rHandsontableOutput(ns("mapping_table")) %>%
+            shinycssloaders::withSpinner(),
+          shinyjs::disabled(confirm_button(ns("save_mapping"))),
+          shinyjs::disabled(shiny::actionButton(ns("edit"), "Edit"))
+        )
       )
     })
 
@@ -198,7 +200,6 @@ mod_map_coralnet_labels_to_mermaid_server <- function(id, r) {
       r$annotations_mapped <- r$annotations %>%
         dplyr::left_join(r$coralnet_mermaid_mapping, get_config("coralnet_labelset_column")[["coralnet_col"]]) %>%
         dplyr::rename(mermaid_attributes_cols)
-
     })
   })
 }

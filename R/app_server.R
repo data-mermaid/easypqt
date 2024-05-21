@@ -10,7 +10,7 @@ app_server <- function(input, output, session) {
   r <- shiny::reactiveValues(
     auxiliary_columns_map = get_config("auxiliary_columns_map"),
     aux_mapped = 0,
-    dev = TRUE,
+    dev = FALSE,
     # dev_scenario = "empties"
     # dev_scenario = "wrong_values"
     dev_scenario = "good_data"
@@ -46,4 +46,26 @@ app_server <- function(input, output, session) {
   # Do ingestion ----
 
   # Ingestion results -----
+
+  # Insert and open accordions / close them when that step is done, since they go into global ns ----
+
+  ##  Map annotations ----
+  shiny::observe({
+    # Insert panel
+    bslib::accordion_panel_insert("accordion", r$accordion_map_annotation_fields)
+
+    # Open panel
+    bslib::accordion_panel_open("accordion", "map-annotation-fields")
+  })
+
+  # Close panel if all annotations are good
+  # TODO - not quite right, need to work on this
+  shiny::observe(
+    {
+      shiny::req(r$all_aux_fields_valid)
+      shiny::req(r$aux_fields_on_edit) # Ensures this happens after "confirm" is disabled and "edit" is enabled
+      bslib::accordion_panel_close("accordion", "map-annotation-fields")
+    }
+  ) %>%
+    shiny::bindEvent(r$aux_fields_on_edit)
 }

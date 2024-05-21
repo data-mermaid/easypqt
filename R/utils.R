@@ -79,8 +79,8 @@ null_if_dev <- function(dev, non_null) {
   }
 }
 
-indent_input <- function(input) {
-  shiny::div(class = "indent-input", input)
+indent <- function(...) {
+  shiny::div(class = "indent", ...)
 }
 
 primary_button <- function(id, label) {
