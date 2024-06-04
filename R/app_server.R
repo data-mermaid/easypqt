@@ -60,12 +60,49 @@ app_server <- function(input, output, session) {
 
   # Close panel if all annotations are good
   # TODO - not quite right, need to work on this
-  shiny::observe(
-    {
-      shiny::req(r$all_aux_fields_valid)
-      shiny::req(r$aux_fields_on_edit) # Ensures this happens after "confirm" is disabled and "edit" is enabled
-      bslib::accordion_panel_close("accordion", "map-annotation-fields")
-    }
-  ) %>%
+  shiny::observe({
+    shiny::req(r$all_aux_fields_valid)
+    shiny::req(r$aux_fields_on_edit) # Ensures this happens after "confirm" is disabled and "edit" is enabled
+    bslib::accordion_panel_close("accordion", "map-annotation-fields")
+  }) %>%
     shiny::bindEvent(r$aux_fields_on_edit)
+
+  ## Map labels ----
+
+  shiny::observe({
+    # Insert panel
+    bslib::accordion_panel_insert("accordion", r$accordion_map_coralnet_labels)
+
+    # Open panel
+    bslib::accordion_panel_open("accordion", "map-coralnet-labels")
+  })
+
+  # Close panel if all labels are good
+  shiny::observe({
+    shiny::req(r$coralnet_mapping_valid)
+    bslib::accordion_panel_close("accordion", "map-coralnet-labels")
+  }) %>%
+    shiny::bindEvent(r$coralnet_labels_on_edit)
+
+  ## Preview/download ---
+
+  shiny::observe({
+    # Insert panel
+    bslib::accordion_panel_insert("accordion", r$accordion_preview_download)
+
+    # Open panel
+    bslib::accordion_panel_open("accordion", "preview-download")
+  })
+
+  ## Confirm ingestion ----
+
+  shiny::observe({
+    # Insert panel
+    bslib::accordion_panel_insert("accordion", r$accordion_confirm)
+
+    # Open panel
+    bslib::accordion_panel_open("accordion", "confirm")
+  })
+
+
 }

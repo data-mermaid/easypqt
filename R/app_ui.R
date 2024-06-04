@@ -24,11 +24,11 @@ app_ui <- function(request) {
         multiple = TRUE,
         mod_parse_annotations_ui("parse_annotations"),
         # Reshape annotations ----
-        # mod_reshape_annotations_ui("reshape_annotations"),
+        mod_reshape_annotations_ui("reshape_annotations"),
         # Preview ingestion ----
-        # mod_ingestion_preview_ui("preview"),
+        mod_ingestion_preview_ui("preview"),
         # Confirm ingestion ----
-        # mod_ingestion_confirm_ui("confirm")
+        mod_ingestion_confirm_ui("confirm")
       )
       # Do ingestion ----
 

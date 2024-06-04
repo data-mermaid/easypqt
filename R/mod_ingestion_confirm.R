@@ -9,7 +9,7 @@
 #' @importFrom shiny NS tagList
 mod_ingestion_confirm_ui <- function(id) {
   ns <- NS(id)
-  shiny::uiOutput(ns("confirm_ui"))
+  shiny::tagList()
 }
 
 #' confirm_continue_ingestion Server Functions
@@ -20,7 +20,7 @@ mod_ingestion_confirm_server <- function(id, r) {
     ns <- session$ns
 
     # UI
-    output$confirm_ui <- shiny::renderUI({
+    shiny::observe({
       shiny::req(r$ingestion_data)
 
       # Confirm continuing with ingestion ----
@@ -40,8 +40,9 @@ mod_ingestion_confirm_server <- function(id, r) {
         onclick = "window.open('https://datamermaid.org/contact-us', '_blank')"
       )
 
-      shiny::tagList(
-        shiny::h2("Continue to ingestion"),
+      r$accordion_confirm <- bslib::accordion_panel(
+        title = shiny::h2("Continue to ingestion"),
+        value = "confirm",
         indent(
           shiny::div("If the data looks correct, click the button below to continue with ingestion"),
           continue_button,
@@ -91,8 +92,7 @@ mod_ingestion_confirm_server <- function(id, r) {
 
 
     shiny::observe({
-      browser()
-      # TODO
+      shiny::removeModal()
     }) %>%
       shiny::bindEvent(input$reset_cancel)
 

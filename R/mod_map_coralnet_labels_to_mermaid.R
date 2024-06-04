@@ -7,12 +7,7 @@
 #' @noRd
 mod_map_coralnet_labels_to_mermaid_ui <- function(id) {
   ns <- NS(id)
-  shiny::fluidRow(
-    shiny::column(
-      width = 6,
-      shiny::uiOutput(ns("map_coralnet_labels")),
-    )
-  )
+  shiny::tagList()
 }
 
 #' mod_map_coralnet_labels_to_mermaid Server Functions
@@ -123,12 +118,13 @@ mod_map_coralnet_labels_to_mermaid_server <- function(id, r) {
 
     # Should there be an option at this point to save the data with the MERMAID attribute - so if they re-upload later on, they won't have to go through this process again? And it could check for MERMAID specific columns? Is that too complicated?
 
-    # Put the editable table in a UI ----
-    output$map_coralnet_labels <- shiny::renderUI({
+    # Put the editable table in an accordion ----
+    shiny::observe({
       shiny::req(coralnet_mermaid_mapping())
 
-      shiny::tagList(
-        shiny::h2("Map CoralNet Labels to MERMAID Attributes"),
+      r$accordion_map_coralnet_labels <- bslib::accordion_panel(
+        title = shiny::h2("Map CoralNet Labels to MERMAID Attributes"),
+        value = "map-coralnet-labels",
         indent(
           rhandsontable::rHandsontableOutput(ns("mapping_table")) %>%
             shinycssloaders::withSpinner(),
@@ -143,7 +139,7 @@ mod_map_coralnet_labels_to_mermaid_server <- function(id, r) {
       rhandsontable::hot_to_r(input$mapping_table)
     })
 
-    # Enable closing of mapping widget ----
+    # Enable confirming of mapping widget ----
     # Closing disabled unless all of `mermaid_attribute` are not NA
     # If none of `mermaid_attribute` are NA, then enable exiting the widget
     # Flag that the mapping is valid, and save the final mapping
@@ -157,10 +153,10 @@ mod_map_coralnet_labels_to_mermaid_server <- function(id, r) {
 
       if (mapping_valid) {
         shinyjs::enable("save_mapping")
-        r$mapping_valid <- TRUE
+        r$coralnet_mapping_valid <- TRUE
       } else {
         shinyjs::disable("save_mapping")
-        r$mapping_valid <- FALSE
+        r$coralnet_mapping_valid <- FALSE
         r$coralnet_mermaid_mapping <- NULL
       }
     })
@@ -174,6 +170,7 @@ mod_map_coralnet_labels_to_mermaid_server <- function(id, r) {
         r$confirm_map_aux_fields <- input$confirm
       }
       r$coralnet_mermaid_mapping <- edited_coralnet_mermaid_mapping()
+      r$coralnet_labels_on_edit <- TRUE
       # Disable confirm, enable "edit"
       shinyjs::disable("save_mapping")
       shinyjs::enable("edit")
