@@ -96,6 +96,9 @@ mod_upload_annotations_server <- function(id, r) {
         # Only read in the required columns
         r$annotations_raw <- readr::read_csv(input$annotations$datapath, show_col_types = FALSE, col_select = r$required_annotations_columns)
         r$ready_to_map_aux <- TRUE
+
+        # Disable data upload after a single upload - need to reset to change data
+        shinyjs::disable("annotations")
       }
     })
   })
