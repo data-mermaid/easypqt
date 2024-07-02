@@ -58,9 +58,10 @@ copy:
   not_admin: |-
     Unable to ingest into project {project_name}.
     You are not an admin in this project and will not be able to ingest until added as one.
-  upload_annotations_missing_instructions: The uploaded annotations do not contain the required columns. To get the correct data from CoralNet,
-    export the annotations as a CSV with the optional columns "Image metadata - date
-    and auxiliary fields" checked, as shown below.
+  upload_annotations_missing_instructions: The uploaded annotations do not contain
+    the required columns. To get the correct data from CoralNet, export the annotations
+    as a CSV with the optional columns "Image metadata - date and auxiliary fields"
+    checked, as shown below.
   upload_annotations_missing_img_alt: 'A screen shot of the "Image Actions" screen
     in CoralNet, showing the Action: "Export Annotations, CSV" for these images: "All
     N image results". The instructions read "Export annotations for these images in
@@ -75,12 +76,14 @@ copy:
     The annotations contain invalid values of {label}. The following are invalid: {invalid_values}
     Valid values of {label} are: {valid_values}
   ingestion_title: Continue to ingestion
-  ingestion_continue: If the data looks correct, click the button below to continue with ingestion
+  ingestion_continue: If the data looks correct, click the button below to continue
+    with ingestion
   ingestion_continue_button: Continue with ingestion
-  ingestion_do_not_continue: "If the data does not look correct, select from the following options to restart the whole process or get help with ingestion"
+  ingestion_do_not_continue: If the data does not look correct, select from the following
+    options to restart the whole process or get help with ingestion
   ingestion_reset_button: Restart process
   ingestion_help_button: Get help
   ingestion_help_link: https://datamermaid.org/contact-us
-  reset: "Are you sure you want to reset the project, data, and all mappings?"
-  reset_confirm: "Reset all"
-  reset_cancel: "Do not reset"
+  reset: Are you sure you want to reset the project, data, and all mappings?
+  reset_confirm: Reset all
+  reset_cancel: Do not reset
