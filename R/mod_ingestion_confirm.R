@@ -27,9 +27,6 @@ mod_ingestion_confirm_server <- function(id, r) {
       ## Correct: continue -----
       continue_button <- shiny::actionButton(ns("correct_continue"), "Continue with ingestion")
 
-      ## Incorrect: edit options -----
-      incorrect_edit_button <- shiny::actionButton(ns("incorrect_edit"), "Edit mapping")
-
       ## Incorrect: start over -----
       incorrect_reset_button <- shiny::actionButton(ns("incorrect_reset"), "Restart process")
 
@@ -46,8 +43,7 @@ mod_ingestion_confirm_server <- function(id, r) {
         indent(
           shiny::div("If the data looks correct, click the button below to continue with ingestion"),
           continue_button,
-          shiny::div("If the data does not look correct, select from the following options to edit the existing mapping, restart the whole process, or get help with ingestion"),
-          incorrect_edit_button,
+          shiny::div("If the data does not look correct, select from the following options to restart the whole process or get help with ingestion"),
           incorrect_reset_button,
           incorrect_help_button
         )
@@ -79,7 +75,6 @@ mod_ingestion_confirm_server <- function(id, r) {
       )
     }) %>%
       shiny::bindEvent(input$incorrect_reset)
-
 
     shiny::observe({
       r$reset <- TRUE
