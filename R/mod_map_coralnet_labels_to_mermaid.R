@@ -61,9 +61,16 @@ mod_map_coralnet_labels_to_mermaid_server <- function(id, r) {
       mermaid_col <- get_config("coralnet_labelset_column")[["mermaid_join"]]
 
       # Create table of mapping that does exist by left joining annotations' labels to the known mapping
+
       annotations_labels() %>%
         dplyr::left_join(known_mapping(), by = setNames(mermaid_col, coralnet_col)) %>%
-        dplyr::arrange(!!rlang::sym(coralnet_col))
+        # Put blanks first, then arrange alphabetically
+        dplyr::mutate(.is_na = is.na(mermaid_attribute)) %>%
+        dplyr::arrange(
+          dplyr::desc(.is_na),
+          !!rlang::sym(coralnet_col)
+        ) %>%
+        dplyr::select(-.is_na)
     }) %>%
       shiny::bindEvent(r$all_aux_fields_valid)
 
@@ -93,6 +100,8 @@ mod_map_coralnet_labels_to_mermaid_server <- function(id, r) {
         ) %>%
         # Make the coralnet label read only
         rhandsontable::hot_col(coralnet_label_display, readOnly = TRUE) %>%
+        # Enable column sorting
+        rhandsontable::hot_cols( columnSorting=TRUE) %>%
         # Validator is not working - but can potentially use a custom renderer to make a cell red if it needs to be validated?
         # Also, should there be a column to reset the mapping to original? if they changed it?
         # Validate there are no non-NA values of `mermaid_attribute` - turn them red to indicate they need to be filled in
