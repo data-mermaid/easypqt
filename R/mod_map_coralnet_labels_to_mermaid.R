@@ -101,13 +101,15 @@ mod_map_coralnet_labels_to_mermaid_server <- function(id, r) {
         # Make the coralnet label read only
         rhandsontable::hot_col(coralnet_label_display, readOnly = TRUE) %>%
         # Enable column sorting
-        rhandsontable::hot_cols( columnSorting=TRUE) %>%
-        # Validator is not working - but can potentially use a custom renderer to make a cell red if it needs to be validated?
-        # Also, should there be a column to reset the mapping to original? if they changed it?
-        # Validate there are no non-NA values of `mermaid_attribute` - turn them red to indicate they need to be filled in
-        # rhandsontable::hot_validate_character("mermaid_attribute", benthic_attribute_levels, allowInvalid = FALSE) %>%
-        # rhandsontable::hot_validate_character("mermaid_growth_form", growth_form_levels, allowInvalid = TRUE) %>%
-        # Make the mermaid_attribute col editable, with dropdown of options from the mapping table
+        rhandsontable::hot_cols(columnSorting = TRUE) %>%
+        # Highlight cells that need to be filled out %>%
+        rhandsontable::hot_col(mermaid_benthic_attribute_display, renderer = "
+           function (instance, td, row, col, prop, value, cellProperties) {
+             Handsontable.renderers.NumericRenderer.apply(this, arguments);
+             if (value === null) {
+              td.style.background = 'pink';
+             }
+           }") %>%
         rhandsontable::hot_col(mermaid_benthic_attribute_display,
           type = "dropdown",
           # type = "autocomplete",
