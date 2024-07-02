@@ -185,7 +185,8 @@ mod_map_coralnet_labels_to_mermaid_server <- function(id, r) {
       # Disable confirm, enable "edit"
       shinyjs::disable("save_mapping")
       shinyjs::enable("edit")
-      # TODO disable the table
+      # Disable the table by making fields read only
+      disable_mapping_table(ns("mapping_table"))
     }) %>%
       shiny::bindEvent(input$save_mapping)
 
@@ -193,7 +194,7 @@ mod_map_coralnet_labels_to_mermaid_server <- function(id, r) {
     shiny::observe({
       shinyjs::disable("edit")
       shinyjs::enable("save_mapping")
-      # TODO Enable table again
+      enable_mapping_table(ns("mapping_table"))
     }) %>%
       shiny::bindEvent(input$edit)
 
@@ -210,4 +211,26 @@ mod_map_coralnet_labels_to_mermaid_server <- function(id, r) {
         dplyr::rename(mermaid_attributes_cols)
     })
   })
+}
+
+disable_mapping_table <- function(id) {
+  shinyjs::runjs(glue::glue("window.HTMLWidgets.findAll('#$id$')[0].hot.updateSettings({readOnly: true, contextMenu: false, disableVisualSelection: true, columnSorting: false})", .open = "$", .close = "$"))
+
+  # Disable pointer events on actual table, add style
+  # Not allowed cursor on parent div, add style
+  shinyjs::runjs(glue::glue("let tempTable = document.getElementById('$id$');
+                            tempTable.getElementsByClassName('ht_master')[0].style.pointerEvents = 'none';
+                            tempTable.getElementsByClassName('ht_clone_top')[0].style.pointerEvents = 'none';
+                            tempTable.style.cursor = 'not-allowed';", .open = "$", .close = "$"))
+}
+
+enable_mapping_table <- function(id) {
+  shinyjs::runjs(glue::glue("window.HTMLWidgets.findAll('#$id$')[0].hot.updateSettings({readOnly: false, contextMenu: true, disableVisualSelection: false, columnSorting: true})", .open = "$", .close = "$"))
+
+  # Allow pointer events on actual table, remove style
+  # Regular cursor on parent div, remove style
+  shinyjs::runjs(glue::glue("let tempTable = document.getElementById('$id$');
+                            tempTable.getElementsByClassName('ht_master')[0].style.pointerEvents = '';
+                            tempTable.getElementsByClassName('ht_clone_top')[0].style.pointerEvents = '';
+                            tempTable.style.cursor = '';", .open = "$", .close = "$"))
 }
