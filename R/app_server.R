@@ -9,7 +9,7 @@ app_server <- function(input, output, session) {
   # Set up reactive values ----
   r <- shiny::reactiveValues(
     auxiliary_columns_map = get_config("auxiliary_columns_map"),
-    aux_mapped = 0,
+    aux_mapped = FALSE,
     dev = FALSE,
     # dev_scenario = "empties"
     # dev_scenario = "wrong_values"
@@ -59,13 +59,11 @@ app_server <- function(input, output, session) {
   })
 
   # Close panel if all annotations are good
-  # TODO - not quite right, need to work on this
   shiny::observe({
     shiny::req(r$all_aux_fields_valid)
-    shiny::req(r$aux_fields_on_edit) # Ensures this happens after "confirm" is disabled and "edit" is enabled
     bslib::accordion_panel_close("accordion", "map-annotation-fields")
   }) %>%
-    shiny::bindEvent(r$aux_fields_on_edit)
+    shiny::bindEvent(r$all_aux_fields_valid)
 
   ## Map labels ----
 

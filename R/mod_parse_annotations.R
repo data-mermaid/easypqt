@@ -60,9 +60,7 @@ mod_parse_annotations_server <- function(id, r) {
           shiny::h3("Data preview"),
           data_preview,
           shiny::h3("Map fields"),
-          inputs,
-          shinyjs::disabled(confirm_button(ns("confirm"))),
-          shinyjs::disabled(shiny::actionButton(ns("edit"), "Edit"))
+          inputs
         )
       )
     })
@@ -116,7 +114,7 @@ mod_parse_annotations_server <- function(id, r) {
       )
     })
 
-    # Enable "confirm" button once all of the columns have been mapped to an auxiliary field ----
+    # Once all auxiliary mapping fields have been filled out, flag them for checking non-empty/valid ----
     shiny::observe({
       shiny::req(r$annotations_raw)
 
@@ -124,85 +122,13 @@ mod_parse_annotations_server <- function(id, r) {
         purrr::map("value") %>%
         purrr::compact()
 
-      all_cols_mapped <- length(cols_mapped) == length(r$auxiliary_columns_map)
-
-      if (all_cols_mapped) {
-        shinyjs::enable("confirm")
-      } else {
-        shinyjs::disable("confirm")
-      }
+      r$aux_mapped <- length(cols_mapped) == length(r$auxiliary_columns_map)
     })
-
-    # Track that auxiliary mapping has been confirmed ----
-    shiny::observe({
-      if (r$dev) {
-        shiny::req(input$site)
-        r$confirm_map_aux_fields <- TRUE
-      } else {
-        r$confirm_map_aux_fields <- input$confirm
-      }
-    }) %>%
-      shiny::bindEvent(input$confirm)
-
-    # Once auxiliary mapping has been confirmed, and checked that it's all good:
-    shiny::observe({
-      # IF they are all good, then:
-      shiny::req(r$all_aux_fields_valid)
-      shiny::req(r$no_empty_fields)
-      r$aux_fields_on_edit <- TRUE
-      # Disable confirm, enable "edit"
-      # Disable all inputs
-      shinyjs::disable("confirm")
-      # TODO - for some reason disable is not actually working here, even though the actual inputs do not work (until renabled) - but it's still possible to interact with them?
-      # TODO - not quite right, need to work on this
-      shinyjs::disable("site")
-      shinyjs::disable("management")
-      shinyjs::disable("transect_number")
-      shinyjs::enable("edit")
-    }) %>%
-      shiny::bindEvent(input$confirm, r$all_aux_fields_valid)
-
-    # Re-enable dropdowns when "edit" is clicked
-    shiny::observe({
-      shinyjs::disable("edit")
-      shinyjs::enable("site")
-      shinyjs::enable("management")
-      shinyjs::enable("transect_number")
-      shinyjs::enable("confirm")
-    }) %>%
-      shiny::bindEvent(input$edit)
-
-    # Rename columns in data according to auxiliary fields mapping ----
-    shiny::observe({
-      mapped_cols_names <- r$auxiliary_columns_map %>%
-        purrr::map("column")
-      mapped_cols_aux <- r$auxiliary_columns_map %>%
-        purrr::map("value")
-      mapped_cols <- setNames(mapped_cols_aux, mapped_cols_names) %>%
-        unlist()
-
-      r$annotations <- r$annotations_raw %>%
-        dplyr::rename(mapped_cols)
-
-      # Remove auxiliary fields that were not mapped
-      extra_aux_fields <- setdiff(r$auxiliary_columns, mapped_cols_aux)
-
-      r$annotations <- r$annotations %>%
-        dplyr::select(-tidyselect::all_of(extra_aux_fields))
-
-      r$aux_mapped <- r$aux_mapped + 1
-    }) %>%
-      shiny::bindEvent(r$confirm_map_aux_fields)
-
-    # Show date/site/management, confirm and continue ----
-    # TODO
 
     # Check that fields are not empty ----
     # Check that Date, Site, Management, and Transect Number are not empty
-    # This needs to happen any time the mapping is edited AND confirmed, not just when it's confirmed the first time
     shiny::observe(priority = 1, {
-      # TODO - this needs to run ANYYYY time the mapping is edited and confirmed!!
-      shiny::req(r$aux_mapped > 0)
+      shiny::req(r$aux_mapped)
 
       # Iterate through and check if any values are empty
       check_fields <- append(get_config("additional_columns_map"), r$auxiliary_columns_map)
@@ -211,7 +137,7 @@ mod_parse_annotations_server <- function(id, r) {
         check_fields,
         \(x) {
           # Get values for field
-          values <- r$annotations[x$column]
+          values <- r$annotations_raw[x$value]
           names(values) <- "field"
 
           # Check if any are NA
@@ -246,14 +172,12 @@ mod_parse_annotations_server <- function(id, r) {
       } else {
         r$no_empty_fields <- TRUE
       }
-    }) %>%
-      shiny::bindEvent(r$aux_mapped)
+    })
 
     # Check valid values of auxiliary fields ----
     # Validate fields ----
-    # This needs to happen any time the mapping is edited, not just when it's confirmed the first time
     shiny::observe({
-      shiny::req(r$aux_mapped > 0)
+      shiny::req(r$aux_mapped)
       shiny::req(r$no_empty_fields)
 
       # Check that sites are ones already entered in the project ----
@@ -278,8 +202,44 @@ mod_parse_annotations_server <- function(id, r) {
           "Please fix invalid values in CoralNet before continuing."
         )
       }
+    })
+
+    # Once all auxiliary mapping have been checked, disable the inputs - cannot edit them anymore
+    shiny::observe({
+      # IF they are all good, then:
+      shiny::req(r$all_aux_fields_valid)
+      shiny::req(r$no_empty_fields)
+      r$aux_fields_on_edit <- TRUE
+      # Disable all inputs
+      shinyjs::disable("site")
+      shinyjs::disable("management")
+      shinyjs::disable("transect_number")
     }) %>%
-      shiny::bindEvent(r$aux_mapped, r$confirm_map_aux_fields)
+      shiny::bindEvent(r$all_aux_fields_valid)
+
+    # Rename columns in data according to auxiliary fields mapping ----
+    shiny::observe({
+
+      mapped_cols_names <- r$auxiliary_columns_map %>%
+        purrr::map("column")
+      mapped_cols_aux <- r$auxiliary_columns_map %>%
+        purrr::map("value")
+      mapped_cols <- setNames(mapped_cols_aux, mapped_cols_names) %>%
+        unlist()
+
+      r$annotations <- r$annotations_raw %>%
+        dplyr::rename(mapped_cols)
+
+      # Remove auxiliary fields that were not mapped
+      extra_aux_fields <- setdiff(r$auxiliary_columns, mapped_cols_aux)
+
+      r$annotations <- r$annotations %>%
+        dplyr::select(-tidyselect::all_of(extra_aux_fields))
+    }) %>%
+      shiny::bindEvent(r$all_aux_fields_valid)
+
+    # Show date/site/management, confirm and continue ----
+    # TODO
 
     # Map CoralNet labelsets to MERMAID ----
     mod_map_coralnet_labels_to_mermaid_server("map_coralnet_labels", r)
@@ -358,7 +318,7 @@ check_valid_values <- function(r, lookup) {
 }
 
 check_integer_values <- function(r, lookup) {
-  values <- r$annotations[r$auxiliary_columns_map[[lookup]][["column"]]]
+  values <- r$annotations_raw[r$auxiliary_columns_map[[lookup]][["value"]]]
   names(values) <- "value"
 
   values_with_numeric <- values %>%
