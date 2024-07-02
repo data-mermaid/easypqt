@@ -20,17 +20,20 @@ mod_ingestion_preview_server <- function(id, r) {
     ns <- session$ns
 
     # Preview and download reshaped data----
+    output$table <- DT::renderDT({
+      shiny::req(r$ingestion_data)
+      DT::datatable(r$ingestion_data, rownames = FALSE, options = list(dom = "tp"))
+    })
+
     shiny::observe({
       shiny::req(r$ingestion_data)
-      table <- DT::datatable(r$ingestion_data, rownames = FALSE, options = list(dom = "tp")) %>%
-        DT::renderDT()
       download <- shiny::downloadButton(ns("download_ingestion"), "Download reshaped data")
 
       r$accordion_preview_download <- bslib::accordion_panel(
         title = shiny::h2("Preview ingestion data"),
         value = "preview-download",
         indent(
-          table,
+          DT::DTOutput(ns("table")),
           download
         )
       )
