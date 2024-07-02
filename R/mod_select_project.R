@@ -56,10 +56,6 @@ mod_select_project_server <- function(id, r) {
       )
 
       shinyjs::show("project")
-
-      # shiny::tagList(
-      #   indent(input)
-      # )
     })
 
     shiny::observe({
@@ -83,6 +79,12 @@ mod_select_project_server <- function(id, r) {
       }
     }) %>%
       shiny::bindEvent(input$project)
+
+    # Disable project selection once data is uploaded
+    shiny::observe({
+      shinyjs::disable("project")
+    }) %>%
+      shiny::bindEvent(r$ready_to_map_aux)
   })
 }
 
