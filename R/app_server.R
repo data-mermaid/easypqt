@@ -10,6 +10,7 @@ app_server <- function(input, output, session) {
   r <- shiny::reactiveValues(
     auxiliary_columns_map = get_config("auxiliary_columns_map"),
     aux_mapped = FALSE,
+    preview_shown = 0,
     dev = FALSE,
     # dev_scenario = "empties"
     # dev_scenario = "wrong_values"

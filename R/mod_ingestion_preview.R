@@ -27,6 +27,9 @@ mod_ingestion_preview_server <- function(id, r) {
 
     shiny::observe({
       shiny::req(r$ingestion_data)
+      # Only do this once, not every time the mapping is updated/confirmed
+      shiny::req(r$preview_shown == 0)
+
       download <- shiny::downloadButton(ns("download_ingestion"), "Download reshaped data")
 
       r$accordion_preview_download <- bslib::accordion_panel(
@@ -37,6 +40,7 @@ mod_ingestion_preview_server <- function(id, r) {
           download
         )
       )
+      r$preview_shown <- r$preview_shown + 1
     })
 
     output$download_ingestion <- shiny::downloadHandler(

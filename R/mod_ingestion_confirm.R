@@ -21,6 +21,8 @@ mod_ingestion_confirm_server <- function(id, r) {
 
     # UI
     shiny::observe({
+      # Only do this once, not every time the mapping is updated/confirmed
+      shiny::req(r$preview_shown == 0)
       shiny::req(r$ingestion_data)
 
       # Confirm continuing with ingestion ----
@@ -48,6 +50,7 @@ mod_ingestion_confirm_server <- function(id, r) {
           incorrect_help_button
         )
       )
+      r$preview_shown <- r$preview_shown + 1
     })
 
     ## Correct: continue -----
