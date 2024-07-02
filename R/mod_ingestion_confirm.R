@@ -25,25 +25,25 @@ mod_ingestion_confirm_server <- function(id, r) {
 
       # Confirm continuing with ingestion ----
       ## Correct: continue -----
-      continue_button <- shiny::actionButton(ns("correct_continue"), "Continue with ingestion")
+      continue_button <- shiny::actionButton(ns("correct_continue"), get_copy("ingestion_continue_button"))
 
       ## Incorrect: start over -----
-      incorrect_reset_button <- shiny::actionButton(ns("incorrect_reset"), "Restart process")
+      incorrect_reset_button <- shiny::actionButton(ns("incorrect_reset"), get_copy("ingestion_reset_button"))
 
       ## Incorrect: need help -----
       incorrect_help_button <- shiny::actionButton(
         ns("incorrect_help"),
-        "Get help",
-        onclick = "window.open('https://datamermaid.org/contact-us', '_blank')"
+        get_copy("ingestion_help_button"),
+        onclick = glue::glue("window.open('{link}', '_blank')", link = get_copy("https://datamermaid.org/contact-us"))
       )
 
       r$accordion_confirm <- bslib::accordion_panel(
-        title = shiny::h2("Continue to ingestion"),
+        title = shiny::h2(get_copy("ingestion_title")),
         value = "confirm",
         indent(
-          shiny::div("If the data looks correct, click the button below to continue with ingestion"),
+          shiny::div(get_copy("ingestion_continue")),
           continue_button,
-          shiny::div("If the data does not look correct, select from the following options to restart the whole process or get help with ingestion"),
+          shiny::div(get_copy("ingestion_do_not_continue")),
           incorrect_reset_button,
           incorrect_help_button
         )
@@ -57,20 +57,13 @@ mod_ingestion_confirm_server <- function(id, r) {
     }) %>%
       shiny::bindEvent(input$correct_continue)
 
-    ## Incorrect: edit options -----
-    # Open a modal that says what to edit
-    shiny::observe({
-      show_modal("Return to the 'Map CoralNet annotation fields' and/or 'Map CoralNet Labels to MERMAID Attributes' sections to edit the data")
-    }) %>%
-      shiny::bindEvent(input$incorrect_edit)
-
     ## Incorrect: start over -----
     # Confirm to reset, clear everything
     shiny::observe({
       show_modal(
-        "Are you sure you want to reset the project, data, and all mappings?",
-        shiny::actionButton(ns("reset_confirm"), "Reset all"),
-        shiny::actionButton(ns("reset_cancel"), "Do not reset ingestion"),
+        get_copy("reset"),
+        shiny::actionButton(ns("reset_confirm"), get_copy("reset_confirm")),
+        shiny::actionButton(ns("reset_cancel"), get_copy("reset_cancel")),
         footer = NULL
       )
     }) %>%

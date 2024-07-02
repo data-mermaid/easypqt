@@ -74,3 +74,13 @@ copy:
   invalid_values: |-
     The annotations contain invalid values of {label}. The following are invalid: {invalid_values}
     Valid values of {label} are: {valid_values}
+  ingestion_title: Continue to ingestion
+  ingestion_continue: If the data looks correct, click the button below to continue with ingestion
+  ingestion_continue_button: Continue with ingestion
+  ingestion_do_not_continue: "If the data does not look correct, select from the following options to restart the whole process or get help with ingestion"
+  ingestion_reset_button: Restart process
+  ingestion_help_button: Get help
+  ingestion_help_link: https://datamermaid.org/contact-us
+  reset: "Are you sure you want to reset the project, data, and all mappings?"
+  reset_confirm: "Reset all"
+  reset_cancel: "Do not reset"
