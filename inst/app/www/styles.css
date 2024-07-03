@@ -60,15 +60,6 @@ hr {
   margin: 2rem 0;
 }
 
-/*.ht_master .handsontable {
-  max-height: 50vh;
-}
-
-.tableContainer {
-  max-height: 50vh;
-  overflow-y: scroll;
-} */
-
 .ht_master.handsontable > .wtHolder {
   max-height: 25vh !important;
   width: auto !important;
@@ -91,6 +82,17 @@ hr {
 .bttn-simple.bttn-primary {
   background: var(--color-primary);
   padding: 0.5rem 1rem;
+}
+
+.bttn-simple.disabled, .bttn-simple:hover {
+  opacity: 0.5 !important;
+}
+
+/* Modal */
+
+.modal_content {
+  max-height: 75vh;
+  overflow-y: scroll;
 }
 
 /* Small devices */

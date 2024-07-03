@@ -177,7 +177,6 @@ mod_parse_annotations_server <- function(id, r) {
     # Check valid values of auxiliary fields ----
     # Validate fields ----
     shiny::observe({
-      shiny::req(r$aux_mapped)
       shiny::req(r$no_empty_fields)
 
       # Check that sites are ones already entered in the project ----
@@ -199,10 +198,12 @@ mod_parse_annotations_server <- function(id, r) {
           site_ui[["ui"]],
           management_ui[["ui"]],
           transect_number_ui[["ui"]],
-          "Please fix invalid values in CoralNet before continuing."
+          shiny::br(),
+          shiny::div("Please fix invalid values in CoralNet before continuing.")
         )
       }
-    })
+    }) %>%
+      shiny::bindEvent(r$no_empty_fields)
 
     # Once all auxiliary mapping have been checked, disable the inputs - cannot edit them anymore
     shiny::observe({
@@ -211,9 +212,9 @@ mod_parse_annotations_server <- function(id, r) {
       shiny::req(r$no_empty_fields)
       r$aux_fields_on_edit <- TRUE
       # Disable all inputs
-      shinyjs::disable("site")
-      shinyjs::disable("management")
-      shinyjs::disable("transect_number")
+      disable_picker_input(ns("site"))
+      disable_picker_input(ns("management"))
+      disable_picker_input(ns("transect_number"))
     }) %>%
       shiny::bindEvent(r$all_aux_fields_valid)
 
@@ -281,10 +282,12 @@ make_mapping_dropdown_ui <- function(auxiliary_column_map, auxiliary_column, r, 
 }
 
 check_valid_values <- function(r, lookup) {
-  options_lookup <- r$auxiliary_columns_map[[lookup]][["column"]]
+  aux_lookup <- r$auxiliary_columns_map[[lookup]]
+  template_lookup <- aux_lookup[["column"]]
+  actual_lookup <- aux_lookup[["value"]]
 
-  valid_values <- r$template_choices[[options_lookup]][["value"]] # TODO, "value" in config?
-  actual_values <- unique(r$annotations[[options_lookup]])
+  valid_values <- r$template_choices[[template_lookup]][["value"]]
+  actual_values <- unique(r$annotations_raw[[actual_lookup]])
 
   invalid_values <- setdiff(actual_values, valid_values)
 

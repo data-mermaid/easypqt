@@ -132,6 +132,7 @@ mod_map_coralnet_labels_to_mermaid_server <- function(id, r) {
     # Put the editable table in an accordion ----
     shiny::observe({
       shiny::req(coralnet_mermaid_mapping())
+      shiny::req(r$all_aux_fields_valid)
 
       r$accordion_map_coralnet_labels <- bslib::accordion_panel(
         title = shiny::h2("Map CoralNet Labels to MERMAID Attributes"),

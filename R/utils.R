@@ -90,3 +90,11 @@ primary_button <- function(id, label) {
     style = "simple"
   )
 }
+
+disable_picker_input <- function(id) {
+  shinyjs::runjs(glue::glue("let selector = $('#{id}'); selector.prop('disabled', true); selector.selectpicker('destroy'); selector.selectpicker();"))
+}
+
+enable_picker_input <- function(id) {
+
+}
