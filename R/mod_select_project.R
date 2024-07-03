@@ -38,7 +38,8 @@ mod_select_project_server <- function(id, r) {
     shiny::observe({
       shiny::req(r$authenticated)
 
-      r$projects <- mermaidr::mermaid_get_my_projects()
+      r$projects <- mermaidr::mermaid_get_my_projects() %>%
+        dplyr::arrange(name)
     })
 
     # Update project selection dropdown based on user's projects ----
