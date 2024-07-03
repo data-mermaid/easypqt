@@ -11,10 +11,13 @@ mod_authenticate_ui <- function(id) {
   shiny::tagList(
     primary_button(
       ns("auth"),
-      "Authenticate to MERMAID"
+      get_copy("authenticate", "title")
     ),
     shinyjs::hidden(
-      shiny::div(id = "loading-projects", "Loading projects...")
+      shiny::div(
+        id = "loading-projects",
+        get_copy("authenticate", "loading")
+      )
     )
   )
 }

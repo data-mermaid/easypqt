@@ -13,14 +13,14 @@ mod_select_project_ui <- function(id) {
     shinyjs::hidden(
       shinyWidgets::pickerInput(
         ns("project"),
-        label = shiny::h2("Project"),
+        label = shiny::h2(get_copy("select_project", "title")),
         multiple = TRUE,
         choices = NULL,
         options = shinyWidgets::pickerOptions(
           liveSearch = TRUE,
           size = 10,
           maxOptions = 1,
-          noneSelectedText = "Select a project"
+          noneSelectedText = get_copy("select_project", "placeholder")
         )
       )
     )
@@ -114,5 +114,5 @@ show_not_project_admin_modal <- function(r) {
     dplyr::filter(id == r$project) %>%
     dplyr::pull(name)
 
-  show_modal(skeleton_to_text(get_copy("not_admin"), list(project_name = project_name)))
+  show_modal(skeleton_to_text(get_copy("select_project", "not_admin"), list(project_name = project_name)))
 }

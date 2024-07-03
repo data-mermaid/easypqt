@@ -64,9 +64,9 @@ mod_ingestion_confirm_server <- function(id, r) {
     # Confirm to reset, clear everything
     shiny::observe({
       show_modal(
-        get_copy("reset"),
-        shiny::actionButton(ns("reset_confirm"), get_copy("reset_confirm")),
-        shiny::actionButton(ns("reset_cancel"), get_copy("reset_cancel")),
+        get_copy("reset", "title"),
+        shiny::actionButton(ns("reset_confirm"), get_copy("reset", "confirm")),
+        shiny::actionButton(ns("reset_cancel"), get_copy("reset", "cancel")),
         footer = NULL
       )
     }) %>%

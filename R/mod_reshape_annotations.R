@@ -101,13 +101,17 @@ mod_reshape_annotations_server <- function(id, r) {
         dplyr::mutate(`First quadrat number` = 1)
 
       ## Observer emails: hit "me" endpoint ----
-      # TODO
+      me <- mermaidr::mermaid_get_me()
+      observer_email <- me[["email"]]
+      ingestion_data_with_defaults <- ingestion_data_with_defaults %>%
+        dplyr::mutate(`Observer emails *` = observer_email)
 
       # Get fields in the right order
       ingestion_data_with_defaults <- ingestion_data_with_defaults %>%
         dplyr::select(dplyr::any_of(names(r$template)))
 
       r$ingestion_data_with_defaults <- ingestion_data_with_defaults
+      browser()
     }) %>%
       shiny::bindEvent(r$ingestion_data)
 
