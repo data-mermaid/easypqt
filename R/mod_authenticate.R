@@ -8,9 +8,14 @@
 #' @importFrom shiny NS moduleServer
 mod_authenticate_ui <- function(id) {
   ns <- NS(id)
-  primary_button(
-    ns("auth"),
-    "Authenticate to MERMAID"
+  shiny::tagList(
+    primary_button(
+      ns("auth"),
+      "Authenticate to MERMAID"
+    ),
+    shinyjs::hidden(
+      shiny::div(id = "loading-projects", "Loading projects...")
+    )
   )
 }
 
@@ -30,6 +35,9 @@ mod_authenticate_server <- function(id, r) {
 
       # Disable authentication button
       shinyjs::disable("auth")
+
+      # Show project loading text
+      shinyjs::show("loading-projects", asis = TRUE)
     }) %>%
       shiny::bindEvent(input$auth)
   })

@@ -56,6 +56,10 @@ mod_select_project_server <- function(id, r) {
         inputId = "project", choices = projects, selected = selected_project
       )
 
+      # Hide project loading text
+      shinyjs::hide("loading-projects", asis = TRUE)
+
+      # Show input
       shinyjs::show("project")
     })
 
