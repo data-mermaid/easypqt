@@ -2,9 +2,13 @@ get_config <- function(key) {
   yaml::read_yaml(app_sys("config.yml"))[[key]]
 }
 
-get_copy <- function(key) {
+get_copy <- function(key, secondary_key = NULL) {
   copy <- get_config("copy")
-  copy[[key]]
+  if (is.null(secondary_key)) {
+    copy[[key]]
+  } else {
+    copy[[key]][[secondary_key]]
+  }
 }
 
 close_button <- shiny::modalButton("Close")

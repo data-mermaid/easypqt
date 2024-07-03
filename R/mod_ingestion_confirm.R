@@ -27,25 +27,25 @@ mod_ingestion_confirm_server <- function(id, r) {
 
       # Confirm continuing with ingestion ----
       ## Correct: continue -----
-      continue_button <- shiny::actionButton(ns("correct_continue"), get_copy("ingestion_continue_button"))
+      continue_button <- shiny::actionButton(ns("correct_continue"), get_copy("ingestion", "continue_button"))
 
       ## Incorrect: start over -----
-      incorrect_reset_button <- shiny::actionButton(ns("incorrect_reset"), get_copy("ingestion_reset_button"))
+      incorrect_reset_button <- shiny::actionButton(ns("incorrect_reset"), get_copy("ingestion", "reset_button"))
 
       ## Incorrect: need help -----
       incorrect_help_button <- shiny::actionButton(
         ns("incorrect_help"),
-        get_copy("ingestion_help_button"),
+        get_copy("ingestion", "help_button"),
         onclick = glue::glue("window.open('{link}', '_blank')", link = get_copy("https://datamermaid.org/contact-us"))
       )
 
       r$accordion_confirm <- bslib::accordion_panel(
-        title = shiny::h2(get_copy("ingestion_title")),
+        title = shiny::h2(get_copy("ingestion", "title")),
         value = "confirm",
         indent(
-          shiny::div(get_copy("ingestion_continue")),
+          shiny::div(get_copy("ingestion", "continue")),
           continue_button,
-          shiny::div(get_copy("ingestion_do_not_continue")),
+          shiny::div(get_copy("ingestion", "do_not_continue")),
           incorrect_reset_button,
           incorrect_help_button
         )
