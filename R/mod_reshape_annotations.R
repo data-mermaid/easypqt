@@ -111,13 +111,8 @@ mod_reshape_annotations_server <- function(id, r) {
         dplyr::select(dplyr::any_of(names(r$template)))
 
       r$ingestion_data_with_defaults <- ingestion_data_with_defaults
-      browser()
     }) %>%
       shiny::bindEvent(r$ingestion_data)
-
-
-    ## Confirm continuing (or not) with ingestion ----
-    # mod_confirm_continue_ingestion_server("confirm_options", r)
   })
 }
 

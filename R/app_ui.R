@@ -29,8 +29,9 @@ app_ui <- function(request) {
         mod_ingestion_preview_ui("preview"),
         # Confirm ingestion ----
         mod_ingestion_confirm_ui("confirm")
-      )
+      ),
       # Do ingestion ----
+      mod_ingestion_do_ui("ingest")
 
       # Ingestion results -----
     )

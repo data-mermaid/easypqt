@@ -11,7 +11,9 @@ app_server <- function(input, output, session) {
     auxiliary_columns_map = get_config("auxiliary_columns_map"),
     aux_mapped = FALSE,
     preview_shown = 0,
+    ingestion_confirm_shown = 0,
     dev = FALSE,
+    prod = FALSE,
     # dev_scenario = "empties"
     # dev_scenario = "wrong_values"
     dev_scenario = "good_data"
@@ -45,6 +47,7 @@ app_server <- function(input, output, session) {
   mod_ingestion_confirm_server("confirm", r)
 
   # Do ingestion ----
+  mod_ingestion_do_server("ingest", r)
 
   # Ingestion results -----
 
