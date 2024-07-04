@@ -24,6 +24,8 @@ good_data <- data %>%
 
 usethis::use_data(good_data, overwrite = TRUE)
 
+# Good data, large dataset -----
+
 # Wrong values ----
 
 wrong_values <- data %>%

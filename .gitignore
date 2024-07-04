@@ -1,4 +1,6 @@
 .Rproj.user
 .httr-oauth
 .DS_Store
-*.csv
+inst/extdata/coralnet-sample-exports/
+scratch/
+test*.csv
