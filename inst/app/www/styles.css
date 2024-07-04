@@ -61,8 +61,13 @@ hr {
 }
 
 .ht_master.handsontable > .wtHolder {
-  max-height: 25vh !important;
+  max-height: 500px !important;
   width: auto !important;
+}
+
+.handsontable-parent {
+  height: 500px; /* Causes double scroll bar, but does not work without it <3 */
+  overflow-y: scroll;
 }
 
 .handsontable tbody th.ht__active_highlight, .handsontable thead th.ht__active_highlight {

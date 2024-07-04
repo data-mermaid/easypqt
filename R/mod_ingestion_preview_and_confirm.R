@@ -21,9 +21,9 @@ mod_ingestion_preview_and_confirm_server <- function(id, r) {
 
     # Preview and download reshaped data ----
 
-    output$table <- DT::renderDT({
+    output$table <- DT::renderDataTable(server = TRUE, {
       shiny::req(r$ingestion_data)
-      DT::datatable(r$ingestion_data, rownames = FALSE, options = list(dom = "tp"))
+      DT::datatable(r$ingestion_data, rownames = FALSE, options = list(dom = "tp"), selectionm = "none")
     })
 
     shiny::observe({

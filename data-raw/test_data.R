@@ -1,6 +1,7 @@
 ## code to prepare `upload` dataset goes here
 
 library(dplyr)
+library(tidyr)
 
 data <- readr::read_csv("data-raw/test_data.csv")
 
@@ -25,6 +26,29 @@ good_data <- data %>%
 usethis::use_data(good_data, overwrite = TRUE)
 
 # Good data, large dataset -----
+
+set.seed(1234)
+
+good_data_large <- good_data %>%
+  select(-Row, -Column, -Label) %>%
+  distinct() %>%
+  mutate(join = TRUE) %>%
+  left_join(
+    crossing(Row = 1:500, Column = 1:100) %>%
+      mutate(join = TRUE),
+    by = "join",
+    relationship = "many-to-many"
+  )
+
+coralnet_labels <- coralnet_mermaid_attributes %>%
+  select(Label = coralnet_label) %>%
+  sample_n(nrow(good_data_large), replace = TRUE)
+
+good_data_large <- good_data_large %>%
+  bind_cols(coralnet_labels) %>%
+  select(-join)
+
+readr::write_csv(good_data_large, here::here("test_large.csv"))
 
 # Wrong values ----
 

@@ -9,6 +9,8 @@ app_server <- function(input, output, session) {
   # Set up reactive values ----
   r <- shiny::reactiveValues(
     auxiliary_columns_map = get_config("auxiliary_columns_map"),
+    page_length = 10,
+    map_annotations_accordion_made = FALSE,
     aux_mapped = FALSE,
     preview_confirm_shown = 0,
     dev = FALSE,
@@ -54,12 +56,27 @@ app_server <- function(input, output, session) {
 
   ##  Map annotations ----
   shiny::observe({
+    shiny::req(r$accordion_map_annotation_fields)
+
     # Insert panel
     bslib::accordion_panel_insert("accordion", r$accordion_map_annotation_fields)
 
     # Open panel
     bslib::accordion_panel_open("accordion", "map-annotation-fields")
+
+    r$map_annotations_accordion_made <- TRUE
   })
+
+  # # Hide annotation page counter if less than 10 rows
+  # shiny::observe({
+  #   Sys.sleep(5)
+  #   shiny::req(r$map_annotations_accordion_made)
+  #
+  #   if (r$hide_annotation_preview_nav) {
+  #     browser()
+  #     shinyjs::runjs('document.getElementById("parse_annotations-data_preview").getElementsByClassName("dataTables_paginate")[0].style.display = "none"')
+  #   }
+  # })
 
   # Close panel if all annotations are good
   shiny::observe({
@@ -71,6 +88,8 @@ app_server <- function(input, output, session) {
   ## Map labels ----
 
   shiny::observe({
+    shiny::req(r$accordion_map_coralnet_labels)
+
     # Insert panel
     bslib::accordion_panel_insert("accordion", r$accordion_map_coralnet_labels)
 

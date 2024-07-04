@@ -40,13 +40,22 @@ mod_parse_annotations_server <- function(id, r) {
     shiny::observe({
       shiny::req(r$annotations_raw)
 
-      data_preview <- r$annotations_raw %>%
+      aux_fields_data <- r$annotations_raw %>%
         dplyr::select(dplyr::all_of(r$auxiliary_columns)) %>%
-        DT::datatable(rownames = FALSE, options = list(dom = "tp"))
+        dplyr::distinct()
+
+      r$hide_annotation_preview_nav <- nrow(aux_fields_data) < r$page_length
+
+      output$data_preview <- aux_fields_data %>%
+        DT::datatable(
+          rownames = FALSE,
+          options = list(dom = "tp", pageLength = r$page_length),
+          selection = "none"
+        ) %>%
+        DT::renderDataTable()
 
       inputs <- purrr::imap(
         # Just do this once, do not listen to changes in the mapping
-        # TODO - unless we want it to listen to changes in the mapping, so that the "edit" works?
         shiny::isolate(r$auxiliary_columns_map),
         \(x, y) {
           make_mapping_dropdown_ui(x, y, r, ns)
@@ -57,12 +66,14 @@ mod_parse_annotations_server <- function(id, r) {
         title = shiny::h2("Map CoralNet annotation fields"),
         value = "map-annotation-fields",
         indent(
-          shiny::h3("Data preview"),
-          data_preview,
-          shiny::h3("Map fields"),
+          shiny::h3("Auxiliary fields preview"), # TODO config
+          DT::dataTableOutput(ns("data_preview")),
+          shiny::h3("Map auxiliary fields"), # TODO config
           inputs
         )
       )
+
+      r$accordion_map_annotation_made <- TRUE
     })
 
     # Observe each dropdown, and disable an Aux field in other dropdowns if it's already selected - because an auxiliary field cannot map to more than one of Site, Management, or Transect Number
