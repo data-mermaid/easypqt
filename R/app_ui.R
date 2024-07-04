@@ -12,6 +12,8 @@ app_ui <- function(request) {
       lang = "en",
       shiny::h1("EasyPQT"),
       shiny::hr(),
+      # Reset
+      mod_reset_ui("reset"),
       # Authenticate ----
       mod_authenticate_ui("authenticate"),
       # Get projects ----

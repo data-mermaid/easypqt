@@ -73,14 +73,9 @@ mod_ingestion_confirm_server <- function(id, r) {
       shiny::bindEvent(input$incorrect_reset)
 
     shiny::observe({
-      r$reset <- TRUE
-      browser()
-      # Each modal should listen to reset, and clear or return to its defaults
-      # Or just set certain reactives to NULL so the renderUIs will reset everything?
-      # TODO
+      session$reload()
     }) %>%
       shiny::bindEvent(input$reset_confirm)
-
 
     shiny::observe({
       shiny::removeModal()

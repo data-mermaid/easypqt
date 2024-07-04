@@ -21,6 +21,9 @@ app_server <- function(input, output, session) {
     # dev_scenario = "transect_decimal"
   )
 
+  # Reset ----
+  mod_reset_server("reset")
+
   # Authenticate ----
   mod_authenticate_server("authenticate", r)
 
