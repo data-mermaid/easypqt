@@ -105,6 +105,4 @@ app_server <- function(input, output, session) {
     # Open panel
     bslib::accordion_panel_open("accordion", "confirm")
   })
-
-
 }

@@ -5,7 +5,6 @@
 #' @param id,input,output,session Internal parameters for {shiny}.
 #'
 #' @noRd
-#' @importFrom shiny NS moduleServer
 mod_authenticate_ui <- function(id) {
   ns <- NS(id)
   shiny::tagList(

@@ -25,7 +25,7 @@ mod_upload_annotations_server <- function(id, r) {
 
     # Show upload form once confirmed they are a project admin
     shiny::observe({
-      req(r$is_project_admin)
+      shiny::req(r$is_project_admin)
 
       shinyjs::show("annotations")
     })

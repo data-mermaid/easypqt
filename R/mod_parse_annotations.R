@@ -220,7 +220,6 @@ mod_parse_annotations_server <- function(id, r) {
 
     # Rename columns in data according to auxiliary fields mapping ----
     shiny::observe({
-
       mapped_cols_names <- r$auxiliary_columns_map %>%
         purrr::map("column")
       mapped_cols_aux <- r$auxiliary_columns_map %>%
@@ -235,7 +234,7 @@ mod_parse_annotations_server <- function(id, r) {
       extra_aux_fields <- setdiff(r$auxiliary_columns, mapped_cols_aux)
 
       r$annotations <- r$annotations %>%
-        dplyr::select(-tidyselect::all_of(extra_aux_fields))
+        dplyr::select(-dplyr::all_of(extra_aux_fields))
     }) %>%
       shiny::bindEvent(r$all_aux_fields_valid)
 

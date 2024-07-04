@@ -68,7 +68,7 @@ mod_map_coralnet_labels_to_mermaid_server <- function(id, r) {
         dplyr::mutate(.is_na = is.na(mermaid_attribute)) %>%
         dplyr::arrange(
           dplyr::desc(.is_na),
-          !!rlang::sym(coralnet_col)
+          !!as.name(coralnet_col)
         ) %>%
         dplyr::select(-.is_na)
     }) %>%

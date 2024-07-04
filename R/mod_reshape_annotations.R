@@ -81,7 +81,6 @@ mod_reshape_annotations_server <- function(id, r) {
 
     # Add default fields ----
     shiny::observe(priority = 0, {
-
       ingestion_data_with_defaults <- r$ingestion_data
 
       ## Depth: default to 0 ----
