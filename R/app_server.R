@@ -10,8 +10,7 @@ app_server <- function(input, output, session) {
   r <- shiny::reactiveValues(
     auxiliary_columns_map = get_config("auxiliary_columns_map"),
     aux_mapped = FALSE,
-    preview_shown = 0,
-    ingestion_confirm_shown = 0,
+    preview_confirm_shown = 0,
     dev = FALSE,
     prod = FALSE,
     # dev_scenario = "empties"
@@ -43,11 +42,8 @@ app_server <- function(input, output, session) {
   # Reshape annotations for ingestion ----
   mod_reshape_annotations_server("reshape_annotations", r)
 
-  # Preview ingestion ----
-  mod_ingestion_preview_server("preview", r)
-
-  # Confirm ingestion ----
-  mod_ingestion_confirm_server("confirm", r)
+  # Preview/confirm ingestion ----
+  mod_ingestion_preview_and_confirm_server("preview_and_confirm", r)
 
   # Do ingestion ----
   mod_ingestion_do_server("ingest", r)
@@ -89,23 +85,13 @@ app_server <- function(input, output, session) {
   }) %>%
     shiny::bindEvent(r$coralnet_labels_on_edit)
 
-  ## Preview/download ---
+  ## Preview/download/confirm ---
 
   shiny::observe({
     # Insert panel
-    bslib::accordion_panel_insert("accordion", r$accordion_preview_download)
+    bslib::accordion_panel_insert("accordion", r$accordion_preview_download_confirm)
 
     # Open panel
-    bslib::accordion_panel_open("accordion", "preview-download")
-  })
-
-  ## Confirm ingestion ----
-
-  shiny::observe({
-    # Insert panel
-    bslib::accordion_panel_insert("accordion", r$accordion_confirm)
-
-    # Open panel
-    bslib::accordion_panel_open("accordion", "confirm")
+    bslib::accordion_panel_open("accordion", "preview-download-confirm")
   })
 }

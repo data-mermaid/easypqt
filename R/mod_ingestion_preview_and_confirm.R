@@ -1,4 +1,4 @@
-#' confirm_continue_ingestion UI Function
+#' ingestion_preview UI Function
 #'
 #' @description A shiny Module.
 #'
@@ -7,25 +7,34 @@
 #' @noRd
 #'
 #' @importFrom shiny NS tagList
-mod_ingestion_confirm_ui <- function(id) {
+mod_ingestion_preview_and_confirm_ui <- function(id) {
   ns <- NS(id)
   shiny::tagList()
 }
 
-#' confirm_continue_ingestion Server Functions
+#' ingestion_preview Server Functions
 #'
 #' @noRd
-mod_ingestion_confirm_server <- function(id, r) {
+mod_ingestion_preview_and_confirm_server <- function(id, r) {
   moduleServer(id, function(input, output, session) {
     ns <- session$ns
 
-    # UI
-    shiny::observe({
-      # Only do this once, not every time the mapping is updated/confirmed
-      shiny::req(r$ingestion_data)
-      shiny::req(r$ingestion_confirm_shown == 0)
+    # Preview and download reshaped data ----
 
-      # Confirm continuing with ingestion ----
+    output$table <- DT::renderDT({
+      shiny::req(r$ingestion_data)
+      DT::datatable(r$ingestion_data, rownames = FALSE, options = list(dom = "tp"))
+    })
+
+    shiny::observe({
+      shiny::req(r$ingestion_data)
+      # Only do this once, not every time the mapping is updated/confirmed
+      shiny::req(r$preview_confirm_shown == 0)
+
+      download <- shiny::downloadButton(ns("download_ingestion"), "Download reshaped data")
+
+      # Confirm proceeding to ingestion -----
+
       ## Correct: continue -----
       continue_button <- shiny::actionButton(ns("correct_continue"), get_copy("ingestion", "continue_button"))
 
@@ -39,10 +48,12 @@ mod_ingestion_confirm_server <- function(id, r) {
         onclick = glue::glue("window.open('{link}', '_blank')", link = get_copy("https://datamermaid.org/contact-us"))
       )
 
-      r$accordion_confirm <- bslib::accordion_panel(
-        title = shiny::h2(get_copy("ingestion", "title")),
-        value = "confirm",
+      r$accordion_preview_download_confirm <- bslib::accordion_panel(
+        title = shiny::h2("Preview data and confirm ingestion"), # TODO config
+        value = "preview-download-confirm",
         indent(
+          DT::DTOutput(ns("table")),
+          download,
           shiny::div(get_copy("ingestion", "continue")),
           continue_button,
           shiny::div(get_copy("ingestion", "do_not_continue")),
@@ -50,8 +61,17 @@ mod_ingestion_confirm_server <- function(id, r) {
           incorrect_help_button
         )
       )
-      r$ingestion_confirm_shown <- r$ingestion_confirm_shown + 1
+      r$preview_confirm_shown <- r$preview_confirm_shown + 1
     })
+
+    output$download_ingestion <- shiny::downloadHandler(
+      filename = function() {
+        "test.csv" # TODO, name of project etc? with date?
+      },
+      content = function(file) {
+        readr::write_csv(r$ingestion_data, file)
+      }
+    )
 
     ## Correct: continue -----
     # Flag to do ingestion
@@ -88,7 +108,7 @@ mod_ingestion_confirm_server <- function(id, r) {
 }
 
 ## To be copied in the UI
-# mod_confirm_continue_ingestion_ui("confirm_continue_ingestion_1")
+# mod_ingestion_preview_ui("ingestion_preview_1")
 
 ## To be copied in the server
-# mod_confirm_continue_ingestion_server("confirm_continue_ingestion_1")
+# mod_ingestion_preview_server("ingestion_preview_1")

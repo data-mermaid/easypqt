@@ -7,7 +7,7 @@
 #' @noRd
 #'
 #' @importFrom shiny NS tagList
-mod_reset_ui <- function(id){
+mod_reset_ui <- function(id) {
   ns <- NS(id)
   shiny::div(
     shiny::actionButton(ns("reset"), "Restart")
@@ -17,8 +17,8 @@ mod_reset_ui <- function(id){
 #' reset Server Functions
 #'
 #' @noRd
-mod_reset_server <- function(id){
-  moduleServer( id, function(input, output, session){
+mod_reset_server <- function(id) {
+  moduleServer(id, function(input, output, session) {
     ns <- session$ns
 
     shiny::observe({

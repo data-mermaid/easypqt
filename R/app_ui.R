@@ -27,10 +27,8 @@ app_ui <- function(request) {
         mod_parse_annotations_ui("parse_annotations"),
         # Reshape annotations ----
         mod_reshape_annotations_ui("reshape_annotations"),
-        # Preview ingestion ----
-        mod_ingestion_preview_ui("preview"),
-        # Confirm ingestion ----
-        mod_ingestion_confirm_ui("confirm")
+        # Preview/confirm ingestion ----
+        mod_ingestion_preview_and_confirm_ui("preview_and_confirm")
       ),
       # Do ingestion ----
       mod_ingestion_do_ui("ingest")
