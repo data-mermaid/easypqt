@@ -10,7 +10,7 @@
 mod_reset_ui <- function(id) {
   ns <- NS(id)
   shiny::div(
-    shiny::actionButton(ns("reset"), "Restart")
+    warning_button(ns("reset"), "Restart")
   )
 }
 

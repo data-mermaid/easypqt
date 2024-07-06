@@ -23,7 +23,7 @@ mod_ingestion_preview_and_confirm_server <- function(id, r) {
 
     output$table <- DT::renderDataTable(server = TRUE, {
       shiny::req(r$ingestion_data)
-      DT::datatable(r$ingestion_data, rownames = FALSE, options = list(dom = "tp"), selectionm = "none")
+      DT::datatable(r$ingestion_data, rownames = FALSE, options = list(dom = "tp"), selection = "none")
     })
 
     shiny::observe({
@@ -31,29 +31,32 @@ mod_ingestion_preview_and_confirm_server <- function(id, r) {
       # Only do this once, not every time the mapping is updated/confirmed
       shiny::req(r$preview_confirm_shown == 0)
 
-      download <- shiny::downloadButton(ns("download_ingestion"), "Download reshaped data")
+      download <- shiny::downloadButton(ns("download_ingestion"), "Download reshaped data") # TODO copy
 
       # Confirm proceeding to ingestion -----
 
       ## Correct: continue -----
-      continue_button <- shiny::actionButton(ns("correct_continue"), get_copy("ingestion", "continue_button"))
+      continue_button <- success_button(ns("correct_continue"), get_copy("ingestion", "continue_button"))
 
       ## Incorrect: start over -----
-      incorrect_reset_button <- shiny::actionButton(ns("incorrect_reset"), get_copy("ingestion", "reset_button"))
+      incorrect_reset_button <- warning_button(ns("incorrect_reset"), get_copy("ingestion", "reset_button"))
 
       ## Incorrect: need help -----
-      incorrect_help_button <- shiny::actionButton(
+      incorrect_help_button <- button(
         ns("incorrect_help"),
         get_copy("ingestion", "help_button"),
-        onclick = glue::glue("window.open('{link}', '_blank')", link = get_copy("https://datamermaid.org/contact-us"))
+        onclick = glue::glue("window.open('{link}', '_blank')", link = get_copy("ingestion", "help_link"))
       )
 
       r$accordion_preview_download_confirm <- bslib::accordion_panel(
         title = shiny::h2("Preview data and confirm ingestion"), # TODO config
         value = "preview-download-confirm",
         indent(
+          shiny::div(
+            class = "left-right", shiny::div(),
+            download
+          ),
           DT::DTOutput(ns("table")),
-          download,
           shiny::div(get_copy("ingestion", "continue")),
           continue_button,
           shiny::div(get_copy("ingestion", "do_not_continue")),
@@ -85,8 +88,12 @@ mod_ingestion_preview_and_confirm_server <- function(id, r) {
     shiny::observe({
       show_modal(
         get_copy("reset", "title"),
-        shiny::actionButton(ns("reset_confirm"), get_copy("reset", "confirm")),
-        shiny::actionButton(ns("reset_cancel"), get_copy("reset", "cancel")),
+        shiny::div(
+          warning_button(ns("reset_confirm"), get_copy("reset", "confirm"))
+        ),
+        shiny::div(
+          button(ns("reset_cancel"), get_copy("reset", "cancel"))
+        ),
         footer = NULL
       )
     }) %>%

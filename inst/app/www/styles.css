@@ -60,6 +60,32 @@ hr {
   margin: 2rem 0;
 }
 
+/* Sticky header/footer */
+
+.sticky-header {
+  position: fixed;
+  top: 0;
+  width: 100%;
+}
+
+.sticky-header-placeholder {
+  height: calc(var(--32px) + 1.5rem*2 + 2rem*2);
+}
+
+/* Position auth/reset */
+.left-right {
+  display: flex;
+  justify-content: space-between;
+}
+
+/* Add top border to all accordion items */
+.accordion-item {
+  border: var(--bs-accordion-border-width) solid var(--bs-accordion-border-color) !important;
+  margin-top: 1rem;
+}
+
+/* Editable table */
+
 .ht_master.handsontable > .wtHolder {
   max-height: 500px !important;
   width: auto !important;
@@ -84,13 +110,20 @@ hr {
 
 /* Inputs */
 
+.bttn-simple {
+  padding: 0.5rem 1rem;
+}
+
 .bttn-simple.bttn-primary {
   background: var(--color-primary);
-  padding: 0.5rem 1rem;
 }
 
 .bttn-simple.disabled, .bttn-simple:hover {
   opacity: 0.5 !important;
+}
+
+.bttn-default {
+  color: black;
 }
 
 /* Modal */

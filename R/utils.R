@@ -95,6 +95,29 @@ primary_button <- function(id, label) {
   )
 }
 
+warning_button <- function(id, label) {
+  shinyWidgets::actionBttn(id,
+    label,
+    color = "danger",
+    style = "simple"
+  )
+}
+
+success_button <- function(id, label) {
+  shinyWidgets::actionBttn(id,
+    label,
+    color = "success",
+    style = "simple"
+  )
+}
+
+button <- function(id, label, ...) {
+  shinyWidgets::actionBttn(id,
+    label,
+    style = "simple", ...
+  )
+}
+
 disable_picker_input <- function(id) {
   shinyjs::runjs(glue::glue("let selector = $('#{id}'); selector.prop('disabled', true); selector.selectpicker('destroy'); selector.selectpicker();"))
 }

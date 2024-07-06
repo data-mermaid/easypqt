@@ -7,18 +7,10 @@
 #' @noRd
 mod_authenticate_ui <- function(id) {
   ns <- NS(id)
-  shiny::tagList(
     primary_button(
       ns("auth"),
       get_copy("authenticate", "title")
-    ),
-    shinyjs::hidden(
-      shiny::div(
-        id = "loading-projects",
-        get_copy("authenticate", "loading")
-      )
     )
-  )
 }
 
 #' authenticate Server Functions

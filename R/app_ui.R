@@ -8,14 +8,30 @@ app_ui <- function(request) {
     golem_add_external_resources(),
     bslib::page_fixed(
       theme = bslib::bs_theme(version = 5, primary = "#174B82"),
-      title = "EasyPQT",
+      title = "Easy PQT",
       lang = "en",
-      shiny::h1("EasyPQT"),
-      shiny::hr(),
-      # Reset
-      mod_reset_ui("reset"),
+      # Header
+      shiny::div(
+        # class = "sticky-header",
+        shiny::h1("Easy PQT"),
+        shiny::hr()
+      ),
+      # shiny::div(class="sticky-header-placeholder"),
       # Authenticate ----
-      mod_authenticate_ui("authenticate"),
+      shiny::div(
+        class = "left-right",
+        mod_authenticate_ui("authenticate"),
+        # Reset
+        mod_reset_ui("reset"),
+      ),
+      # Loading projects
+      shinyjs::hidden(
+        shiny::div(
+          id = "loading-projects",
+          style = "margin-top: 1rem",
+          get_copy("authenticate", "loading")
+        )
+      ),
       # Get projects ----
       mod_select_project_ui("select_project"),
       # Upload CoralNet annotations ----

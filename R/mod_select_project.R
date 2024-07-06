@@ -67,6 +67,9 @@ mod_select_project_server <- function(id, r) {
       # Update r$project with selected project ----
       r$project <- input$project
 
+      # Get "me" endpoint which contains information on whether they are admin
+      # This is faster than getting templates at this point
+
       # Get project template/options ----
       # At this point, will get an error if they are not an admin
       template_and_options <- safely_get_template_and_options(input$project, "benthicpqt")
