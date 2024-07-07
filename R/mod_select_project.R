@@ -105,7 +105,6 @@ check_project_admin <- function(response) {
     if (response$error$parent$parent$parent$message == "Mermaid API request failed: (403) Forbidden") {
       FALSE
     } else {
-      browser()
     }
   } else {
     TRUE
