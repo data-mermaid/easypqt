@@ -24,8 +24,12 @@ mod_reset_server <- function(id) {
     shiny::observe({
       show_modal(
         get_copy("reset", "title"),
-        shiny::actionButton(ns("reset_confirm"), get_copy("reset", "confirm")),
-        shiny::actionButton(ns("reset_cancel"), get_copy("reset", "cancel")),
+        spaced(
+          left_right(
+            warning_button(ns("reset_confirm"), get_copy("reset", "confirm")),
+            button(ns("reset_cancel"), get_copy("reset", "cancel"))
+          )
+        ),
         footer = NULL
       )
     }) %>%

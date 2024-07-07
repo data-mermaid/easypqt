@@ -19,13 +19,18 @@
   --color-grey-90: #2c2c2c;
   --color-grey-100: #131313;
   --color-black: #282828;
-  --color-primary: rgb(23, 75, 130);
+  --color-darkblue: rgb(23, 75, 130);
+  --color-red: rgb(187, 22, 0);
+  --color-base: rgb(19, 18, 74);
+  --color-green: rgb(3, 128, 4);
+  --color-yellow: rgb(255, 165, 0);
+  --color-grey: rgb(221, 220, 227);
 }
 
 html {
   font-family: "Open Sans", "Helvetica Neue", "Helvetica", "Arial", "sans-serif";
   font-size: 16px !important;
-  color: var(--color-black);
+  color: var(--color-base);
 }
 
 /* Sizing */
@@ -106,6 +111,10 @@ hr {
   margin-left: 1rem;
 }
 
+.space {
+  margin: 1rem 0;
+}
+
 /* Colours */
 
 /* Inputs */
@@ -115,15 +124,24 @@ hr {
 }
 
 .bttn-simple.bttn-primary {
-  background: var(--color-primary);
+  background-color: var(--color-darkblue);
+}
+
+.bttn-simple.bttn-danger {
+  background-color: var(--color-red);
+}
+
+.bttn-simple.bttn-default {
+  color: var(--color-base);
+  background-color: var(--color-grey);
+}
+
+.bttn-simple.bttn-success {
+  background-color: var(--color-green);
 }
 
 .bttn-simple.disabled, .bttn-simple:hover {
   opacity: 0.5 !important;
-}
-
-.bttn-default {
-  color: black;
 }
 
 /* Modal */

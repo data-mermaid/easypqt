@@ -43,11 +43,12 @@ mod_ingestion_do_server <- function(id, r) {
       show_modal(
         title = get_copy("ingestion_success", "title"),
         shiny::div(shiny::HTML(get_copy("ingestion_success", "text"))),
-        shiny::actionButton(
+        success_button(
           ns("go_to_mermaid"),
           get_copy("ingestion_success", "button"),
           onclick = glue::glue("window.open('{link}', '_blank')", link = collect_url)
-        )
+        ) %>%
+          shiny::div(class = "space")
       )
     }) %>%
       shiny::bindEvent(r$do_ingestion)

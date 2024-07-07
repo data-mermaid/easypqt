@@ -36,24 +36,27 @@ mod_ingestion_preview_and_confirm_server <- function(id, r) {
       # Confirm proceeding to ingestion -----
 
       ## Correct: continue -----
-      continue_button <- success_button(ns("correct_continue"), get_copy("ingestion", "continue_button"))
+      continue_button <- success_button(ns("correct_continue"), get_copy("ingestion", "continue_button")) %>%
+        shiny::div(class = "space")
 
       ## Incorrect: start over -----
-      incorrect_reset_button <- warning_button(ns("incorrect_reset"), get_copy("ingestion", "reset_button"))
+      incorrect_reset_button <- warning_button(ns("incorrect_reset"), get_copy("ingestion", "reset_button")) %>%
+        shiny::div(class = "space")
 
       ## Incorrect: need help -----
       incorrect_help_button <- button(
         ns("incorrect_help"),
         get_copy("ingestion", "help_button"),
         onclick = glue::glue("window.open('{link}', '_blank')", link = get_copy("ingestion", "help_link"))
-      )
+      ) %>%
+        shiny::div(class = "space")
 
       r$accordion_preview_download_confirm <- bslib::accordion_panel(
         title = shiny::h2("Preview data and confirm ingestion"), # TODO config
         value = "preview-download-confirm",
         indent(
-          shiny::div(
-            class = "left-right", shiny::div(),
+          left_right(
+            shiny::div(),
             download
           ),
           DT::DTOutput(ns("table")),
@@ -88,11 +91,11 @@ mod_ingestion_preview_and_confirm_server <- function(id, r) {
     shiny::observe({
       show_modal(
         get_copy("reset", "title"),
-        shiny::div(
-          warning_button(ns("reset_confirm"), get_copy("reset", "confirm"))
-        ),
-        shiny::div(
-          button(ns("reset_cancel"), get_copy("reset", "cancel"))
+        spaced(
+          left_right(
+            warning_button(ns("reset_confirm"), get_copy("reset", "confirm")),
+            button(ns("reset_cancel"), get_copy("reset", "cancel"))
+          )
         ),
         footer = NULL
       )

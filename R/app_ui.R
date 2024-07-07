@@ -17,9 +17,8 @@ app_ui <- function(request) {
         shiny::hr()
       ),
       # shiny::div(class="sticky-header-placeholder"),
-      # Authenticate ----
-      shiny::div(
-        class = "left-right",
+      left_right(
+        # Authenticate ----
         mod_authenticate_ui("authenticate"),
         # Reset
         mod_reset_ui("reset"),

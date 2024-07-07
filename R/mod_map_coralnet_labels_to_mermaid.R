@@ -143,8 +143,11 @@ mod_map_coralnet_labels_to_mermaid_server <- function(id, r) {
             rhandsontable::rHandsontableOutput(ns("mapping_table")) %>%
               shinycssloaders::withSpinner()
           ),
-          shinyjs::disabled(confirm_button(ns("save_mapping"))),
-          shinyjs::disabled(shiny::actionButton(ns("edit"), "Edit"))
+          shiny::div(
+            class = "space",
+            shinyjs::disabled(success_button(ns("save_mapping"), "Confirm")),
+            shinyjs::disabled(button(ns("edit"), "Edit"))
+          )
         )
       )
     })

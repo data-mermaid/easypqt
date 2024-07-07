@@ -13,10 +13,6 @@ get_copy <- function(key, secondary_key = NULL) {
 
 close_button <- shiny::modalButton("Close")
 
-confirm_button <- function(id) {
-  shiny::actionButton(id, "Confirm")
-}
-
 modal <- function(..., title = NULL, footer, size = "m", disable_footer = FALSE) {
   if (disable_footer) {
     footer <- shinyjs::disabled(footer)
@@ -34,10 +30,6 @@ modal <- function(..., title = NULL, footer, size = "m", disable_footer = FALSE)
 
 show_modal <- function(..., footer = close_button) {
   modal(..., footer = footer)
-}
-
-confirm_modal <- function(..., footer_id, title = NULL, size = "l") {
-  modal(..., title = title, footer = confirm_button(footer_id), size = size, disable_footer = TRUE)
 }
 
 make_formatted_list <- function(x) {
@@ -87,41 +79,53 @@ indent <- function(...) {
   shiny::div(class = "indent", ...)
 }
 
-primary_button <- function(id, label) {
-  shinyWidgets::actionBttn(id,
+spaced <- function(...) {
+  shiny::div(class = "space", ...)
+}
+
+left_right <- function(...) {
+  shiny::div(class = "left-right", ...)
+}
+
+primary_button <- function(id, label, ...) {
+  shinyWidgets::actionBttn(
+    id,
     label,
     color = "primary",
-    style = "simple"
+    style = "simple",
+    ...
   )
 }
 
-warning_button <- function(id, label) {
-  shinyWidgets::actionBttn(id,
+warning_button <- function(id, label, ...) {
+  shinyWidgets::actionBttn(
+    id,
     label,
     color = "danger",
-    style = "simple"
+    style = "simple",
+    ...
   )
 }
 
-success_button <- function(id, label) {
-  shinyWidgets::actionBttn(id,
+success_button <- function(id, label, ...) {
+  shinyWidgets::actionBttn(
+    id,
     label,
     color = "success",
-    style = "simple"
+    style = "simple",
+    ...
   )
 }
 
 button <- function(id, label, ...) {
-  shinyWidgets::actionBttn(id,
+  shinyWidgets::actionBttn(
+    id,
     label,
-    style = "simple", ...
+    style = "simple",
+    ...
   )
 }
 
 disable_picker_input <- function(id) {
   shinyjs::runjs(glue::glue("let selector = $('#{id}'); selector.prop('disabled', true); selector.selectpicker('destroy'); selector.selectpicker();"))
-}
-
-enable_picker_input <- function(id) {
-
 }
