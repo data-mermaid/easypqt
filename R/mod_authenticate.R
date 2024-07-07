@@ -22,7 +22,7 @@ mod_authenticate_server <- function(id, r) {
 
     # Authenticate without caching token - available for usage in session only
     shiny::observe({
-      mermaidr::mermaid_auth(cache = TRUE) # TODO - change to FALSE, just TRUE right now because authenticating over and over is annoying
+      mermaidr::mermaid_auth(cache = FALSE)
 
       # Flag that authentication is done
       r$authenticated <- TRUE
