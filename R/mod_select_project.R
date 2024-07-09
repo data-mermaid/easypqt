@@ -36,9 +36,9 @@ mod_select_project_server <- function(id, r) {
 
     # Once authenticated, get a list of projects to choose from ----
     shiny::observe({
-      shiny::req(r$authenticated)
+      shiny::req(r$mermaidr_token)
 
-      r$projects <- mermaidr::mermaid_get_my_projects() %>%
+      r$projects <- mermaidr::mermaid_get_my_projects(token = r$mermaidr_token) %>%
         dplyr::arrange(name)
     })
 

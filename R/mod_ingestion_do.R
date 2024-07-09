@@ -25,13 +25,13 @@ mod_ingestion_do_server <- function(id, r) {
 
       # Do dry run, handle errors if they come up -----
 
-      dry_run_success <- ingest_and_handle_errors(ingestion_data, r$project, dryrun = TRUE)
+      dry_run_success <- ingest_and_handle_errors(ingestion_data, r$project, r$mermaidr_token, dryrun = TRUE)
 
       # Do actual import if no errors in dry run ----
 
       shiny::req(dry_run_success)
 
-      import_success <- ingest_and_handle_errors(ingestion_data, r$project, dryrun = FALSE)
+      import_success <- ingest_and_handle_errors(ingestion_data, r$project,  r$mermaidr_token, dryrun = FALSE)
 
       # If actual import is successful, show a modal with this information, and for them to go into Collect and validate/submit -----
 
@@ -55,8 +55,8 @@ mod_ingestion_do_server <- function(id, r) {
   })
 }
 
-ingest_and_handle_errors <- function(data, project, dryrun) {
-  res <- mermaidr::mermaid_import_project_data(data, project, "benthicpqt", dryrun = dryrun) %>%
+ingest_and_handle_errors <- function(data, project, token, dryrun) {
+  res <- mermaidr::mermaid_import_project_data(data, project, "benthicpqt", dryrun = dryrun, token = token) %>%
     tryCatch(error = function(e) e)
 
   res_error <- res$message

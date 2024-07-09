@@ -97,6 +97,25 @@
       ],
       "Hash": "d7421bb5dfeb2676b9e4a5a60c2fcfd2"
     },
+    "auth0": {
+      "Package": "auth0",
+      "Version": "0.2.3",
+      "Source": "GitHub",
+      "RemoteType": "github",
+      "RemoteHost": "api.github.com",
+      "RemoteRepo": "auth0",
+      "RemoteUsername": "curso-r",
+      "RemoteRef": "HEAD",
+      "RemoteSha": "7722eba11d77edfa515ff460ce49b3214b72769d",
+      "Requirements": [
+        "httr",
+        "shiny",
+        "shinyjs",
+        "utils",
+        "yaml"
+      ],
+      "Hash": "a40a4f6a29b5a1e97e4e49bbabc54825"
+    },
     "base64enc": {
       "Package": "base64enc",
       "Version": "0.1-3",
@@ -708,8 +727,8 @@
       "RemoteHost": "api.github.com",
       "RemoteRepo": "mermaidr",
       "RemoteUsername": "data-mermaid",
-      "RemoteRef": "dev",
-      "RemoteSha": "c5b9ffd452e7e5689c5ecc7fb3726cea1d80d9eb",
+      "RemoteRef": "oauth-shiny",
+      "RemoteSha": "756a817f909cae0aa15a136b2b605a54dec5dc63",
       "Requirements": [
         "R",
         "curl",
@@ -733,7 +752,7 @@
         "usethis",
         "vctrs"
       ],
-      "Hash": "88222efe2402665e24081a198d3e6026"
+      "Hash": "9b8ffda6c0d4d3501e6b3e90bd1df207"
     },
     "mime": {
       "Package": "mime",

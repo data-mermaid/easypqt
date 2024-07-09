@@ -1,10 +1,52 @@
+# Taken from auth0 package, but skips call to "userinfo" endpoint, which is unauthorized, and works better with mermaidr tokening system to recognize that the token is being called from Shiny and is therefore fresh and does not need to be refreshed in browser again
+
+auth0_server_verify <- function(session, app, api, state) {
+  u_search <- session[["clientData"]]$url_search
+  params <- shiny::parseQueryString(u_search)
+
+  if (auth0:::has_auth_code(params, state)) {
+    # TODO - does not work on reset
+    cred <- httr::oauth2.0_access_token(api, app(redirect_uri), params$code)
+    mermaidr_token <- mermaidr:::mermaid2.0_token(
+      app = app(redirect_uri), endpoint = api, cache = FALSE, credentials = cred,
+      user_params = list(grant_type = "authorization_code")
+    )
+    # Add $shiny = TRUE to the credentials
+    mermaidr_token$credentials$shiny <- TRUE
+
+    mermaidr_token <- httr::config(token = mermaidr_token)
+
+    assign("auth0_credentials", mermaidr_token, envir = session$userData)
+  }
+}
+
+auth0_server <- function(server, info) {
+  disable <- getOption("auth0_disable")
+  if (!is.null(disable) && disable) {
+    server
+  } else {
+    if (missing(info)) info <- auth0::auth0_info()
+    function(input, output, session) {
+      shiny::isolate(auth0_server_verify(session, info$app, info$api, info$state))
+      shiny::observeEvent(input[["._auth0logout_"]], logout())
+      server(input, output, session)
+    }
+  }
+}
+
+
 #' The application server-side
 #'
 #' @param input,output,session Internal parameters for {shiny}.
 #'     DO NOT REMOVE.
 #' @noRd
-app_server <- function(input, output, session) {
+app_server <- auth0_server(function(input, output, session) {
   authenticated <- shiny::reactiveVal(FALSE)
+
+  # Get login info
+  shiny::observe({
+    r$mermaidr_token <- session$userData$auth0_credentials
+  })
 
   # Set up reactive values ----
   r <- shiny::reactiveValues(
@@ -26,7 +68,7 @@ app_server <- function(input, output, session) {
   mod_reset_server("reset")
 
   # Authenticate ----
-  mod_authenticate_server("authenticate", r)
+  # mod_authenticate_server("authenticate", r)
 
   # Get projects ----
   # This will also get the project template/options, and flag if they are not an admin of the selected project
@@ -113,4 +155,4 @@ app_server <- function(input, output, session) {
     # Open panel
     bslib::accordion_panel_open("accordion", "preview-download-confirm")
   })
-}
+})

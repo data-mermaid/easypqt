@@ -1,0 +1,10 @@
+name: mermaidr
+remote_url: ''
+auth0_config:
+  scope: "openid email profile"
+  api_url: !expr paste0('https://', Sys.getenv('AUTH0_USER'), '.auth0.com')
+  audience: https://dev-api.datamermaid.org
+  credentials:
+    key: !expr Sys.getenv("AUTH0_KEY")
+    secret: !expr Sys.getenv("AUTH0_SECRET")
+

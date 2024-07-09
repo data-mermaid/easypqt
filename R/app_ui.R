@@ -18,21 +18,21 @@ app_ui <- function(request) {
       ),
       # shiny::div(class="sticky-header-placeholder"),
       left_right(
-        # Authenticate ----
-        mod_authenticate_ui("authenticate"),
-        # Reset
-        mod_reset_ui("reset"),
-      ),
-      # Loading projects
-      shinyjs::hidden(
+        # Loading projects ----
+        # shinyjs::hidden(
         shiny::div(
           id = "loading-projects",
           style = "margin-top: 1rem",
           get_copy("authenticate", "loading")
-        )
+        ),
+        # Get projects ----
+        mod_select_project_ui("select_project"),
+        # ),
+        # Authenticate ----
+        # mod_authenticate_ui("authenticate"),
+        # Reset
+        mod_reset_ui("reset"),
       ),
-      # Get projects ----
-      mod_select_project_ui("select_project"),
       # Upload CoralNet annotations ----
       mod_upload_annotations_ui("upload_annotations"),
       # Parse CoralNet annotations ----

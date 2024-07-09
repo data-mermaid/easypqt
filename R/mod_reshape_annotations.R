@@ -100,7 +100,7 @@ mod_reshape_annotations_server <- function(id, r) {
         dplyr::mutate(`First quadrat number` = 1)
 
       ## Observer emails: hit "me" endpoint ----
-      me <- mermaidr::mermaid_get_me()
+      me <- mermaidr::mermaid_get_me(token = r$mermaidr_token)
       observer_email <- me[["email"]]
       ingestion_data_with_defaults <- ingestion_data_with_defaults %>%
         dplyr::mutate(`Observer emails *` = observer_email)
