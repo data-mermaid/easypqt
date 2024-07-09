@@ -4,4 +4,4 @@
 
 pkgload::load_all(export_all = FALSE, helpers = FALSE, attach_testthat = FALSE)
 options("golem.app.prod" = TRUE)
-easypqt::run_app_auth0() # add parameters here (if any)
+easypqt::run_app() # add parameters here (if any)

@@ -35,11 +35,14 @@ mod_select_project_server <- function(id, r) {
     ns <- session$ns
 
     # Once authenticated, get a list of projects to choose from ----
+    # Also get "me" endpoint at this time
     shiny::observe({
       shiny::req(r$mermaidr_token)
 
       r$projects <- mermaidr::mermaid_get_my_projects(token = r$mermaidr_token) %>%
         dplyr::arrange(name)
+
+      r$me <- mermaidr::mermaid_get_me(token = r$mermaidr_token)
     })
 
     # Update project selection dropdown based on user's projects ----
@@ -67,23 +70,16 @@ mod_select_project_server <- function(id, r) {
       # Update r$project with selected project ----
       r$project <- input$project
 
-      # Get "me" endpoint which contains information on whether they are admin
-      # This is faster than getting templates at this point
+      # Use "me" endpoint to check if they are an admin for the project
+      project_role <- r$me %>%
+        dplyr::pull(projects) %>%
+        dplyr::filter(id == r$project) %>%
+        dplyr::pull(role)
 
-      # Get project template/options ----
-      # At this point, will get an error if they are not an admin
-      template_and_options <- safely_get_template_and_options(input$project, "benthicpqt")
-
-      r$is_project_admin <- check_project_admin(template_and_options)
+      r$is_project_admin <- project_role == 90
 
       if (!r$is_project_admin) {
         show_not_project_admin_modal(r)
-      } else {
-        template_and_options <- template_and_options$result
-        r$template <- template_and_options$Template
-        r$template_choices <- template_and_options[names(template_and_options) != "Template"] %>%
-          purrr::map("choices") %>%
-          purrr::compact()
       }
     }) %>%
       shiny::bindEvent(input$project)
@@ -97,19 +93,6 @@ mod_select_project_server <- function(id, r) {
 }
 
 # Utils ----
-
-safely_get_template_and_options <- purrr::safely(mermaidr::mermaid_import_get_template_and_options)
-
-check_project_admin <- function(response) {
-  if (!is.null(response$error)) {
-    if (response$error$parent$parent$parent$message == "Mermaid API request failed: (403) Forbidden") {
-      FALSE
-    } else {
-    }
-  } else {
-    TRUE
-  }
-}
 
 show_not_project_admin_modal <- function(r) {
   project_name <- r$projects %>%

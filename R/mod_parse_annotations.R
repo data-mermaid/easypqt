@@ -190,6 +190,14 @@ mod_parse_annotations_server <- function(id, r) {
     shiny::observe({
       shiny::req(r$no_empty_fields)
 
+      # Get project template/options ----
+      # Show modal that we are getting this?
+      template_and_options <- mermaidr::mermaid_import_get_template_and_options(r$project, "benthicpqt", token = r$mermaidr_token)
+      r$template <- template_and_options$Template
+      r$template_choices <- template_and_options[names(template_and_options) != "Template"] %>%
+        purrr::map("choices") %>%
+        purrr::compact()
+
       # Check that sites are ones already entered in the project ----
       site_ui <- check_valid_values(r, "site")
 
