@@ -34,17 +34,6 @@ mod_select_project_server <- function(id, r) {
   moduleServer(id, function(input, output, session) {
     ns <- session$ns
 
-    # Once authenticated, get a list of projects to choose from ----
-    # Also get "me" endpoint at this time
-    shiny::observe({
-      shiny::req(r$mermaidr_token)
-
-      r$projects <- mermaidr::mermaid_get_my_projects(token = r$mermaidr_token) %>%
-        dplyr::arrange(name)
-
-      r$me <- mermaidr::mermaid_get_me(token = r$mermaidr_token)
-    })
-
     # Update project selection dropdown based on user's projects ----
 
     shiny::observe({

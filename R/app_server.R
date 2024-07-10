@@ -64,11 +64,34 @@ app_server <- auth0_server(function(input, output, session) {
     # dev_scenario = "transect_decimal"
   )
 
+  # Hit initial endpoints ----
+  # Once authenticated, get:
+  # - User projects
+  # - "me" endpoint
+  # - benthic attributes
+  # - growth forms
+  shiny::observe({
+    shiny::req(r$mermaidr_token)
+
+    r$projects <- mermaidr::mermaid_get_my_projects(token = r$mermaidr_token) %>%
+      dplyr::arrange(name)
+
+    r$me <- mermaidr::mermaid_get_me(token = r$mermaidr_token)
+
+    r$benthic_attributes <- mermaidr::mermaid_get_reference("benthicattributes") %>%
+      dplyr::filter(status == "Open") %>% # TODO? Ask Kim
+      dplyr::pull(name)
+
+    growth_forms <- mermaidr::mermaid_get_endpoint("choices") %>%
+      dplyr::filter(name == "growthforms") %>%
+      dplyr::pull(data)
+
+    r$growth_forms <- growth_forms[[1]][["name"]] %>%
+      sort()
+  })
+
   # Reset ----
   mod_reset_server("reset")
-
-  # Authenticate ----
-  # mod_authenticate_server("authenticate", r)
 
   # Get projects ----
   # This will also get the project template/options, and flag if they are not an admin of the selected project

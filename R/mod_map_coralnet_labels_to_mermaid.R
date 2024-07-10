@@ -25,25 +25,6 @@ mod_map_coralnet_labels_to_mermaid_server <- function(id, r) {
       easypqt::coralnet_mermaid_attributes
     })
 
-    benthic_attributes <- shiny::reactive({
-      shiny::req(r$all_aux_fields_valid)
-
-      # Get other benthic attributes (to show *not* known mappings in dropdown)
-      mermaidr::mermaid_get_reference("benthicattributes") %>%
-        dplyr::filter(status == "Open") %>% # TODO? Ask Kim
-        dplyr::pull(name)
-    })
-
-    growth_forms <- shiny::reactive({
-      shiny::req(r$all_aux_fields_valid)
-
-      growth_forms <- mermaidr::mermaid_get_endpoint("choices") %>%
-        dplyr::filter(name == "growthforms") %>%
-        dplyr::pull(data)
-
-      growth_forms[[1]][["name"]]
-    })
-
     annotations_labels <- shiny::reactive({
       shiny::req(r$all_aux_fields_valid)
 
@@ -79,12 +60,11 @@ mod_map_coralnet_labels_to_mermaid_server <- function(id, r) {
       # List of possible dropdown values for benthic attribute and growth form
 
       # For benthic attribute, the levels are the known mapping + anything in `benthic_attributes` that isn't in the known mapping
-      benthic_attribute_levels <- c(known_mapping()[["mermaid_attribute"]], benthic_attributes()) %>%
+      benthic_attribute_levels <- c(known_mapping()[["mermaid_attribute"]], r$benthic_attributes) %>%
         unique() %>%
         sort()
 
-      # For growth form, it's `growth_forms`
-      growth_form_levels <- growth_forms() %>% sort()
+      # For growth form, it's `r$growth_forms`
 
       coralnet_label_display <- get_config("coralnet_labelset_column")[["table_label"]]
       mermaid_benthic_attribute_display <- get_config("mermaid_attributes_columns")[["mermaid_attribute"]][["table_label"]]
@@ -119,7 +99,7 @@ mod_map_coralnet_labels_to_mermaid_server <- function(id, r) {
         rhandsontable::hot_col(mermaid_growth_form_display,
           # type = "autocomplete",
           type = "dropdown",
-          source = c(NA_character_, growth_form_levels), # To allow it to be empty?
+          source = c(NA_character_, r$growth_forms), # To allow it to be empty?
           strict = TRUE
         )
     })
