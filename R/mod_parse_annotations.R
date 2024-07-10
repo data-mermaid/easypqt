@@ -134,12 +134,16 @@ mod_parse_annotations_server <- function(id, r) {
         purrr::compact()
 
       r$aux_mapped <- length(cols_mapped) == length(r$auxiliary_columns_map)
-    })
 
-    # Check that fields are not empty ----
-    # Check that Date, Site, Management, and Transect Number are not empty
-    shiny::observe(priority = 1, {
+      # Check that fields are not empty ----
+      # Check that Date, Site, Management, and Transect Number are not empty
+
       shiny::req(r$aux_mapped)
+
+      show_modal(
+        title = "Validating fields", "Checking auxiliary fields..."
+      )
+      Sys.sleep(2)
 
       # Iterate through and check if any values are empty
       check_fields <- append(get_config("additional_columns_map"), r$auxiliary_columns_map)
@@ -179,15 +183,17 @@ mod_parse_annotations_server <- function(id, r) {
 
         empty_fields_text <- skeleton_to_text(empty_fields_skeleton, empty_fields_glue)
 
-        show_modal(empty_fields_text)
+        shiny::removeModal()
+        show_modal(
+          title = "Validating fields", empty_fields_text
+        )
       } else {
         r$no_empty_fields <- TRUE
       }
-    })
 
-    # Check valid values of auxiliary fields ----
-    # Validate fields ----
-    shiny::observe({
+      # Check valid values of auxiliary fields ----
+      # Validate fields ----
+      # browser()
       shiny::req(r$no_empty_fields)
 
       # Get project template/options ----
@@ -207,8 +213,18 @@ mod_parse_annotations_server <- function(id, r) {
       # Check that transect number is an integer ----
       transect_number_ui <- check_integer_values(r, "transect_number")
 
+      # Hide checking modal
+      shiny::removeModal()
+
       if (site_ui[["valid"]] & management_ui[["valid"]] & transect_number_ui[["valid"]]) {
         r$all_aux_fields_valid <- TRUE
+
+        # Show modal that all is good
+        # Show checking modal
+        show_modal(
+          title = "Validating fields",
+          "All auxiliary fields are valid!"
+        )
       } else {
         r$all_aux_fields_valid <- FALSE
 
@@ -218,11 +234,11 @@ mod_parse_annotations_server <- function(id, r) {
           management_ui[["ui"]],
           transect_number_ui[["ui"]],
           shiny::br(),
+          shiny::br(),
           shiny::div("Please fix invalid values in CoralNet before continuing.")
         )
       }
-    }) %>%
-      shiny::bindEvent(r$no_empty_fields)
+    })
 
     # Once all auxiliary mapping have been checked, disable the inputs - cannot edit them anymore
     shiny::observe({
