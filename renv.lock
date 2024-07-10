@@ -728,7 +728,7 @@
       "RemoteRepo": "mermaidr",
       "RemoteUsername": "data-mermaid",
       "RemoteRef": "oauth-shiny",
-      "RemoteSha": "756a817f909cae0aa15a136b2b605a54dec5dc63",
+      "RemoteSha": "3e9d1a20ac20a5b528ffc0d3234936d7281e34ad",
       "Requirements": [
         "R",
         "curl",
@@ -752,7 +752,7 @@
         "usethis",
         "vctrs"
       ],
-      "Hash": "9b8ffda6c0d4d3501e6b3e90bd1df207"
+      "Hash": "e9bb9e2ef5039cb7fc011b0882dd4612"
     },
     "mime": {
       "Package": "mime",
@@ -1400,6 +1400,18 @@
         "withr"
       ],
       "Hash": "9db52c1656cf19c124f93124ea57f0fd"
+    },
+    "waiter": {
+      "Package": "waiter",
+      "Version": "0.2.5",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Requirements": [
+        "R6",
+        "htmltools",
+        "shiny"
+      ],
+      "Hash": "93e6b6c8ae3f81d4be77a0dc74e5cf5e"
     },
     "whisker": {
       "Package": "whisker",

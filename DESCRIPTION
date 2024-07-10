@@ -27,6 +27,7 @@ Imports:
     shinyjs,
     shinyWidgets,
     usethis,
+    waiter,
     yaml
 Remotes: data-mermaid/mermaidr
 Encoding: UTF-8
