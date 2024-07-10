@@ -6,6 +6,7 @@
 app_ui <- function(request) {
   shiny::tagList(
     golem_add_external_resources(),
+    waiter::useWaiter(),
     bslib::page_fixed(
       theme = bslib::bs_theme(version = 5, primary = "#174B82"),
       title = "Easy PQT",
@@ -20,11 +21,11 @@ app_ui <- function(request) {
       left_right(
         # Loading projects ----
         # shinyjs::hidden(
-        shiny::div(
-          id = "loading-projects",
-          style = "margin-top: 1rem",
-          get_copy("authenticate", "loading")
-        ),
+        # shiny::div(
+        #   id = "loading-projects",
+        #   style = "margin-top: 1rem",
+        #   get_copy("authenticate", "loading")
+        # ),
         # Get projects ----
         mod_select_project_ui("select_project"),
         # ),

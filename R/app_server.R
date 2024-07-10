@@ -34,7 +34,6 @@ auth0_server <- function(server, info) {
   }
 }
 
-
 #' The application server-side
 #'
 #' @param input,output,session Internal parameters for {shiny}.
@@ -42,11 +41,6 @@ auth0_server <- function(server, info) {
 #' @noRd
 app_server <- auth0_server(function(input, output, session) {
   authenticated <- shiny::reactiveVal(FALSE)
-
-  # Get login info
-  shiny::observe({
-    r$mermaidr_token <- session$userData$auth0_credentials
-  })
 
   # Set up reactive values ----
   r <- shiny::reactiveValues(
@@ -64,30 +58,35 @@ app_server <- auth0_server(function(input, output, session) {
     # dev_scenario = "transect_decimal"
   )
 
-  # Hit initial endpoints ----
-  # Once authenticated, get:
-  # - User projects
-  # - "me" endpoint
-  # - benthic attributes
-  # - growth forms
+  # Get login info and hit initial endpoints ----
   shiny::observe({
+    waiter::waiter_show(html = shiny::h1("Loading EasyPQT..."), color = "#174B82")
+
+    r$mermaidr_token <- session$userData$auth0_credentials
+
     shiny::req(r$mermaidr_token)
 
+    # - User projects
     r$projects <- mermaidr::mermaid_get_my_projects(token = r$mermaidr_token) %>%
       dplyr::arrange(name)
 
+    # - "me" endpoint
     r$me <- mermaidr::mermaid_get_me(token = r$mermaidr_token)
 
+    # - benthic attributes
     r$benthic_attributes <- mermaidr::mermaid_get_reference("benthicattributes") %>%
       dplyr::filter(status == "Open") %>% # TODO? Ask Kim
       dplyr::pull(name)
 
+    # - growth forms
     growth_forms <- mermaidr::mermaid_get_endpoint("choices") %>%
       dplyr::filter(name == "growthforms") %>%
       dplyr::pull(data)
 
     r$growth_forms <- growth_forms[[1]][["name"]] %>%
       sort()
+
+    waiter::waiter_hide()
   })
 
   # Reset ----
