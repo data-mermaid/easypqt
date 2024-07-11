@@ -5,7 +5,6 @@ auth0_server_verify <- function(session, app, api, state) {
   params <- shiny::parseQueryString(u_search)
 
   if (auth0:::has_auth_code(params, state)) {
-    # TODO - does not work on reset
     cred <- httr::oauth2.0_access_token(api, app(redirect_uri), params$code)
     mermaidr_token <- mermaidr:::mermaid2.0_token(
       app = app(redirect_uri), endpoint = api, cache = FALSE, credentials = cred,
@@ -75,7 +74,7 @@ app_server <- auth0_server(function(input, output, session) {
 
     # - benthic attributes
     r$benthic_attributes <- mermaidr::mermaid_get_reference("benthicattributes") %>%
-      dplyr::filter(status == "Open") %>% # TODO? Ask Kim
+      dplyr::filter(status == "Open") %>%
       dplyr::pull(name)
 
     # - growth forms

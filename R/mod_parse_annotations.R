@@ -63,12 +63,12 @@ mod_parse_annotations_server <- function(id, r) {
       )
 
       r$accordion_map_annotation_fields <- bslib::accordion_panel(
-        title = shiny::h2("Map CoralNet annotation fields"),
+        title = shiny::h2(get_copy("auxiliary", "title")),
         value = "map-annotation-fields",
         indent(
-          shiny::h3("Auxiliary fields preview"), # TODO config
+          shiny::h3(get_copy("auxiliary", "preview")),
           DT::dataTableOutput(ns("data_preview")),
-          shiny::h3("Map auxiliary fields"), # TODO config
+          shiny::h3(get_copy("auxiliary", "map")),
           inputs
         )
       )
@@ -308,7 +308,7 @@ make_mapping_dropdown_ui <- function(auxiliary_column_map, auxiliary_column, r, 
         # TODO, CSS styling for this to look like single selection, e.g. darker highlighting and not a check mark
         options = shinyWidgets::pickerOptions(
           maxOptions = 1,
-          noneSelectedText = "Select an auxiliary field"
+          noneSelectedText = get_copy("auxiliary", "placeholder")
         )
       )
     )

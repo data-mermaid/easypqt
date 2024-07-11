@@ -31,7 +31,7 @@ mod_ingestion_preview_and_confirm_server <- function(id, r) {
       # Only do this once, not every time the mapping is updated/confirmed
       shiny::req(r$preview_confirm_shown == 0)
 
-      download <- shiny::downloadButton(ns("download_ingestion"), "Download reshaped data") # TODO copy
+      download <- shiny::downloadButton(ns("download_ingestion"), get_copy("preview", "download"))
 
       # Confirm proceeding to ingestion -----
 
@@ -52,7 +52,7 @@ mod_ingestion_preview_and_confirm_server <- function(id, r) {
         shiny::div(class = "space")
 
       r$accordion_preview_download_confirm <- bslib::accordion_panel(
-        title = shiny::h2("Preview data and confirm ingestion"), # TODO config
+        title = shiny::h2(get_copy("preview", "title")),
         value = "preview-download-confirm",
         indent(
           left_right(

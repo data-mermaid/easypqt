@@ -88,6 +88,14 @@ copy:
     The annotations contain invalid values of {label}. The following are invalid: {invalid_values}
     <br><br>
     Valid values of {label} are: {valid_values}
+  auxiliary:
+    title: "Map CoralNet annotation fields"
+    preview: "Auxiliary fields preview"
+    map: "Map auxiliary fields"
+    placeholder: "Select an auxiliary field"
+  preview:
+    title: "Preview data and confirm ingestion"
+    download: Download reshaped data
   ingestion:
     title: Continue to ingestion
     continue: If the data looks correct, click the button below to continue with ingestion
