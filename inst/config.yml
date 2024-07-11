@@ -53,7 +53,7 @@ mermaid_attributes_columns:
   mermaid_growth_form:
     table_label: MERMAID Growth form
     label: Growth form
-    column: Growth form *
+    column: Growth form
 upload_annotations_missing_img_path: www/coralnet_annotations_export.png
 copy:
   authenticate:

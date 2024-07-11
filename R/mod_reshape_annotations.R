@@ -71,7 +71,7 @@ mod_reshape_annotations_server <- function(id, r) {
 
       ## Number of points: count of points with benthic attribute/growth form in a quadrat
       ingestion_data <- ingestion_data %>%
-        dplyr::add_count(...su, `Quadrat *`, `Benthic attribute *`, `Growth form *`, name = "Number of points *")
+        dplyr::add_count(...su, `Quadrat *`, `Benthic attribute *`, `Growth form`, name = "Number of points *")
 
       # Select only relevant fields
       r$ingestion_data <- ingestion_data %>%
