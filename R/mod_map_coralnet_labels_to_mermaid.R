@@ -145,9 +145,21 @@ mod_map_coralnet_labels_to_mermaid_server <- function(id, r) {
       # The data in the table is named after the output, so it's input$mapping_table
       # Need to convert it to an R data frame using rhandsontable::hot_to_r()
 
-      mapping_valid <- edited_coralnet_mermaid_mapping() %>%
+      no_empty_mapping <- edited_coralnet_mermaid_mapping() %>%
         dplyr::filter(is.na(mermaid_attribute)) %>%
         nrow() == 0
+
+      all_valid_mapping <- edited_coralnet_mermaid_mapping() %>%
+        dplyr::filter(!is.na(mermaid_attribute)) %>%
+        dplyr::pull(mermaid_attribute) %in%
+        r$benthic_attributes %>%
+        all()
+
+      if (!all_valid_mapping) {
+        # TODO - show invalid modal?
+      }
+
+      mapping_valid <- no_empty_mapping & all_valid_mapping
 
       if (mapping_valid) {
         shinyjs::enable("save_mapping")
