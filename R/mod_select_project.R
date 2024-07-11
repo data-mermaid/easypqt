@@ -60,7 +60,6 @@ mod_select_project_server <- function(id, r) {
       r$project <- input$project
 
       # Use "me" endpoint to check if they are an admin for the project
-      browser()
       r$project_role <- r$me %>%
         dplyr::pull(projects) %>%
         purrr::pluck(1) %>%

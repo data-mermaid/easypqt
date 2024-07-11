@@ -37,7 +37,8 @@ mod_reset_server <- function(id) {
 
 
     shiny::observe({
-      session$reload()
+      shinyjs::runjs("window.history.pushState({}, document.title, window.location.pathname);") # Remove code etc from URL so it can restart cleanly
+      shinyjs::refresh()
     }) %>%
       shiny::bindEvent(input$reset_confirm)
 
