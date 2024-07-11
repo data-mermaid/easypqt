@@ -60,12 +60,14 @@ mod_select_project_server <- function(id, r) {
       r$project <- input$project
 
       # Use "me" endpoint to check if they are an admin for the project
-      project_role <- r$me %>%
+      browser()
+      r$project_role <- r$me %>%
         dplyr::pull(projects) %>%
+        purrr::pluck(1) %>%
         dplyr::filter(id == r$project) %>%
         dplyr::pull(role)
 
-      r$is_project_admin <- project_role == 90
+      r$is_project_admin <- r$project_role == "Admin"
 
       if (!r$is_project_admin) {
         show_not_project_admin_modal(r)
@@ -88,5 +90,7 @@ show_not_project_admin_modal <- function(r) {
     dplyr::filter(id == r$project) %>%
     dplyr::pull(name)
 
-  show_modal(skeleton_to_text(get_copy("select_project", "not_admin"), list(project_name = project_name)))
+  project_role <- r$project_role
+
+  show_modal(skeleton_to_text(get_copy("select_project", "not_admin"), list(project_name = project_name, project_id = r$project, role = project_role)))
 }
