@@ -67,21 +67,14 @@ ingest_and_handle_errors <- function(data, project, token, dryrun) {
 
   if (!res_success) {
     # Generate message for modal
-    modal_message <- glue::glue('{get_copy("ingestion_error", "project")}
-                                <br>
-                                <br>
-                                {project}
-                                <br>
-                                <br>
-                                {get_copy("ingestion_error", "error")}
-                                <br>
-                                <br>
-                                {res_error}')
+    modal_message <- glue::glue(get_copy("ingestion_error", "error"), .envir = list(project = project, error = res_error))
+    modal_message <- modal_message %>% as.character() %>% stringr::str_replace_all("\\\n", "<br>")
+
     # Show modal
     show_modal(
       title = get_copy("ingestion_error", "title"),
       shiny::div(shiny::HTML(get_copy("ingestion_error", "text"))),
-      shiny::div(shiny::HTML(modal_message)),
+      shiny::div(class = "error", shiny::HTML(modal_message)),
       ## TODO -> download data again?
     )
   }

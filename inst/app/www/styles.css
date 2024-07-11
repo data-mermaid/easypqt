@@ -151,6 +151,15 @@ hr {
   overflow-y: scroll;
 }
 
+/* Ingestion error */
+.error {
+  margin-top: 1rem;
+  border: 2px solid var(--color-grey-50);
+  padding: 1rem;
+  font-family: "Lucida Console", "Courier New", monospace;
+  background-color: var(--color-grey-20);
+}
+
 /* Small devices */
 @media (max-width: 768px) {
   /* Smaller sizing */

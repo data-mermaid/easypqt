@@ -97,9 +97,16 @@ copy:
     cancel: Do not reset
   ingestion_error:
     title: Error ingesting data
-    text: 'There was an error ingesting the data. Please <a href="" target="_blank"></a>contact us</a> with the subject "Easy PQT ingestion error", and paste the following into the message body:'
-    project: "project_id"
-    error: "Error message"
+    text: |-
+      There was an error ingesting the data.
+
+      Please <a href="https://datamermaid.org/contact-us" target="_blank">contact us</a> with the subject "Easy PQT ingestion error", and paste the following into the message body:'
+    error: |-
+      project_id:
+      {project}
+
+      Error message:
+      {error}
   ingestion_success:
     title: Ingestion successful!
     text: Data was successfully ingested into MERMAID. Click the button below to open the records in the MERMAID App to validate and submit records. Note that the data is not successfully imported into MERMAID until this step has been completed.
