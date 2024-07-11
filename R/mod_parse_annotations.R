@@ -141,9 +141,12 @@ mod_parse_annotations_server <- function(id, r) {
       shiny::req(r$aux_mapped)
 
       show_modal(
-        title = "Validating fields", "Checking auxiliary fields..."
+        title = get_copy("auxiliary_validating", "title"),
+        get_copy("auxiliary_validating", "checking"),
+        shiny::br(),
+        footer = NULL
       )
-      Sys.sleep(2)
+      Sys.sleep(1)
 
       # Iterate through and check if any values are empty
       check_fields <- append(get_config("additional_columns_map"), r$auxiliary_columns_map)
@@ -185,7 +188,7 @@ mod_parse_annotations_server <- function(id, r) {
 
         shiny::removeModal()
         show_modal(
-          title = "Validating fields", empty_fields_text
+          title = get_copy("auxiliary_validating", "title"), empty_fields_text
         )
       } else {
         r$no_empty_fields <- TRUE
@@ -222,20 +225,18 @@ mod_parse_annotations_server <- function(id, r) {
         # Show modal that all is good
         # Show checking modal
         show_modal(
-          title = "Validating fields",
-          "All auxiliary fields are valid!"
+          title = get_copy("auxiliary_validating", "title"),
+          get_copy("auxiliary_validating", "all_valid")
         )
       } else {
         r$all_aux_fields_valid <- FALSE
 
         show_modal(
-          title = "Validating fields",
+          title = get_copy("auxiliary_validating", "title"),
+          shiny::div(class = "validating-aux", get_copy("auxiliary_validating", "fix")),
           site_ui[["ui"]],
           management_ui[["ui"]],
           transect_number_ui[["ui"]],
-          shiny::br(),
-          shiny::br(),
-          shiny::div("Please fix invalid values in CoralNet before continuing.")
         )
       }
     })
@@ -327,6 +328,8 @@ check_valid_values <- function(r, lookup) {
 
   all_valid <- length(invalid_values) == 0
 
+  column <- r$auxiliary_columns_map[[lookup]][["label"]]
+
   if (!all_valid) {
     invalid_values_skeleton <- get_copy("invalid_values")
     invalid_values <- make_formatted_list(invalid_values)
@@ -340,22 +343,22 @@ check_valid_values <- function(r, lookup) {
 
     res <- skeleton_to_text(invalid_values_skeleton, invalid_values_envir)
   } else {
-    res <- glue::glue("{lookup} values good")
-    # TODO
+    res <- glue::glue(get_copy("auxiliary_validating", "column_valid"))
   }
 
   list(
     valid = all_valid,
     ui =
       shiny::tagList(
-        shiny::h3(r$auxiliary_columns_map[[lookup]][["label"]]),
-        res
+        shiny::h3(column),
+        shiny::div(class = "validating-aux", res)
       )
   )
 }
 
 check_integer_values <- function(r, lookup) {
   values <- r$annotations_raw[r$auxiliary_columns_map[[lookup]][["value"]]]
+  column <- r$auxiliary_columns_map[[lookup]][["label"]]
   names(values) <- "value"
 
   values_with_numeric <- values %>%
@@ -375,7 +378,7 @@ check_integer_values <- function(r, lookup) {
 
     res <- skeleton_to_text(transect_number_invalid_skeleton, list(invalid_values = invalid_values))
   } else {
-    res <- glue::glue("{lookup} numbers good")
+    res <- glue::glue(get_copy("auxiliary_validating", "column_valid"))
     # TODO
   }
 
@@ -384,7 +387,7 @@ check_integer_values <- function(r, lookup) {
     ui =
       shiny::tagList(
         shiny::h3(r$auxiliary_columns_map[[lookup]][["label"]]),
-        res
+        shiny::div(class = "validating-aux", res)
       )
   )
 }

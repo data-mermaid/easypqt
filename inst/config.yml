@@ -80,19 +80,23 @@ copy:
       option "Image metadata - date and auxiliary fields" is checked.'
   non_empty_fields: |-
     {fields} cannot contain empty values. The following fields contain empty values: {list}
-    <br><br>
     Please update the data directly in CoralNet then begin the import process again.
   transect_number_not_integer: 'Transect Number must be an integer. The following
     are invalid: {invalid_values}'
   invalid_values: |-
     The annotations contain invalid values of {label}. The following are invalid: {invalid_values}
-    <br><br>
     Valid values of {label} are: {valid_values}
   auxiliary:
     title: "Map CoralNet annotation fields"
     preview: "Auxiliary fields preview"
     map: "Map auxiliary fields"
     placeholder: "Select an auxiliary field"
+  auxiliary_validating:
+    title: "Validating fields"
+    checking: Checking auxiliary fields...
+    all_valid: "✔ All auxiliary fields are valid!"
+    column_valid: ✔ Values of {column} are valid.
+    fix: There are some issues with the auxiliary column values, as described below. Please fix invalid values in CoralNet before continuing.
   preview:
     title: "Preview data and confirm ingestion"
     download: Download reshaped data
