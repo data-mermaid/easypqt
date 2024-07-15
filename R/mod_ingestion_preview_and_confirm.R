@@ -54,17 +54,20 @@ mod_ingestion_preview_and_confirm_server <- function(id, r) {
       r$accordion_preview_download_confirm <- bslib::accordion_panel(
         title = shiny::h2(get_copy("preview", "title")),
         value = "preview-download-confirm",
-        indent(
-          left_right(
-            shiny::div(),
-            download
-          ),
-          DT::DTOutput(ns("table")),
-          shiny::div(get_copy("ingestion", "continue")),
-          continue_button,
-          shiny::div(get_copy("ingestion", "do_not_continue")),
-          incorrect_reset_button,
-          incorrect_help_button
+        shiny::tagList(
+          get_copy("preview", "text"),
+          indent(
+            left_right(
+              shiny::div(),
+              download
+            ),
+            DT::DTOutput(ns("table")),
+            shiny::div(get_copy("ingestion", "continue")),
+            continue_button,
+            shiny::div(get_copy("ingestion", "do_not_continue")),
+            incorrect_reset_button,
+            incorrect_help_button
+          )
         )
       )
       r$preview_confirm_shown <- r$preview_confirm_shown + 1

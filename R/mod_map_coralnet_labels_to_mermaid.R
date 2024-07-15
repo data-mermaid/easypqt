@@ -115,8 +115,10 @@ mod_map_coralnet_labels_to_mermaid_server <- function(id, r) {
       shiny::req(r$all_aux_fields_valid)
 
       r$accordion_map_coralnet_labels <- bslib::accordion_panel(
-        title = shiny::h2("Map CoralNet Labels to MERMAID Attributes"),
+        title = shiny::h2(get_copy("mapping", "title")),
         value = "map-coralnet-labels",
+        shiny::tagList(
+          title = shiny::h2(get_copy("mapping", "text")),
         indent(
           shiny::div(
             class = "handsontable-parent",
@@ -128,6 +130,7 @@ mod_map_coralnet_labels_to_mermaid_server <- function(id, r) {
             shinyjs::disabled(success_button(ns("save_mapping"), "Confirm")),
             shinyjs::disabled(button(ns("edit"), "Edit"))
           )
+        )
         )
       )
     })

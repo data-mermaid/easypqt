@@ -8,11 +8,13 @@
 mod_upload_annotations_ui <- function(id) {
   ns <- NS(id)
 
-  shiny::div(
-    id = "upload-parent",
-    shinyjs::hidden(
+  shinyjs::hidden(
+    shiny::div(
+      id = "upload-parent",
+      shiny::h2(get_copy("upload_annotations", "title")),
+      shiny::div(get_copy("upload_annotations", "text")),
       shiny::fileInput(ns("annotations"),
-        label = shiny::h2("Upload CoralNet annotations"),
+        label = NULL,
         accept = ".csv"
       )
     )
@@ -30,8 +32,8 @@ mod_upload_annotations_server <- function(id, r) {
     shiny::observe({
       shiny::req(r$is_project_admin)
 
-      # shinyjs::show("upload-parent", asis = TRUE)
-      shinyjs::show("annotations")
+      shinyjs::show("upload-parent", asis = TRUE)
+      # shinyjs::show("annotations")
     })
 
     # Check the file contains the correct columns

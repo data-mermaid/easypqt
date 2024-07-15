@@ -9,19 +9,19 @@
 mod_select_project_ui <- function(id) {
   ns <- NS(id)
 
-  shiny::tagList(
-    shinyjs::hidden(
-      shinyWidgets::pickerInput(
-        ns("project"),
-        label = shiny::h2(get_copy("select_project", "title")),
-        multiple = TRUE,
-        choices = NULL,
-        options = shinyWidgets::pickerOptions(
-          liveSearch = TRUE,
-          size = 10,
-          maxOptions = 1,
-          noneSelectedText = get_copy("select_project", "placeholder")
-        )
+  shiny::div(
+    shiny::h2(get_copy("select_project", "title")),
+    shiny::div(get_copy("select_project", "text")),
+    shinyWidgets::pickerInput(
+      ns("project"),
+      label = NULL,
+      multiple = TRUE,
+      choices = NULL,
+      options = shinyWidgets::pickerOptions(
+        liveSearch = TRUE,
+        size = 10,
+        maxOptions = 1,
+        noneSelectedText = get_copy("select_project", "placeholder")
       )
     )
   )
@@ -47,12 +47,6 @@ mod_select_project_server <- function(id, r) {
         session = session,
         inputId = "project", choices = projects, selected = selected_project
       )
-
-      # Hide project loading text
-      shinyjs::hide("loading-projects", asis = TRUE)
-
-      # Show input
-      shinyjs::show("project")
     })
 
     shiny::observe({
@@ -89,7 +83,6 @@ mod_select_project_server <- function(id, r) {
 # Utils ----
 
 show_not_project_admin_modal <- function(r) {
-
   project_role <- r$project_role
 
   show_modal(skeleton_to_text(get_copy("select_project", "not_admin"), list(project_name = r$project_name, project_id = r$project, role = project_role)))

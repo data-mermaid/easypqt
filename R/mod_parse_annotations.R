@@ -65,11 +65,16 @@ mod_parse_annotations_server <- function(id, r) {
       r$accordion_map_annotation_fields <- bslib::accordion_panel(
         title = shiny::h2(get_copy("auxiliary", "title")),
         value = "map-annotation-fields",
-        indent(
-          shiny::h3(get_copy("auxiliary", "preview")),
-          DT::dataTableOutput(ns("data_preview")),
-          shiny::h3(get_copy("auxiliary", "map")),
-          inputs
+        shiny::tagList(
+          get_copy("auxiliary", "text"),
+          indent(
+            shiny::h3(get_copy("auxiliary", "preview")),
+            get_copy("auxiliary", "preview_text"),
+            DT::dataTableOutput(ns("data_preview")),
+            shiny::h3(get_copy("auxiliary", "map")),
+            get_copy("auxiliary", "map_text"),
+            inputs
+          )
         )
       )
 

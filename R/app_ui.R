@@ -7,31 +7,22 @@ app_ui <- function(request) {
   shiny::tagList(
     golem_add_external_resources(),
     waiter::useWaiter(),
-    waiter::waiterShowOnLoad(html = shiny::h1("Loading EasyPQT..."), color = "#174B82"),
+    waiter::waiterShowOnLoad(html = shiny::h1(get_copy("loading")), color = "#174B82"),
     bslib::page_fixed(
       theme = bslib::bs_theme(version = 5, primary = "#174B82"),
-      title = "Easy PQT",
+      title = get_copy("title"),
       lang = "en",
       # Header
       shiny::div(
         # class = "sticky-header",
-        shiny::h1("Easy PQT"),
+        shiny::h1(get_copy("title")),
         shiny::hr()
       ),
-      # shiny::div(class="sticky-header-placeholder"),
+      shiny::div(get_copy("preamble")),
       left_right(
         # Loading projects ----
-        # shinyjs::hidden(
-        # shiny::div(
-        #   id = "loading-projects",
-        #   style = "margin-top: 1rem",
-        #   get_copy("authenticate", "loading")
-        # ),
         # Get projects ----
         mod_select_project_ui("select_project"),
-        # ),
-        # Authenticate ----
-        # mod_authenticate_ui("authenticate"),
         # Reset
         mod_reset_ui("reset"),
       ),
@@ -70,7 +61,7 @@ golem_add_external_resources <- function() {
     favicon(),
     bundle_resources(
       path = app_sys("app/www"),
-      app_title = "Easy PQT"
+      app_title = get_copy("title")
     ),
     shinyjs::useShinyjs()
   )

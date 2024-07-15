@@ -1,9 +1,10 @@
-authenticate:
-  title: Authenticate to MERMAID
-  loading: Loading projects...
+title: Easy PQT
+loading: Loading Easy PQT...
+preamble: Placeholder text for introducing Easy PQT
 select_project:
   title: Project
-  placeholder: Select a project
+  text: Placeholder text for describing project selection input
+  placeholder: Select a project for ingestion
   not_admin: |-
     Unable to ingest into project {project_name}.
     <br><br>
@@ -11,6 +12,8 @@ select_project:
     <br><br>
     Please <a href="https://datamermaid.org/contact-project?project_id={project_id}" target="_blank">contact the project administrators</a> to change your role to Admin.
 upload_annotations:
+  title: Upload CoralNet annotations
+  text: Placeholder text for describing upload annotations input
   missing_instructions: The uploaded annotations do not contain the required columns.
     To get the correct data from CoralNet, export the annotations as a CSV with the
     optional columns "Image metadata - date and auxiliary fields" checked, as shown
@@ -29,9 +32,12 @@ invalid_values: |-
   The annotations contain invalid values of {label}. The following are invalid: {invalid_values}
   Valid values of {label} are: {valid_values}
 auxiliary:
-  title: Map CoralNet annotation fields
+  title: Map CoralNet auxiliary fields
+  text: Placeholder text for introducing mapping auxiliary fields
   preview: Auxiliary fields preview
+  preview_text: Placeholder text for auxiliary fields preview
   map: Map auxiliary fields
+  map_text: Placeholder text for mapping auxiliary fields
   placeholder: Select an auxiliary field
 auxiliary_validating:
   title: Validating fields
@@ -40,11 +46,15 @@ auxiliary_validating:
   column_valid: ✔ Values of {column} are valid.
   fix: There are some issues with the auxiliary column values, as described below.
     Please fix invalid values in CoralNet before continuing.
+mapping:
+  title: "Map CoralNet Labels to MERMAID Attributes"
+  text: Placeholder text for mapping CoralNet labels to MERMAID benthic attributes / growth forms
 reshaping:
   title: Reshaping data
   text: Reshaping data into format required for MERMAID...
 preview:
   title: Preview data and confirm ingestion
+  text: Placeholder text for preview/confirm
   download: Download reshaped data
   file: MERMAID Easy PQT Data - {project_name}.csv
 ingestion:
