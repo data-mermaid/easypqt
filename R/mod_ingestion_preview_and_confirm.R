@@ -72,7 +72,7 @@ mod_ingestion_preview_and_confirm_server <- function(id, r) {
 
     output$download_ingestion <- shiny::downloadHandler(
       filename = function() {
-        "test.csv" # TODO, name of project etc? with date?
+        skeleton_to_text(get_copy("preview", "file"), list(project_name = r$project_name))
       },
       content = function(file) {
         readr::write_csv(r$ingestion_data, file)
