@@ -728,7 +728,7 @@
       "RemoteRepo": "mermaidr",
       "RemoteUsername": "data-mermaid",
       "RemoteRef": "dev",
-      "RemoteSha": "4879f69649bd78630314b6c8d958c394c41b5e51",
+      "RemoteSha": "cb1f318fa92e3f5999362e078d5e7f9d07382a37",
       "Requirements": [
         "R",
         "curl",
@@ -752,7 +752,7 @@
         "usethis",
         "vctrs"
       ],
-      "Hash": "c3bcac5acaab8659eb13ae2407015618"
+      "Hash": "7800854b846d105802cb09213975591d"
     },
     "mime": {
       "Package": "mime",
