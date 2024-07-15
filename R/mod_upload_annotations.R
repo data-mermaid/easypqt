@@ -8,10 +8,13 @@
 mod_upload_annotations_ui <- function(id) {
   ns <- NS(id)
 
-  shinyjs::hidden(
-    shiny::fileInput(ns("annotations"),
-      label = shiny::h2("Upload CoralNet annotations"),
-      accept = ".csv"
+  shiny::div(
+    id = "upload-parent",
+    shinyjs::hidden(
+      shiny::fileInput(ns("annotations"),
+        label = shiny::h2("Upload CoralNet annotations"),
+        accept = ".csv"
+      )
     )
   )
 }
@@ -27,6 +30,7 @@ mod_upload_annotations_server <- function(id, r) {
     shiny::observe({
       shiny::req(r$is_project_admin)
 
+      # shinyjs::show("upload-parent", asis = TRUE)
       shinyjs::show("annotations")
     })
 
@@ -99,6 +103,11 @@ mod_upload_annotations_server <- function(id, r) {
 
         # Disable data upload after a single upload - need to reset to change data
         shinyjs::disable("annotations")
+
+        # Pointer etc of disabling
+        # Disable pointer events on actual button, add style
+        # Not allowed cursor on parent div, add style
+        shinyjs::runjs("document.getElementById('upload-parent').getElementsByClassName('input-group')[0].style.pointerEvents = 'none'; document.getElementById('upload-parent').style.cursor = 'not-allowed';")
       }
     })
   })
