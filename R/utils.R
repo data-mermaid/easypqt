@@ -3,7 +3,7 @@ get_config <- function(key) {
 }
 
 get_copy <- function(key, secondary_key = NULL) {
-  copy <- get_config("copy")
+  copy <- yaml::read_yaml(app_sys("copy.yml"))[[key]]
   if (is.null(secondary_key)) {
     copy[[key]]
   } else {
