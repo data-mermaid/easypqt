@@ -7,3 +7,4 @@ test*.csv
 inst/extdata/mapping/
 .Renviron
 rsconnect/
+data-raw/CoralNetMermaidMatchedCoralFocusModel2Reassign_master.csv

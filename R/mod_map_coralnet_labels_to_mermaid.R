@@ -151,9 +151,12 @@ mod_map_coralnet_labels_to_mermaid_server <- function(id, r) {
 
       all_valid_mapping <- edited_coralnet_mermaid_mapping() %>%
         dplyr::filter(!is.na(mermaid_attribute)) %>%
-        dplyr::pull(mermaid_attribute) %in%
-        r$benthic_attributes %>%
-        all()
+        dplyr::as_tibble() %>%
+        dplyr::filter(!mermaid_attribute %in% c(
+          r$benthic_attributes,
+          # TODO -> discrepancy here between known_mapping and r$benthic_attributes
+          known_mapping()[["mermaid_attribute"]])) %>%
+        nrow() == 0
 
       if (!all_valid_mapping) {
         # TODO - show invalid modal?
