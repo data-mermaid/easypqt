@@ -22,6 +22,18 @@ mod_reshape_annotations_server <- function(id, r) {
     # Reshape annotations into the format required for ingestion ----
 
     shiny::observe({
+      # Show modal for reshaping data -> only if over a certain # of rows?
+
+      shiny::req(r$annotations_mapped)
+
+      show_modal(
+        title = get_copy("reshaping", "title"),
+        get_copy("reshaping", "text"),
+        shiny::br(), # TODO
+        footer = NULL
+      )
+      Sys.sleep(1)
+
       ingestion_data <- r$annotations_mapped
 
       ## Site: already mapped ----
@@ -76,11 +88,9 @@ mod_reshape_annotations_server <- function(id, r) {
       # Select only relevant fields
       r$ingestion_data <- ingestion_data %>%
         dplyr::select(dplyr::any_of(names(r$template)))
-    }) %>%
-      shiny::bindEvent(r$annotations_mapped)
 
-    # Add default fields ----
-    shiny::observe(priority = 0, {
+      # Add default fields ----
+
       ingestion_data_with_defaults <- r$ingestion_data
 
       ## Depth: default to 0 ----
@@ -109,8 +119,9 @@ mod_reshape_annotations_server <- function(id, r) {
         dplyr::select(dplyr::any_of(names(r$template)))
 
       r$ingestion_data_with_defaults <- ingestion_data_with_defaults
-    }) %>%
-      shiny::bindEvent(r$ingestion_data)
+
+      shiny::removeModal()
+    })
   })
 }
 

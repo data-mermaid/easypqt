@@ -143,7 +143,7 @@ mod_parse_annotations_server <- function(id, r) {
       show_modal(
         title = get_copy("auxiliary_validating", "title"),
         get_copy("auxiliary_validating", "checking"),
-        shiny::br(),
+        shiny::br(), # TODO
         footer = NULL
       )
       Sys.sleep(1)

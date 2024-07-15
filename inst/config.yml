@@ -97,6 +97,9 @@ copy:
     all_valid: "✔ All auxiliary fields are valid!"
     column_valid: ✔ Values of {column} are valid.
     fix: There are some issues with the auxiliary column values, as described below. Please fix invalid values in CoralNet before continuing.
+  reshaping:
+    title: "Reshaping data"
+    text: "Reshaping data into format required for MERMAID..."
   preview:
     title: "Preview data and confirm ingestion"
     download: Download reshaped data
