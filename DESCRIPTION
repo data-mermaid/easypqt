@@ -9,15 +9,17 @@ Authors@R:
 Description: What the package does (one paragraph).
 License: What license is it under?
 Imports: 
+    auth0,
     bslib,
     config (>= 0.3.2),
     dplyr,
     DT,
     glue,
     golem (>= 0.4.1),
+    httr,
     lubridate,
     magrittr,
-    mermaidr (>= 1.0.1),
+    mermaidr (>= 1.0.2),
     pkgload,
     purrr,
     readr,
