@@ -5,7 +5,7 @@
 run_app <- function(...) {
   options(shiny.port = 8080)
 
-    with_golem_options(
+  with_golem_options(
     app = shinyAppAuth0(
       ui = app_ui(),
       server = app_server,

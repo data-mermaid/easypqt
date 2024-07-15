@@ -31,7 +31,7 @@ mod_ingestion_do_server <- function(id, r) {
 
       shiny::req(dry_run_success)
 
-      import_success <- ingest_and_handle_errors(ingestion_data, r$project,  r$mermaidr_token, dryrun = FALSE)
+      import_success <- ingest_and_handle_errors(ingestion_data, r$project, r$mermaidr_token, dryrun = FALSE)
 
       # If actual import is successful, show a modal with this information, and for them to go into Collect and validate/submit -----
 

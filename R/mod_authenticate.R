@@ -7,10 +7,10 @@
 #' @noRd
 mod_authenticate_ui <- function(id) {
   ns <- NS(id)
-    primary_button(
-      ns("auth"),
-      get_copy("authenticate", "title")
-    )
+  primary_button(
+    ns("auth"),
+    get_copy("authenticate", "title")
+  )
 }
 
 #' authenticate Server Functions

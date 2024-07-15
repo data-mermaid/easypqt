@@ -119,18 +119,18 @@ mod_map_coralnet_labels_to_mermaid_server <- function(id, r) {
         value = "map-coralnet-labels",
         shiny::tagList(
           title = shiny::h2(get_copy("mapping", "text")),
-        indent(
-          shiny::div(
-            class = "handsontable-parent",
-            rhandsontable::rHandsontableOutput(ns("mapping_table")) %>%
-              shinycssloaders::withSpinner()
-          ),
-          shiny::div(
-            class = "space",
-            shinyjs::disabled(success_button(ns("save_mapping"), "Confirm")),
-            shinyjs::disabled(button(ns("edit"), "Edit"))
+          indent(
+            shiny::div(
+              class = "handsontable-parent",
+              rhandsontable::rHandsontableOutput(ns("mapping_table")) %>%
+                shinycssloaders::withSpinner()
+            ),
+            shiny::div(
+              class = "space",
+              shinyjs::disabled(success_button(ns("save_mapping"), "Confirm")),
+              shinyjs::disabled(button(ns("edit"), "Edit"))
+            )
           )
-        )
         )
       )
     })
@@ -158,7 +158,8 @@ mod_map_coralnet_labels_to_mermaid_server <- function(id, r) {
         dplyr::filter(!mermaid_attribute %in% c(
           r$benthic_attributes,
           # TODO -> discrepancy here between known_mapping and r$benthic_attributes
-          known_mapping()[["mermaid_attribute"]])) %>%
+          known_mapping()[["mermaid_attribute"]]
+        )) %>%
         nrow() == 0
 
       if (!all_valid_mapping) {
