@@ -1,10 +1,14 @@
 # Make CoralNet/MERMAID attribute mapping an object available in app
 
+# From CoralNet_ImageAnalysis google drive folder
+# File: CoralNetMermaidMatchedCoralFocusModel2Reassign_master
+
 library(readr)
 library(dplyr)
 
-coralnet_mermaid_attributes <- read_csv2(here::here("data-raw", "CoralNet-MERMAID attributes.csv"))
-
-names(coralnet_mermaid_attributes) <- c("coralnet_label", "mermaid_attribute", "mermaid_growth_form")
+coralnet_mermaid_attributes <- read_csv(here::here("data-raw", "CoralNetMermaidMatchedCoralFocusModel2Reassign_master.csv")) %>%
+  filter(`Public sources using` >= 5) %>%
+  select(coralnet_label = `Default short code`, mermaid_attribute = MERMAID_BA, mermaid_growth_form = MERMAID_GF) %>%
+  arrange(coralnet_label)
 
 usethis::use_data(coralnet_mermaid_attributes, overwrite = TRUE)
