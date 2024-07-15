@@ -721,14 +721,14 @@
     },
     "mermaidr": {
       "Package": "mermaidr",
-      "Version": "1.0.1",
+      "Version": "1.0.2",
       "Source": "GitHub",
       "RemoteType": "github",
       "RemoteHost": "api.github.com",
       "RemoteRepo": "mermaidr",
       "RemoteUsername": "data-mermaid",
-      "RemoteRef": "oauth-shiny",
-      "RemoteSha": "3e9d1a20ac20a5b528ffc0d3234936d7281e34ad",
+      "RemoteRef": "dev",
+      "RemoteSha": "4879f69649bd78630314b6c8d958c394c41b5e51",
       "Requirements": [
         "R",
         "curl",
@@ -752,7 +752,7 @@
         "usethis",
         "vctrs"
       ],
-      "Hash": "e9bb9e2ef5039cb7fc011b0882dd4612"
+      "Hash": "c3bcac5acaab8659eb13ae2407015618"
     },
     "mime": {
       "Package": "mime",
@@ -960,7 +960,7 @@
     },
     "readr": {
       "Package": "readr",
-      "Version": "2.1.4",
+      "Version": "2.1.5",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
@@ -979,7 +979,7 @@
         "utils",
         "vroom"
       ],
-      "Hash": "b5047343b3825f37ad9d3b5d89aa1078"
+      "Hash": "9de96463d2117f6ac49980577939dfb3"
     },
     "renv": {
       "Package": "renv",
