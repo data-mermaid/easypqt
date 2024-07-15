@@ -59,7 +59,6 @@ app_server <- auth0_server(function(input, output, session) {
 
   # Get login info and hit initial endpoints ----
   shiny::observe(priority = 9999, {
-    waiter::waiter_show(html = shiny::h1("Loading EasyPQT..."), color = "#174B82")
 
     r$mermaidr_token <- session$userData$auth0_credentials
 
