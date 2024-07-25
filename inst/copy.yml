@@ -77,10 +77,10 @@ ingestion_error:
     <br><br>
     Please <a href="https://datamermaid.org/contact-us" target="_blank">contact us</a> with the subject "Easy PQT ingestion error", and paste the following into the message body:'
   error: |-
-    project_id:
+    project_id:<br>
     {project}
     <br><br>
-    Error message:
+    Error message:<br>
     {error}
 ingestion_success:
   title: Ingestion successful!

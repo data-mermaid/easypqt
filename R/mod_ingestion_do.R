@@ -55,19 +55,37 @@ mod_ingestion_do_server <- function(id, r) {
   })
 }
 
-ingest_and_handle_errors <- function(data, project, token, dryrun) {
-  res <- mermaidr::mermaid_import_project_data(data, project, "benthicpqt", dryrun = dryrun, token = token) %>%
-    tryCatch(error = function(e) e)
+safely_import_project_data <- purrr::safely(mermaidr::mermaid_import_project_data)
 
-  res_error <- res$message
+ingest_and_handle_errors <- function(data, project, token, dryrun) {
+  res <- safely_import_project_data(data, project, "benthicpqt", dryrun = dryrun, token = token)
+
+  # Error can come from res$error, or the contents of res itself
+  no_error <- is.null(res$error)
+  no_result <- is.null(res$result)
+
+  res_success <- no_error & no_result
 
   ## If not successful, show error message/to contact us -----
-
-  res_success <- is.null(res_error)
-
   if (!res_success) {
+    if (!no_error) {
+      ingest_error <- res$error
+    } else {
+      ingest_error <- res$result
+
+      # Format
+      t <- tempfile(fileext = ".txt")
+      sink(t)
+      for (i in 1:nrow(ingest_error)) {
+        print(as.list(ingest_error[i,]))
+      }
+      sink()
+      ingest_error <- readLines(t) %>% paste0(collapse = "<br>")
+    }
+
+
     # Generate message for modal
-    modal_message <- skeleton_to_text(get_copy("ingestion_error", "error"), .envir = list(project = project, error = res_error))
+    modal_message <- skeleton_to_text(get_copy("ingestion_error", "error"), list(project = project, error = ingest_error))
 
     # Show modal
     show_modal(

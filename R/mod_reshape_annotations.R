@@ -111,8 +111,8 @@ mod_reshape_annotations_server <- function(id, r) {
 
       ## Observer emails: hit "me" endpoint ----
       observer_email <- r$me[["email"]] %>% unique()
-      ingestion_data_with_defaults <- ingestion_data_with_defaults %>%
-        dplyr::mutate(`Observer emails *` = observer_email)
+      # ingestion_data_with_defaults <- ingestion_data_with_defaults %>%
+        # dplyr::mutate(`Observer emails *` = observer_email)
 
       # Get fields in the right order
       ingestion_data_with_defaults <- ingestion_data_with_defaults %>%
