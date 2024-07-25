@@ -128,7 +128,7 @@ mod_map_coralnet_labels_to_mermaid_server <- function(id, r) {
             shiny::div(
               class = "space",
               shinyjs::disabled(success_button(ns("save_mapping"), "Confirm")),
-              shinyjs::disabled(button(ns("edit"), "Edit"))
+              shinyjs::hidden(button(ns("edit"), "Edit"))
             )
           )
         )
@@ -188,8 +188,9 @@ mod_map_coralnet_labels_to_mermaid_server <- function(id, r) {
       }
       r$coralnet_mermaid_mapping <- edited_coralnet_mermaid_mapping()
       r$coralnet_labels_on_edit <- TRUE
-      # Disable confirm, enable "edit"
+      # Disable confirm, show and enable "edit"
       shinyjs::disable("save_mapping")
+      shinyjs::show("edit")
       shinyjs::enable("edit")
       # Disable the table by making fields read only
       disable_mapping_table(ns("mapping_table"))
