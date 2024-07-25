@@ -39,6 +39,15 @@ mod_upload_annotations_server <- function(id, r) {
     # Check the file contains the correct columns
     shiny::observe({
       cols <- readr::read_csv(input$annotations$datapath, n_max = 0, show_col_types = FALSE)
+
+      # Check if it is semicolon separated
+      if (ncol(cols) == 1 & stringr::str_detect(names(cols), ";")) {
+        r$csv_sep <- ";"
+        cols <- readr::read_delim(input$annotations$datapath, n_max = 0, show_col_types = FALSE, delim = r$csv_sep)
+      } else {
+        r$csv_sep <- ","
+      }
+
       cols <- names(cols)
 
       # There are required columns, but the auxiliary columns do not actually have to be named Aux1, Aux2, ..., Aux 5
@@ -100,7 +109,7 @@ mod_upload_annotations_server <- function(id, r) {
       } else {
         shiny::req(r$contains_required_cols)
         # Only read in the required columns
-        r$annotations_raw <- readr::read_csv(input$annotations$datapath, show_col_types = FALSE, col_select = r$required_annotations_columns)
+        r$annotations_raw <- readr::read_delim(input$annotations$datapath, show_col_types = FALSE, col_select = r$required_annotations_columns, delim = r$csv_sep)
         r$ready_to_map_aux <- TRUE
 
         # Disable data upload after a single upload - need to reset to change data
