@@ -11,7 +11,7 @@ select_project:
     You role in this MERMAID project is <i>{role}</i>, but the Admin role is required to use Easy PQT.
     <br><br>
     Please <a href="https://datamermaid.org/contact-project?project_id={project_id}" target="_blank">contact the project administrators</a> to change your role to Admin.
-upload_annotations:
+upload_data:
   title: Upload CoralNet annotations
   text: Placeholder text for describing upload annotations input
   missing_instructions: The uploaded annotations do not contain the required columns.

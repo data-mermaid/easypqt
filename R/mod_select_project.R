@@ -68,6 +68,8 @@ mod_select_project_server <- function(id, r) {
 
       if (!r$is_project_admin) {
         show_not_project_admin_modal(r)
+      } {
+        r$step_select_project_done <- TRUE
       }
     }) %>%
       shiny::bindEvent(input$project)

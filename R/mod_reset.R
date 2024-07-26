@@ -65,10 +65,13 @@ mod_reset_server <- function(id, r) {
       r$annotations_raw <- NULL
       r$ready_to_map_aux <- FALSE
       r$auxiliary_columns_map <- get_config("auxiliary_columns_map")
+      r$all_aux_fields_valid <- FALSE
       r$aux_mapping_ui_created <- FALSE
       r$accordion_map_annotation_made <- FALSE
       r$map_annotations_accordion_made <- FALSE
       r$aux_mapped <- FALSE
+      r$ingestion_data <- NULL
+      r$annotations_mapped <- NULL
       r$preview_confirm_shown <- 0
     }) %>%
       shiny::bindEvent(input$reset_confirm)

@@ -55,7 +55,10 @@ app_server <- auth0_server(function(input, output, session) {
     reset = NULL,
     # dev_scenario = "empties"
     # dev_scenario = "wrong_values"
-    dev_scenario = "good_data"
+    dev_scenario = "good_data",
+
+
+    step_select_project_done = FALSE
     # dev_scenario = "some_good_some_wrong"
     # dev_scenario = "transect_decimal"
   )
@@ -100,7 +103,7 @@ app_server <- auth0_server(function(input, output, session) {
 
   # Upload CoralNet annotations ----
   # (only once confirmed that they are a project admin)
-  mod_upload_annotations_server("upload_annotations", r)
+  mod_upload_data_server("upload_data", r)
 
   # Parse annotations -----
   # Map and check auxiliary fields
@@ -135,7 +138,6 @@ app_server <- auth0_server(function(input, output, session) {
   ### Close panel if all annotations are good ----
   shiny::observe({
     shiny::req(r$all_aux_fields_valid)
-    # TODO start here, not closing
     bslib::accordion_panel_close("accordion", "map-auxiliary-fields")
   }) %>%
     shiny::bindEvent(r$all_aux_fields_valid)
@@ -144,8 +146,6 @@ app_server <- auth0_server(function(input, output, session) {
 
   shiny::observe({
     shiny::req(r$accordion_map_coralnet_labels)
-
-    # TODO start here, open/render is not triggering
     # Insert panel
     bslib::accordion_panel_insert("accordion", r$accordion_map_coralnet_labels)
 
@@ -155,6 +155,7 @@ app_server <- auth0_server(function(input, output, session) {
 
   ### Close panel if all labels are good ----
   shiny::observe({
+    browser()
     shiny::req(r$coralnet_mapping_valid)
     bslib::accordion_panel_close("accordion", "map-coralnet-labels")
   }) %>%

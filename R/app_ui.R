@@ -27,7 +27,7 @@ app_ui <- function(request) {
         mod_reset_ui("reset"),
       ),
       # Upload CoralNet annotations ----
-      mod_upload_annotations_ui("upload_annotations"),
+      mod_upload_data_ui("upload_data"),
       # Parse CoralNet annotations ----
       bslib::accordion(
         id = "accordion",

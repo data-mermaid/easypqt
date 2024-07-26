@@ -245,20 +245,18 @@ mod_parse_annotations_server <- function(id, r) {
       }
     })
 
-    # Once all auxiliary mapping have been checked, disable the inputs - cannot edit them anymore
     shiny::observe({
       # IF they are all good, then:
       shiny::req(r$all_aux_fields_valid)
       shiny::req(r$no_empty_fields)
+
+      # Once all auxiliary mapping have been checked, disable the inputs - cannot edit them anymore
       # Disable all inputs
       disable_picker_input(ns("site"))
       disable_picker_input(ns("management"))
       disable_picker_input(ns("transect_number"))
-    }) %>%
-      shiny::bindEvent(r$all_aux_fields_valid)
 
-    # Rename columns in data according to auxiliary fields mapping ----
-    shiny::observe({
+      # Rename columns in data according to auxiliary fields mapping ----
       mapped_cols_names <- r$auxiliary_columns_map %>%
         purrr::map("column")
       mapped_cols_aux <- r$auxiliary_columns_map %>%
