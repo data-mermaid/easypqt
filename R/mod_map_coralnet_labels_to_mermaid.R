@@ -18,16 +18,12 @@ mod_map_coralnet_labels_to_mermaid_server <- function(id, r) {
     ns <- session$ns
 
     known_mapping <- shiny::reactive({
-      shiny::req(r$all_aux_fields_valid)
-
       # Get known mapping from endpoint
       # TODO, actually get from endpoint
       easypqt::coralnet_mermaid_attributes
     })
 
     annotations_labels <- shiny::reactive({
-      shiny::req(r$all_aux_fields_valid)
-
       col <- get_config("coralnet_labelset_column")[["coralnet_col"]]
 
       r$annotations[col] %>%
@@ -36,7 +32,7 @@ mod_map_coralnet_labels_to_mermaid_server <- function(id, r) {
 
     # Check uploaded mapping (r$coralnet_upload) against `coralnet_mermaid_attributes` ----
     coralnet_mermaid_mapping <- shiny::reactive({
-      shiny::req(r$all_aux_fields_valid)
+      shiny::req(r$step_map_auxiliary_fields_accordion_fully_done)
 
       coralnet_col <- get_config("coralnet_labelset_column")[["coralnet_col"]]
       mermaid_col <- get_config("coralnet_labelset_column")[["mermaid_join"]]
@@ -53,7 +49,7 @@ mod_map_coralnet_labels_to_mermaid_server <- function(id, r) {
         ) %>%
         dplyr::select(-.is_na)
     }) %>%
-      shiny::bindEvent(r$all_aux_fields_valid)
+      shiny::bindEvent(r$step_map_auxiliary_fields_accordion_fully_done)
 
     # Create an editable table to be shown -----
     output$mapping_table <- rhandsontable::renderRHandsontable({
@@ -111,8 +107,8 @@ mod_map_coralnet_labels_to_mermaid_server <- function(id, r) {
 
     # Put the editable table in an accordion ----
     shiny::observe({
+      shiny::req(r$step_map_auxiliary_fields_accordion_fully_done)
       shiny::req(coralnet_mermaid_mapping())
-      shiny::req(r$all_aux_fields_valid)
 
       r$accordion_map_coralnet_labels <- bslib::accordion_panel(
         title = shiny::h2(get_copy("mapping", "title")),
@@ -133,6 +129,8 @@ mod_map_coralnet_labels_to_mermaid_server <- function(id, r) {
           )
         )
       )
+
+      r$step_map_coralnet_labels_accordion_made_done <- TRUE
     })
 
     edited_coralnet_mermaid_mapping <- shiny::reactive({
@@ -145,6 +143,7 @@ mod_map_coralnet_labels_to_mermaid_server <- function(id, r) {
     # If none of `mermaid_attribute` are NA, then enable exiting the widget
     # Flag that the mapping is valid, and save the final mapping
     shiny::observe({
+      shiny::req(r$step_map_coralnet_labels_accordion_made_done)
       # The data in the table is named after the output, so it's input$mapping_table
       # Need to convert it to an R data frame using rhandsontable::hot_to_r()
 
@@ -170,24 +169,16 @@ mod_map_coralnet_labels_to_mermaid_server <- function(id, r) {
 
       if (mapping_valid) {
         shinyjs::enable("save_mapping")
-        r$coralnet_mapping_valid <- TRUE
       } else {
         shinyjs::disable("save_mapping")
-        r$coralnet_mapping_valid <- FALSE
         r$coralnet_mermaid_mapping <- NULL
       }
     })
 
     # When the label mapping has been confirmed ----
     shiny::observe({
-      if (r$dev) {
-        shiny::req(r$auxiliary_columns_map$site$value)
-        r$confirm_map_aux_fields <- TRUE
-      } else {
-        r$confirm_map_aux_fields <- input$confirm
-      }
       r$coralnet_mermaid_mapping <- edited_coralnet_mermaid_mapping()
-      r$coralnet_labels_on_edit <- TRUE
+      r$step_map_coralnet_labels_done <- TRUE
       # Disable confirm, show and enable "edit"
       shinyjs::disable("save_mapping")
       shinyjs::show("edit")
@@ -202,11 +193,13 @@ mod_map_coralnet_labels_to_mermaid_server <- function(id, r) {
       shinyjs::disable("edit")
       shinyjs::enable("save_mapping")
       enable_mapping_table(ns("mapping_table"))
+      r$step_map_coralnet_labels_done <- FALSE
     }) %>%
       shiny::bindEvent(input$edit)
 
     # Create a new version of the annotations with the mapping ----
     shiny::observe({
+      shiny::req(r$step_map_coralnet_labels_done)
       shiny::req(r$coralnet_mermaid_mapping)
 
       mermaid_attributes_cols <- get_config("mermaid_attributes_columns") %>%

@@ -78,6 +78,14 @@ mod_reset_server <- function(id, r) {
       r$upload_contains_required_cols <- FALSE
       r$step_select_valid_project_done <- FALSE
       r$step_upload_valid_data_done <- FALSE
+      r$step_map_auxiliary_fields_accordion_made_done <- FALSE
+      r$step_map_auxiliary_fields_done <- FALSE
+      r$step_map_auxiliary_fields_valid_done <- FALSE
+      r$step_map_auxiliary_fields_accordion_fully_done <- FALSE
+      r$step_map_coralnet_labels_accordion_made_done <- FALSE
+      r$step_map_coralnet_labels_done <- FALSE
+      r$step_map_coralnet_labels_fully_done <- FALSE
+      r$preview_confirm_shown <- 0
 
     }) %>%
       shiny::bindEvent(input$reset_confirm)

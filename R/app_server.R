@@ -60,7 +60,13 @@ app_server <- auth0_server(function(input, output, session) {
 
     upload_contains_required_cols = FALSE,
     step_select_valid_project_done = FALSE,
-    step_upload_valid_data_done = FALSE
+    step_upload_valid_data_done = FALSE,
+    step_map_auxiliary_fields_accordion_made_done = FALSE,
+    step_map_auxiliary_fields_accordion_fully_done = FALSE,
+    step_map_coralnet_labels_accordion_made_done = FALSE,
+    step_map_coralnet_labels_done = FALSE,
+    step_map_coralnet_labels_fully_done = FALSE,
+    preview_confirm_shown = 0
     # dev_scenario = "some_good_some_wrong"
     # dev_scenario = "transect_decimal"
   )
@@ -125,24 +131,26 @@ app_server <- auth0_server(function(input, output, session) {
 
   # Insert and open accordions / close them when that step is done, since they go into global ns ----
 
-  ##  Map annotations ----
+  ##  Map auxiliary fields ----
   shiny::observe({
-    shiny::req(r$accordion_map_annotation_fields, r$aux_mapping_ui_created, r$accordion_map_annotation_made)
-    # browser()
+    shiny::req(r$step_map_auxiliary_fields_accordion_made_done)
 
     # Insert panel
     bslib::accordion_panel_insert("accordion", r$accordion_map_annotation_fields)
 
     # Open panel
     bslib::accordion_panel_open("accordion", "map-auxiliary-fields")
-  })
+  }) %>%
+    shiny::bindEvent(r$step_map_auxiliary_fields_accordion_made_done)
 
   ### Close panel if all annotations are good ----
   shiny::observe({
-    shiny::req(r$all_aux_fields_valid)
+    shiny::req(r$step_map_auxiliary_fields_valid_done)
     bslib::accordion_panel_close("accordion", "map-auxiliary-fields")
+
+    r$step_map_auxiliary_fields_accordion_fully_done <- TRUE
   }) %>%
-    shiny::bindEvent(r$all_aux_fields_valid)
+    shiny::bindEvent(r$step_map_auxiliary_fields_valid_done)
 
   ## Map labels ----
 
@@ -157,13 +165,12 @@ app_server <- auth0_server(function(input, output, session) {
 
   ### Close panel if all labels are good ----
   shiny::observe({
-    browser()
-    shiny::req(r$coralnet_mapping_valid)
+    shiny::req(r$step_map_coralnet_labels_done)
     bslib::accordion_panel_close("accordion", "map-coralnet-labels")
-  }) %>%
-    shiny::bindEvent(r$coralnet_labels_on_edit)
 
-  ### Remove panel on reset ----
+    r$step_map_coralnet_labels_fully_done <- TRUE
+  }) %>%
+    shiny::bindEvent(r$step_map_coralnet_labels_done)
 
   ## Preview/download/confirm ---
 

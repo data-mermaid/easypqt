@@ -22,12 +22,12 @@ mod_ingestion_preview_and_confirm_server <- function(id, r) {
     # Preview and download reshaped data ----
 
     output$table <- DT::renderDataTable(server = TRUE, {
-      shiny::req(r$ingestion_data)
+      shiny::req(r$step_map_coralnet_labels_fully_done)
       DT::datatable(r$ingestion_data, rownames = FALSE, options = list(dom = "tp"), selection = "none")
     })
 
     shiny::observe({
-      shiny::req(r$ingestion_data)
+      shiny::req(r$step_map_coralnet_labels_fully_done)
       # Only do this once, not every time the mapping is updated/confirmed
       shiny::req(r$preview_confirm_shown == 0)
 
@@ -106,8 +106,7 @@ mod_ingestion_preview_and_confirm_server <- function(id, r) {
       shiny::bindEvent(input$incorrect_reset)
 
     shiny::observe({
-      shinyjs::runjs("window.history.pushState({}, document.title, window.location.pathname);") # Remove code etc from URL so it can restart cleanly
-      shinyjs::refresh()
+      mod_reset_server("reset", r)
     }) %>%
       shiny::bindEvent(input$reset_confirm)
 
