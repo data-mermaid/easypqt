@@ -58,7 +58,9 @@ app_server <- auth0_server(function(input, output, session) {
     dev_scenario = "good_data",
 
 
-    step_select_project_done = FALSE
+    upload_contains_required_cols = FALSE,
+    step_select_valid_project_done = FALSE,
+    step_upload_valid_data_done = FALSE
     # dev_scenario = "some_good_some_wrong"
     # dev_scenario = "transect_decimal"
   )
@@ -108,7 +110,7 @@ app_server <- auth0_server(function(input, output, session) {
   # Parse annotations -----
   # Map and check auxiliary fields
   # Map CoralNet labels to MERMAID attributes
-  mod_parse_annotations_server("parse_annotations", r)
+  mod_map_auxiliary_fields_server("map_auxliary_fields", r)
 
   # Reshape annotations for ingestion ----
   mod_reshape_annotations_server("reshape_annotations", r)

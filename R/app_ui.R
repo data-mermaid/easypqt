@@ -32,7 +32,7 @@ app_ui <- function(request) {
       bslib::accordion(
         id = "accordion",
         multiple = TRUE,
-        mod_parse_annotations_ui("parse_annotations"),
+        mod_map_auxiliary_fields_ui("map_auxliary_fields"),
         # Reshape annotations ----
         mod_reshape_annotations_ui("reshape_annotations"),
         # Preview/confirm ingestion ----

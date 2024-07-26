@@ -37,17 +37,14 @@ mod_select_project_server <- function(id, r) {
     # Update project selection dropdown based on user's projects ----
 
     shiny::observe({
-      shiny::req(r$projects)
-
       projects <- setNames(r$projects$id, r$projects$name)
-
-      selected_project <- null_if_dev(r$dev, "4d23d2a1-774f-4ccf-b567-69f95e4ff572")
 
       shinyWidgets::updatePickerInput(
         session = session,
-        inputId = "project", choices = projects, selected = selected_project
+        inputId = "project", choices = projects, selected = character(0)
       )
-    })
+    }) %>%
+      shiny::bindEvent(r$projects)
 
     shiny::observe({
       # Update r$project with selected project ----
@@ -68,13 +65,13 @@ mod_select_project_server <- function(id, r) {
 
       if (!r$is_project_admin) {
         show_not_project_admin_modal(r)
-      } {
-        r$step_select_project_done <- TRUE
+      } else {
+        r$step_select_valid_project_done <- TRUE
       }
     }) %>%
       shiny::bindEvent(input$project)
 
-    # Disable project selection once data is uploaded
+    # Disable project selection once data is uploaded and valid
     shiny::observe({
       shiny::req(r$ready_to_map_aux)
       disable_picker_input(ns("project"))

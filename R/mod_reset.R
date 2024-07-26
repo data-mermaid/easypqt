@@ -73,6 +73,12 @@ mod_reset_server <- function(id, r) {
       r$ingestion_data <- NULL
       r$annotations_mapped <- NULL
       r$preview_confirm_shown <- 0
+
+
+      r$upload_contains_required_cols <- FALSE
+      r$step_select_valid_project_done <- FALSE
+      r$step_upload_valid_data_done <- FALSE
+
     }) %>%
       shiny::bindEvent(input$reset_confirm)
 
