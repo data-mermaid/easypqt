@@ -9,7 +9,7 @@
 #' @importFrom shiny NS tagList
 mod_ingestion_preview_and_confirm_ui <- function(id) {
   ns <- NS(id)
-  shiny::tagList()
+  mod_reset_ui(ns("reset"), show_ui = FALSE)
 }
 
 #' ingestion_preview Server Functions
@@ -92,23 +92,9 @@ mod_ingestion_preview_and_confirm_server <- function(id, r) {
     ## Incorrect: start over -----
     # Confirm to reset, clear everything
     shiny::observe({
-      show_modal(
-        get_copy("reset", "title"),
-        spaced(
-          left_right(
-            warning_button(ns("reset_confirm"), get_copy("reset", "confirm")),
-            button(ns("reset_cancel"), get_copy("reset", "cancel"))
-          )
-        ),
-        footer = NULL
-      )
+      mod_reset_server("reset", r, show_ui = FALSE)
     }) %>%
       shiny::bindEvent(input$incorrect_reset)
-
-    shiny::observe({
-      mod_reset_server("reset", r)
-    }) %>%
-      shiny::bindEvent(input$reset_confirm)
 
     shiny::observe({
       shiny::removeModal()
