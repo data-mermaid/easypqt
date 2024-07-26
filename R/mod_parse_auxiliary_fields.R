@@ -225,7 +225,6 @@ mod_map_auxiliary_fields_server <- function(id, r) {
           get_copy("auxiliary_validating", "all_valid")
         )
       } else {
-
         show_modal(
           title = get_copy("auxiliary_validating", "title"),
           shiny::div(class = "validating-aux", get_copy("auxiliary_validating", "fix")),

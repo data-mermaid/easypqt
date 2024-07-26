@@ -56,8 +56,6 @@ app_server <- auth0_server(function(input, output, session) {
     # dev_scenario = "empties"
     # dev_scenario = "wrong_values"
     dev_scenario = "good_data",
-
-
     upload_contains_required_cols = FALSE,
     step_select_valid_project_done = FALSE,
     step_upload_valid_data_done = FALSE,

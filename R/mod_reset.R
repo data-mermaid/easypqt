@@ -86,7 +86,6 @@ mod_reset_server <- function(id, r) {
       r$step_map_coralnet_labels_done <- FALSE
       r$step_map_coralnet_labels_fully_done <- FALSE
       r$preview_confirm_shown <- 0
-
     }) %>%
       shiny::bindEvent(input$reset_confirm)
 

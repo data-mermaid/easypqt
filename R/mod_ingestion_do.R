@@ -77,7 +77,7 @@ ingest_and_handle_errors <- function(data, project, token, dryrun) {
       t <- tempfile(fileext = ".txt")
       sink(t)
       for (i in 1:nrow(ingest_error)) {
-        print(as.list(ingest_error[i,]))
+        print(as.list(ingest_error[i, ]))
       }
       sink()
       ingest_error <- readLines(t) %>% paste0(collapse = "<br>")

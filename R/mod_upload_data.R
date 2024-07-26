@@ -21,7 +21,6 @@ mod_upload_data_server <- function(id, r) {
     # Show upload form once confirmed they are a project admin (they have selected a valid project), and additionally on any reset ----
     shiny::observe({
       output$upload <- renderUI({
-
         if (r$step_select_valid_project_done) {
           shiny::div(
             id = "upload-parent",

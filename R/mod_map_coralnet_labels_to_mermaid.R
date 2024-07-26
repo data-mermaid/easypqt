@@ -218,10 +218,7 @@ disable_mapping_table <- function(id) {
 
   # Disable pointer events on actual table, add style
   # Not allowed cursor on parent div, add style
-  shinyjs::runjs(glue::glue("let tempTable = document.getElementById('$id$');
-                            tempTable.getElementsByClassName('ht_master')[0].style.pointerEvents = 'none';
-                            tempTable.getElementsByClassName('ht_clone_top')[0].style.pointerEvents = 'none';
-                            tempTable.style.cursor = 'not-allowed';", .open = "$", .close = "$"))
+  shinyjs::runjs(glue::glue("let tempTable = document.getElementById('$id$'); tempTable.getElementsByClassName('ht_master')[0].style.pointerEvents = 'none'; tempTable.getElementsByClassName('ht_clone_top')[0].style.pointerEvents = 'none'; tempTable.style.cursor = 'not-allowed';", .open = "$", .close = "$"))
 }
 
 enable_mapping_table <- function(id) {
@@ -229,8 +226,5 @@ enable_mapping_table <- function(id) {
 
   # Allow pointer events on actual table, remove style
   # Regular cursor on parent div, remove style
-  shinyjs::runjs(glue::glue("let tempTable = document.getElementById('$id$');
-                            tempTable.getElementsByClassName('ht_master')[0].style.pointerEvents = '';
-                            tempTable.getElementsByClassName('ht_clone_top')[0].style.pointerEvents = '';
-                            tempTable.style.cursor = '';", .open = "$", .close = "$"))
+  shinyjs::runjs(glue::glue("let tempTable = document.getElementById('$id$');  tempTable.getElementsByClassName('ht_master')[0].style.pointerEvents = '';  tempTable.getElementsByClassName('ht_clone_top')[0].style.pointerEvents = '';  tempTable.style.cursor = '';", .open = "$", .close = "$"))
 }
