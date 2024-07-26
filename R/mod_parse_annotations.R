@@ -64,7 +64,7 @@ mod_parse_annotations_server <- function(id, r) {
 
       r$accordion_map_annotation_fields <- bslib::accordion_panel(
         title = shiny::h2(get_copy("auxiliary", "title")),
-        value = "map-annotation-fields",
+        value = "map-auxiliary-fields",
         shiny::tagList(
           get_copy("auxiliary", "text"),
           indent(

@@ -17,7 +17,7 @@ mod_reset_ui <- function(id) {
 #' reset Server Functions
 #'
 #' @noRd
-mod_reset_server <- function(id) {
+mod_reset_server <- function(id, r) {
   moduleServer(id, function(input, output, session) {
     ns <- session$ns
 
@@ -37,8 +37,27 @@ mod_reset_server <- function(id) {
 
 
     shiny::observe({
-      shinyjs::runjs("window.history.pushState({}, document.title, window.location.pathname);") # Remove code etc from URL so it can restart cleanly
-      shinyjs::refresh()
+      # shinyjs::runjs("window.history.pushState({}, document.title, window.location.pathname);") # Remove code etc from URL so it can restart cleanly
+
+      # Things to reset:
+      # Project selection
+      # Upload
+      # Parse
+      # Reshape
+      # Preview/confirm
+      # Ingestion
+
+      # DONE
+      # Accordions
+      # shinyjs::refresh()
+      # To refrain from needing to do req(r$reset > 0), since bindEvent will not pick it up if it's NULL
+      if (is.null(r$reset)) {
+        r$reset <- 1
+      } else {
+        r$reset <- r$reset + 1
+      }
+      # Hide the modal
+      shiny::removeModal()
     }) %>%
       shiny::bindEvent(input$reset_confirm)
 

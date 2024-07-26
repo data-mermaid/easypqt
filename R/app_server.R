@@ -43,6 +43,7 @@ app_server <- auth0_server(function(input, output, session) {
 
   # Set up reactive values ----
   r <- shiny::reactiveValues(
+    is_project_admin = FALSE,
     auxiliary_columns_map = get_config("auxiliary_columns_map"),
     page_length = 10,
     map_annotations_accordion_made = FALSE,
@@ -50,6 +51,7 @@ app_server <- auth0_server(function(input, output, session) {
     preview_confirm_shown = 0,
     dev = FALSE,
     prod = FALSE,
+    reset = NULL,
     # dev_scenario = "empties"
     # dev_scenario = "wrong_values"
     dev_scenario = "good_data"
@@ -59,7 +61,6 @@ app_server <- auth0_server(function(input, output, session) {
 
   # Get login info and hit initial endpoints ----
   shiny::observe(priority = 9999, {
-
     shinyjs::runjs("window.history.pushState({}, document.title, window.location.pathname);") # Remove code etc from URL so it can restart/refresh cleanly
 
     r$mermaidr_token <- session$userData$auth0_credentials
@@ -90,7 +91,7 @@ app_server <- auth0_server(function(input, output, session) {
   })
 
   # Reset ----
-  mod_reset_server("reset")
+  mod_reset_server("reset", r)
 
   # Get projects ----
   # This will also get the project template/options, and flag if they are not an admin of the selected project
@@ -126,26 +127,15 @@ app_server <- auth0_server(function(input, output, session) {
     bslib::accordion_panel_insert("accordion", r$accordion_map_annotation_fields)
 
     # Open panel
-    bslib::accordion_panel_open("accordion", "map-annotation-fields")
+    bslib::accordion_panel_open("accordion", "map-auxiliary-fields")
 
     r$map_annotations_accordion_made <- TRUE
   })
 
-  # # Hide annotation page counter if less than 10 rows
-  # shiny::observe({
-  #   Sys.sleep(5)
-  #   shiny::req(r$map_annotations_accordion_made)
-  #
-  #   if (r$hide_annotation_preview_nav) {
-  #     browser()
-  #     shinyjs::runjs('document.getElementById("parse_annotations-data_preview").getElementsByClassName("dataTables_paginate")[0].style.display = "none"')
-  #   }
-  # })
-
-  # Close panel if all annotations are good
+  ### Close panel if all annotations are good ----
   shiny::observe({
     shiny::req(r$all_aux_fields_valid)
-    bslib::accordion_panel_close("accordion", "map-annotation-fields")
+    bslib::accordion_panel_close("accordion", "map-auxiliary-fields")
   }) %>%
     shiny::bindEvent(r$all_aux_fields_valid)
 
@@ -161,12 +151,14 @@ app_server <- auth0_server(function(input, output, session) {
     bslib::accordion_panel_open("accordion", "map-coralnet-labels")
   })
 
-  # Close panel if all labels are good
+  ### Close panel if all labels are good ----
   shiny::observe({
     shiny::req(r$coralnet_mapping_valid)
     bslib::accordion_panel_close("accordion", "map-coralnet-labels")
   }) %>%
     shiny::bindEvent(r$coralnet_labels_on_edit)
+
+  ### Remove panel on reset ----
 
   ## Preview/download/confirm ---
 
@@ -177,4 +169,16 @@ app_server <- auth0_server(function(input, output, session) {
     # Open panel
     bslib::accordion_panel_open("accordion", "preview-download-confirm")
   })
+
+  ## Remove panels on reset ----
+
+  shiny::observe({
+    shiny::req(r$reset > 0)
+
+    # Works even if the panels have not been created/added <3
+    bslib::accordion_panel_remove("accordion", "map-auxiliary-fields")
+    bslib::accordion_panel_remove("accordion", "map-coralnet-labels")
+    bslib::accordion_panel_remove("accordion", "preview-download-confirm")
+  }) %>%
+    shiny::bindEvent(r$reset)
 })

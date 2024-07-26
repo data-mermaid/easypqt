@@ -77,6 +77,20 @@ mod_select_project_server <- function(id, r) {
       disable_picker_input(ns("project"))
     }) %>%
       shiny::bindEvent(r$ready_to_map_aux)
+
+    # Reset and re-enable project selection on refresh ----
+    shiny::observe({
+      enable_picker_input(ns("project"))
+
+      shinyWidgets::updatePickerInput(
+        session = session,
+        inputId = "project",
+        selected = character(0)
+      )
+
+      r$is_project_admin <- FALSE
+    }) %>%
+      shiny::bindEvent(r$reset)
   })
 }
 

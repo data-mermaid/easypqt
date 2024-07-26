@@ -8,17 +8,7 @@
 mod_upload_annotations_ui <- function(id) {
   ns <- NS(id)
 
-  shinyjs::hidden(
-    shiny::div(
-      id = "upload-parent",
-      shiny::h2(get_copy("upload_annotations", "title")),
-      shiny::div(get_copy("upload_annotations", "text")),
-      shiny::fileInput(ns("annotations"),
-        label = NULL,
-        accept = ".csv"
-      )
-    )
-  )
+  shiny::uiOutput(ns("upload"))
 }
 
 #' upload_annotations Server Functions
@@ -28,13 +18,28 @@ mod_upload_annotations_server <- function(id, r) {
   moduleServer(id, function(input, output, session) {
     ns <- session$ns
 
-    # Show upload form once confirmed they are a project admin
+    # Show upload form once confirmed they are a project admin, and additionally on any reset ----
     shiny::observe({
-      shiny::req(r$is_project_admin)
+      output$upload <- renderUI({
+        if (r$is_project_admin) {
+          shiny::div(
+            id = "upload-parent",
+            shiny::h2(get_copy("upload_annotations", "title")),
+            shiny::div(get_copy("upload_annotations", "text")),
+            shiny::fileInput(ns("annotations"),
+              label = NULL,
+              accept = ".csv"
+            )
+          )
+        } else {
+          shiny::tagList()
+        }
+      })
 
-      shinyjs::show("upload-parent", asis = TRUE)
+      # shinyjs::show("upload-parent", asis = TRUE)
       # shinyjs::show("annotations")
-    })
+    }) %>%
+      shiny::bindEvent(r$is_project_admin, r$reset)
 
     # Check the file contains the correct columns
     shiny::observe({
@@ -121,5 +126,17 @@ mod_upload_annotations_server <- function(id, r) {
         shinyjs::runjs("document.getElementById('upload-parent').getElementsByClassName('input-group')[0].style.pointerEvents = 'none'; document.getElementById('upload-parent').style.cursor = 'not-allowed';")
       }
     })
+
+    # Re-hide file upload on reset, reset file ----
+    shiny::observe({
+      enable_picker_input(ns("project"))
+
+      shinyWidgets::updatePickerInput(
+        session = session,
+        inputId = "project",
+        selected = character(0)
+      )
+    }) %>%
+      shiny::bindEvent(r$reset)
   })
 }
