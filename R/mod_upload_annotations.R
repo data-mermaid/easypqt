@@ -21,6 +21,8 @@ mod_upload_annotations_server <- function(id, r) {
     # Show upload form once confirmed they are a project admin, and additionally on any reset ----
     shiny::observe({
       output$upload <- renderUI({
+        r$annotations_raw <- NULL
+
         if (r$is_project_admin) {
           shiny::div(
             id = "upload-parent",
@@ -43,6 +45,7 @@ mod_upload_annotations_server <- function(id, r) {
 
     # Check the file contains the correct columns
     shiny::observe({
+      # browser()
       cols <- readr::read_csv(input$annotations$datapath, n_max = 0, show_col_types = FALSE)
 
       # Check if it is semicolon separated
@@ -106,37 +109,19 @@ mod_upload_annotations_server <- function(id, r) {
     # If it does contain the correct columns, read in the data and proceed
     shiny::observe({
       shiny::req(r$is_project_admin)
-      if (r$dev) {
-        r$annotations_raw <- get(r$dev_scenario)
-        r$ready_to_map_aux <- TRUE
-        r$auxiliary_columns <- get_config("auxiliary_columns_dev")
-        r$required_annotations_columns <- get_config("required_annotations_columns_dev")
-      } else {
-        shiny::req(r$contains_required_cols)
-        # Only read in the required columns
-        r$annotations_raw <- readr::read_delim(input$annotations$datapath, show_col_types = FALSE, col_select = r$required_annotations_columns, delim = r$csv_sep)
-        r$ready_to_map_aux <- TRUE
+      shiny::req(r$contains_required_cols)
+      # Only read in the required columns
+      r$annotations_raw <- readr::read_delim(input$annotations$datapath, show_col_types = FALSE, col_select = r$required_annotations_columns, delim = r$csv_sep)
+      r$ready_to_map_aux <- TRUE
 
-        # Disable data upload after a single upload - need to reset to change data
-        shinyjs::disable("annotations")
+      # Disable data upload after a single upload - need to reset to change data
+      shinyjs::disable("annotations")
 
-        # Pointer etc of disabling
-        # Disable pointer events on actual button, add style
-        # Not allowed cursor on parent div, add style
-        shinyjs::runjs("document.getElementById('upload-parent').getElementsByClassName('input-group')[0].style.pointerEvents = 'none'; document.getElementById('upload-parent').style.cursor = 'not-allowed';")
-      }
-    })
-
-    # Re-hide file upload on reset, reset file ----
-    shiny::observe({
-      enable_picker_input(ns("project"))
-
-      shinyWidgets::updatePickerInput(
-        session = session,
-        inputId = "project",
-        selected = character(0)
-      )
+      # Pointer etc of disabling
+      # Disable pointer events on actual button, add style
+      # Not allowed cursor on parent div, add style
+      shinyjs::runjs("document.getElementById('upload-parent').getElementsByClassName('input-group')[0].style.pointerEvents = 'none'; document.getElementById('upload-parent').style.cursor = 'not-allowed';")
     }) %>%
-      shiny::bindEvent(r$reset)
+      shiny::bindEvent(input$annotations)
   })
 }

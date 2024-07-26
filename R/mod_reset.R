@@ -40,8 +40,7 @@ mod_reset_server <- function(id, r) {
       # shinyjs::runjs("window.history.pushState({}, document.title, window.location.pathname);") # Remove code etc from URL so it can restart cleanly
 
       # Things to reset:
-      # Project selection
-      # Upload
+      # Auxiliary fields mapping
       # Parse
       # Reshape
       # Preview/confirm
@@ -49,6 +48,9 @@ mod_reset_server <- function(id, r) {
 
       # DONE
       # Accordions
+      # Project selection
+      # Upload
+
       # shinyjs::refresh()
       # To refrain from needing to do req(r$reset > 0), since bindEvent will not pick it up if it's NULL
       if (is.null(r$reset)) {
@@ -58,6 +60,16 @@ mod_reset_server <- function(id, r) {
       }
       # Hide the modal
       shiny::removeModal()
+
+      # Some general resets:
+      r$annotations_raw <- NULL
+      r$ready_to_map_aux <- FALSE
+      r$auxiliary_columns_map <- get_config("auxiliary_columns_map")
+      r$aux_mapping_ui_created <- FALSE
+      r$accordion_map_annotation_made <- FALSE
+      r$map_annotations_accordion_made <- FALSE
+      r$aux_mapped <- FALSE
+      r$preview_confirm_shown <- 0
     }) %>%
       shiny::bindEvent(input$reset_confirm)
 

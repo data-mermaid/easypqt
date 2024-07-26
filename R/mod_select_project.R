@@ -74,6 +74,7 @@ mod_select_project_server <- function(id, r) {
 
     # Disable project selection once data is uploaded
     shiny::observe({
+      shiny::req(r$ready_to_map_aux)
       disable_picker_input(ns("project"))
     }) %>%
       shiny::bindEvent(r$ready_to_map_aux)

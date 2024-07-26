@@ -46,6 +46,7 @@ app_server <- auth0_server(function(input, output, session) {
     is_project_admin = FALSE,
     auxiliary_columns_map = get_config("auxiliary_columns_map"),
     page_length = 10,
+    ready_to_map_aux = FALSE,
     map_annotations_accordion_made = FALSE,
     aux_mapped = FALSE,
     preview_confirm_shown = 0,
@@ -121,20 +122,20 @@ app_server <- auth0_server(function(input, output, session) {
 
   ##  Map annotations ----
   shiny::observe({
-    shiny::req(r$accordion_map_annotation_fields)
+    shiny::req(r$accordion_map_annotation_fields, r$aux_mapping_ui_created, r$accordion_map_annotation_made)
+    # browser()
 
     # Insert panel
     bslib::accordion_panel_insert("accordion", r$accordion_map_annotation_fields)
 
     # Open panel
     bslib::accordion_panel_open("accordion", "map-auxiliary-fields")
-
-    r$map_annotations_accordion_made <- TRUE
   })
 
   ### Close panel if all annotations are good ----
   shiny::observe({
     shiny::req(r$all_aux_fields_valid)
+    # TODO start here, not closing
     bslib::accordion_panel_close("accordion", "map-auxiliary-fields")
   }) %>%
     shiny::bindEvent(r$all_aux_fields_valid)
@@ -144,6 +145,7 @@ app_server <- auth0_server(function(input, output, session) {
   shiny::observe({
     shiny::req(r$accordion_map_coralnet_labels)
 
+    # TODO start here, open/render is not triggering
     # Insert panel
     bslib::accordion_panel_insert("accordion", r$accordion_map_coralnet_labels)
 

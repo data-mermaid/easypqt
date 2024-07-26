@@ -33,12 +33,10 @@ mod_parse_annotations_server <- function(id, r) {
 
     # Use a dropdown for each rather than radio buttons - just a bit more complicated to disable etc and to work within a data table
 
-    # It would be nice to allow them to optionally preview the data in here to remind themselves which of the auxiliary columns is which?
-
     # Generate dropdown UI ----
     # (Shown once annotations are uploaded)
     shiny::observe({
-      shiny::req(r$annotations_raw)
+      shiny::req(r$ready_to_map_aux)
 
       aux_fields_data <- r$annotations_raw %>%
         dplyr::select(dplyr::all_of(r$auxiliary_columns)) %>%
@@ -50,17 +48,17 @@ mod_parse_annotations_server <- function(id, r) {
         DT::datatable(
           rownames = FALSE,
           options = list(dom = "tp", pageLength = r$page_length),
-          selection = "none"
+          selection = "none",
+          callback = DT::JS("$.fn.dataTable.ext.errMode = 'none';") # To eliminate JS popups with mismatch of cols / accordion / table updating, it's just annoying
         ) %>%
         DT::renderDataTable()
 
-      inputs <- purrr::imap(
-        # Just do this once, do not listen to changes in the mapping
-        shiny::isolate(r$auxiliary_columns_map),
+      output$inputs <- purrr::imap(
+        r$auxiliary_columns_map,
         \(x, y) {
           make_mapping_dropdown_ui(x, y, r, ns)
         }
-      )
+      ) %>% shiny::renderUI()
 
       r$accordion_map_annotation_fields <- bslib::accordion_panel(
         title = shiny::h2(get_copy("auxiliary", "title")),
@@ -73,13 +71,17 @@ mod_parse_annotations_server <- function(id, r) {
             DT::dataTableOutput(ns("data_preview")),
             shiny::h3(get_copy("auxiliary", "map")),
             get_copy("auxiliary", "map_text"),
-            inputs
+            shiny::uiOutput(ns("inputs"))
           )
         )
       )
 
+      # browser()
+
       r$accordion_map_annotation_made <- TRUE
-    })
+      r$aux_mapping_ui_created <- TRUE
+    }) %>%
+      shiny::bindEvent(r$annotations_raw)
 
     # Observe each dropdown, and disable an Aux field in other dropdowns if it's already selected - because an auxiliary field cannot map to more than one of Site, Management, or Transect Number
 
@@ -87,15 +89,13 @@ mod_parse_annotations_server <- function(id, r) {
     purrr::walk(
       names(get_config("auxiliary_columns_map")),
       \(x)
-      shiny::observe(priority = 1, {
-        shiny::req(r$annotations_raw)
-        if (r$dev) {
-          shiny::req(input$site)
-        }
+      shiny::observe({
         r$auxiliary_columns_map[[x]]["value"] <- list(input[[x]])
-        r$aux_mapping_ui_created <- TRUE
-      })
+      }) %>%
+        shiny::bindEvent(input[[x]])
     )
+
+    # On reset, reset all of the values in r$auxiliary_columns_map[[x]]["value"]  -> happens in mod_reset ? ----
 
     # Go through each and disable other columns' aux fields ----
     shiny::observe({
@@ -201,7 +201,6 @@ mod_parse_annotations_server <- function(id, r) {
 
       # Check valid values of auxiliary fields ----
       # Validate fields ----
-      # browser()
       shiny::req(r$no_empty_fields)
 
       # Get project template/options ----
@@ -251,7 +250,6 @@ mod_parse_annotations_server <- function(id, r) {
       # IF they are all good, then:
       shiny::req(r$all_aux_fields_valid)
       shiny::req(r$no_empty_fields)
-      r$aux_fields_on_edit <- TRUE
       # Disable all inputs
       disable_picker_input(ns("site"))
       disable_picker_input(ns("management"))
