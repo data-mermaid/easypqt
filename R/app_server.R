@@ -59,6 +59,9 @@ app_server <- auth0_server(function(input, output, session) {
 
   # Get login info and hit initial endpoints ----
   shiny::observe(priority = 9999, {
+
+    shinyjs::runjs("window.history.pushState({}, document.title, window.location.pathname);") # Remove code etc from URL so it can restart/refresh cleanly
+
     r$mermaidr_token <- session$userData$auth0_credentials
 
     shiny::req(r$mermaidr_token)
