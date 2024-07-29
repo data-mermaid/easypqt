@@ -16,47 +16,67 @@ mod_reset_ui <- function(id, show_ui = TRUE) {
     reset <- shinyjs::hidden(reset)
   }
 
-  shiny::div(reset)
+  shiny::div(
+    reset
+  )
 }
 
 #' reset Server Functions
 #'
 #' @noRd
-mod_reset_server <- function(id, r, show_ui = TRUE) {
+mod_reset_server <- function(id, r, show_ui = TRUE, show_confirm = TRUE) {
   moduleServer(id, function(input, output, session) {
     ns <- session$ns
 
     if (!show_ui) {
       # Emulate a click on the UI
       shiny::observe({
-
         shinyjs::click("reset")
       })
     }
 
-    shiny::observe({
-      show_modal(
-        get_copy("reset", "title"),
-        spaced(
-          left_right(
-            warning_button(ns("reset_confirm"), get_copy("reset", "confirm")),
-            button(ns("reset_cancel"), get_copy("reset", "cancel"))
-          )
-        ),
-        footer = NULL
-      )
-    }) %>%
-      shiny::bindEvent(input$reset)
+    # Only show the confirmation dialog if show_confirm = TRUE (e.g. not after ingestion success or failure)
+    if (show_confirm) {
+      shiny::observe({
+        show_modal(
+          get_copy("reset", "title"),
+          spaced(
+            left_right(
+              warning_button(ns("reset_confirm"), get_copy("reset", "confirm")),
+              button(ns("reset_cancel"), get_copy("reset", "cancel"))
+            )
+          ),
+          footer = NULL
+        )
+      }) %>%
+        shiny::bindEvent(input$reset)
+    } else {
+      # Otherwise, just trigger the counter reset
+      shiny::observe({
+        if (is.null(r$reset_confirm_counter)) {
+          r$reset_confirm_counter <- 1
+        } else {
+          r$reset_confirm_counter <- r$reset_confirm_counter + 1
+        }
+      }) %>%
+        shiny::bindEvent(input$reset)
+    }
+    # Otherwise, mimic it and trigger the reactive instead
+
 
     shiny::observe({
       # To refrain from needing to do req(r$reset > 0), since bindEvent will not pick it up if it's NULL
+
       if (is.null(r$reset)) {
         r$reset <- 1
       } else {
         r$reset <- r$reset + 1
       }
+
       # Hide the modal
-      shiny::removeModal()
+      if (show_confirm) {
+        shiny::removeModal()
+      }
 
       # General resets
       r$upload_contains_required_cols <- FALSE
@@ -71,8 +91,9 @@ mod_reset_server <- function(id, r, show_ui = TRUE) {
       r$step_map_coralnet_labels_fully_done <- FALSE
       r$preview_confirm_shown <- 0
     }) %>%
-      shiny::bindEvent(input$reset_confirm)
+      shiny::bindEvent(input$reset_confirm, r$reset_confirm_counter)
 
+    # Just close the modal on cancel
     shiny::observe({
       shiny::removeModal()
     }) %>%

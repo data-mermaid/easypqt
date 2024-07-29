@@ -48,17 +48,17 @@ mod_ingestion_do_server <- function(id, r) {
         success_button(
           ns("go_to_mermaid"),
           get_copy("ingestion_success", "button"),
-          onclick = glue::glue("window.open('{link}', '_blank')", link = collect_url),
-          footer = button(ns("ingestion_success_close"), "Close") # TODO copy
+          onclick = glue::glue("window.open('{link}', '_blank')", link = collect_url)
         ) %>%
-          shiny::div(class = "space")
+          shiny::div(class = "space"),
+        footer = button(ns("ingestion_success_close"), "Close") # TODO copy
       )
     }) %>%
       shiny::bindEvent(r$do_ingestion)
 
     shiny::observe({
       shiny::removeModal()
-      mod_reset_server("ingestion_reset", show_ui = FALSE)
+      mod_reset_server("ingestion_reset", r, show_ui = FALSE, show_confirm = FALSE)
     }) %>%
       shiny::bindEvent(input$ingestion_success_close)
   })
