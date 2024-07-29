@@ -66,8 +66,6 @@ mod_map_coralnet_labels_to_mermaid_server <- function(id, r) {
       mermaid_benthic_attribute_display <- get_config("mermaid_attributes_columns")[["mermaid_attribute"]][["table_label"]]
       mermaid_growth_form_display <- get_config("mermaid_attributes_columns")[["mermaid_growth_form"]][["table_label"]]
 
-      browser()
-
       coralnet_mermaid_mapping() %>%
         rhandsontable::rhandsontable(
           rowHeaders = FALSE, # Remove row numbers
@@ -83,17 +81,25 @@ mod_map_coralnet_labels_to_mermaid_server <- function(id, r) {
         rhandsontable::hot_col(mermaid_benthic_attribute_display,
           type = "autocomplete",
           source = benthic_attribute_levels,
-          strict = TRUE) %>%
+          strict = TRUE
+        ) %>%
         rhandsontable::hot_col(mermaid_growth_form_display,
           type = "autocomplete",
           source = c(NA_character_, r$growth_forms), # To allow it to be empty?
-          strict = TRUE) %>%
+          strict = TRUE
+        ) %>%
         # Highlight cells that need to be filled out %>%
         rhandsontable::hot_col(mermaid_benthic_attribute_display, renderer = "
            function (instance, td, row, col, prop, value, cellProperties) {
              Handsontable.renderers.NumericRenderer.apply(this, arguments);
+              // Add down arrow back in, it goes missing for some reason <3
+              var arrow = document.createElement('div');
+              arrow.classList.add('htAutocompleteArrow');
+              arrow.innerHTML = '&#9660';
+              td.appendChild(arrow);
+
              if (value === null) {
-              td.style.background.color = 'pink';
+              td.style.background = 'pink';
              }
 
            td

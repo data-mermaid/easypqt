@@ -106,6 +106,18 @@ hr {
   background-color: auto;
 }
 
+.handsontable .htAutocompleteArrow {
+  color: var(--color-grey-60) !important;
+}
+
+.handsontable td .htAutocompleteArrow:hover {
+  color: var(--color-grey-80) !important;
+}
+
+.handsontable td.htInvalid {
+  background-color: pink !important;
+}
+
 /* Spacing */
 
 .indent {

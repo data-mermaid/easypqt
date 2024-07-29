@@ -11,7 +11,7 @@ get_copy <- function(key, secondary_key = NULL) {
   }
 }
 
-close_button <- shiny::modalButton("Close")
+close_button <- shiny::modalButton("Close") # TODO copy
 
 modal <- function(..., title = NULL, footer, size = "m", disable_footer = FALSE) {
   if (disable_footer) {

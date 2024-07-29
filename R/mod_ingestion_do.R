@@ -9,7 +9,9 @@
 #' @importFrom shiny NS tagList
 mod_ingestion_do_ui <- function(id) {
   ns <- NS(id)
-  tagList()
+  tagList(
+    mod_reset_ui(ns("ingestion_reset"), show_ui = FALSE)
+  )
 }
 
 #' ingestion_do Server Functions
@@ -46,12 +48,19 @@ mod_ingestion_do_server <- function(id, r) {
         success_button(
           ns("go_to_mermaid"),
           get_copy("ingestion_success", "button"),
-          onclick = glue::glue("window.open('{link}', '_blank')", link = collect_url)
+          onclick = glue::glue("window.open('{link}', '_blank')", link = collect_url),
+          footer = button(ns("ingestion_success_close"), "Close") # TODO copy
         ) %>%
           shiny::div(class = "space")
       )
     }) %>%
       shiny::bindEvent(r$do_ingestion)
+
+    shiny::observe({
+      shiny::removeModal()
+      mod_reset_server("ingestion_reset", show_ui = FALSE)
+    }) %>%
+      shiny::bindEvent(input$ingestion_success_close)
   })
 }
 
@@ -92,7 +101,6 @@ ingest_and_handle_errors <- function(data, project, token, dryrun) {
       title = get_copy("ingestion_error", "title"),
       shiny::div(shiny::HTML(get_copy("ingestion_error", "text"))),
       shiny::div(class = "error", modal_message),
-      ## TODO -> download data again?
     )
   }
 
