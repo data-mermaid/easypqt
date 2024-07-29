@@ -80,24 +80,24 @@ mod_map_coralnet_labels_to_mermaid_server <- function(id, r) {
         rhandsontable::hot_col(coralnet_label_display, readOnly = TRUE) %>%
         # Enable column sorting
         rhandsontable::hot_cols(columnSorting = TRUE) %>%
-        # Highlight cells that need to be filled out %>%
-        rhandsontable::hot_col(mermaid_benthic_attribute_display, renderer = "
-           function (instance, td, row, col, prop, value, cellProperties) {
-             Handsontable.renderers.NumericRenderer.apply(this, arguments);
-             if (value === null) {
-              td.style.background = 'pink';
-             }
-           }") %>%
         rhandsontable::hot_col(mermaid_benthic_attribute_display,
-          # type = "dropdown",
           type = "autocomplete",
           source = benthic_attribute_levels,
           strict = TRUE) %>%
         rhandsontable::hot_col(mermaid_growth_form_display,
           type = "autocomplete",
-          # type = "dropdown",
           source = c(NA_character_, r$growth_forms), # To allow it to be empty?
-          strict = TRUE)
+          strict = TRUE) %>%
+        # Highlight cells that need to be filled out %>%
+        rhandsontable::hot_col(mermaid_benthic_attribute_display, renderer = "
+           function (instance, td, row, col, prop, value, cellProperties) {
+             Handsontable.renderers.NumericRenderer.apply(this, arguments);
+             if (value === null) {
+              td.style.background.color = 'pink';
+             }
+
+           td
+           }")
     })
     # The flow is:
     # Show the mapping that there is, but make the MERMAID attribute editable if that's not what they want to map it to
