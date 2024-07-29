@@ -66,6 +66,8 @@ mod_map_coralnet_labels_to_mermaid_server <- function(id, r) {
       mermaid_benthic_attribute_display <- get_config("mermaid_attributes_columns")[["mermaid_attribute"]][["table_label"]]
       mermaid_growth_form_display <- get_config("mermaid_attributes_columns")[["mermaid_growth_form"]][["table_label"]]
 
+      browser()
+
       coralnet_mermaid_mapping() %>%
         rhandsontable::rhandsontable(
           rowHeaders = FALSE, # Remove row numbers
@@ -87,17 +89,15 @@ mod_map_coralnet_labels_to_mermaid_server <- function(id, r) {
              }
            }") %>%
         rhandsontable::hot_col(mermaid_benthic_attribute_display,
-          type = "dropdown",
-          # type = "autocomplete",
+          # type = "dropdown",
+          type = "autocomplete",
           source = benthic_attribute_levels,
-          strict = TRUE
-        ) %>%
+          strict = TRUE) %>%
         rhandsontable::hot_col(mermaid_growth_form_display,
-          # type = "autocomplete",
-          type = "dropdown",
+          type = "autocomplete",
+          # type = "dropdown",
           source = c(NA_character_, r$growth_forms), # To allow it to be empty?
-          strict = TRUE
-        )
+          strict = TRUE)
     })
     # The flow is:
     # Show the mapping that there is, but make the MERMAID attribute editable if that's not what they want to map it to
