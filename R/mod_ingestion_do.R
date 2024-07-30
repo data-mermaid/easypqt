@@ -29,29 +29,50 @@ mod_ingestion_do_server <- function(id, r) {
 
       dry_run_success <- ingest_and_handle_errors(ingestion_data, r$project, r$mermaidr_token, dryrun = TRUE)
 
+      browser()
+
       # Do actual import if no errors in dry run ----
-
-      shiny::req(dry_run_success)
-
-      import_success <- ingest_and_handle_errors(ingestion_data, r$project, r$mermaidr_token, dryrun = FALSE)
+      if (dry_run_success[["success"]]) {
+        import_success <- ingest_and_handle_errors(ingestion_data, r$project, r$mermaidr_token, dryrun = FALSE)
+      } else {
+        import_success <- dry_run_success
+      }
 
       # If actual import is successful, show a modal with this information, and for them to go into Collect and validate/submit -----
+      # Otherwise, show the error - either the dry run error, or the non-dry run error if dry run was successful but the actual import was not
 
-      shiny::req(import_success)
+      if (import_success[["success"]]) {
 
-      collect_url_skeleton <- ifelse(r$prod, get_copy("ingestion_success", "collect_url_prod"), get_copy("ingestion_success", "collect_url_dev"))
-      collect_url <- glue::glue(collect_url_skeleton, .envir = list(project = r$project))
+        collect_url_skeleton <- ifelse(r$prod, get_copy("ingestion_success", "collect_url_prod"), get_copy("ingestion_success", "collect_url_dev"))
+        collect_url <- glue::glue(collect_url_skeleton, .envir = list(project = r$project))
+
+        modal_title <- title <- get_copy("ingestion_success", "title")
+
+        modal_content <- shiny::tagList(
+          shiny::div(shiny::HTML(get_copy("ingestion_success", "text"))),
+          success_button(
+            ns("go_to_mermaid"),
+            get_copy("ingestion_success", "button"),
+            onclick = glue::glue("window.open('{link}', '_blank')", link = collect_url)
+          ) %>%
+            shiny::div(class = "space")
+        )
+
+      } else {
+
+        modal_title <- get_copy("ingestion_error", "title")
+        modal_content <- shiny::tagList(
+          shiny::div(shiny::HTML(get_copy("ingestion_error", "text"))),
+          shiny::div(class = "error", skeleton_to_text(get_copy("ingestion_error", "error"), list(project = r$project, error = import_success[["error"]])))
+        )
+
+      }
+      modal_close <- button(ns("ingestion_close"), "Close") # TODO copy
 
       show_modal(
-        title = get_copy("ingestion_success", "title"),
-        shiny::div(shiny::HTML(get_copy("ingestion_success", "text"))),
-        success_button(
-          ns("go_to_mermaid"),
-          get_copy("ingestion_success", "button"),
-          onclick = glue::glue("window.open('{link}', '_blank')", link = collect_url)
-        ) %>%
-          shiny::div(class = "space"),
-        footer = button(ns("ingestion_success_close"), "Close") # TODO copy
+        title = modal_title,
+        modal_content,
+        footer = modal_close
       )
     }) %>%
       shiny::bindEvent(r$do_ingestion)
@@ -60,7 +81,7 @@ mod_ingestion_do_server <- function(id, r) {
       shiny::removeModal()
       mod_reset_server("ingestion_reset", r, show_ui = FALSE, show_confirm = FALSE)
     }) %>%
-      shiny::bindEvent(input$ingestion_success_close)
+      shiny::bindEvent(input$ingestion_close)
   })
 }
 
@@ -91,21 +112,14 @@ ingest_and_handle_errors <- function(data, project, token, dryrun) {
       sink()
       ingest_error <- readLines(t) %>% paste0(collapse = "<br>")
     }
-
-
-    # Generate message for modal
-    modal_message <- skeleton_to_text(get_copy("ingestion_error", "error"), list(project = project, error = ingest_error))
-
-    # Show modal
-    show_modal(
-      title = get_copy("ingestion_error", "title"),
-      shiny::div(shiny::HTML(get_copy("ingestion_error", "text"))),
-      shiny::div(class = "error", modal_message),
-    )
+  } else {
+    ingest_error <- NULL
   }
 
-  # Return results
-  res_success
+  list(
+    success = res_success,
+    error = ingest_error
+  )
 }
 
 ## To be copied in the UI
