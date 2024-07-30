@@ -59,7 +59,7 @@ golem_add_external_resources <- function() {
     app_sys("app/www")
   )
   shiny::tags$head(
-    favicon(),
+    favicon(ext = "png"),
     bundle_resources(
       path = app_sys("app/www"),
       app_title = get_copy("title")
