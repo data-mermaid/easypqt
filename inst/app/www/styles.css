@@ -128,6 +128,14 @@ hr {
   margin: 1rem 0;
 }
 
+.large {
+  font-size: var(--18px);
+}
+
+.constrained-col {
+  max-width: 20rem;
+}
+
 .validating-aux {
   margin-bottom: 1rem;
 }

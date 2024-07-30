@@ -83,6 +83,10 @@ spaced <- function(...) {
   shiny::div(class = "space", ...)
 }
 
+large <- function(...) {
+  shiny::div(class = "large", ...)
+}
+
 left_right <- function(...) {
   shiny::div(class = "left-right", ...)
 }

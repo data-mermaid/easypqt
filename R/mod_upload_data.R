@@ -25,7 +25,7 @@ mod_upload_data_server <- function(id, r) {
           shiny::div(
             id = "upload-parent",
             shiny::h2(get_copy("upload_data", "title")),
-            shiny::div(get_copy("upload_data", "text")),
+            spaced(get_copy("upload_data", "text")),
             shiny::fileInput(ns("annotations"),
               label = NULL,
               accept = ".csv"

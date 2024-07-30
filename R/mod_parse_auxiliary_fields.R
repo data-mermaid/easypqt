@@ -62,10 +62,12 @@ mod_map_auxiliary_fields_server <- function(id, r) {
         value = "map-auxiliary-fields",
         shiny::tagList(
           spaced(get_copy("auxiliary", "text")),
+          shiny::hr(),
           indent(
             shiny::h3(get_copy("auxiliary", "preview")),
             spaced(get_copy("auxiliary", "preview_text")),
             DT::dataTableOutput(ns("data_preview")),
+            shiny::hr(),
             shiny::h3(get_copy("auxiliary", "map")),
             spaced(get_copy("auxiliary", "map_text")),
             shiny::uiOutput(ns("inputs"))
@@ -289,7 +291,7 @@ make_mapping_dropdown_ui <- function(auxiliary_column_map, auxiliary_column, r, 
       shiny::tags$b(auxiliary_column_map[["label"]])
     ),
     shiny::column(
-      width = 3,
+      width = 6,
       shinyWidgets::pickerInput(
         inputId = ns(auxiliary_column),
         label = NULL,
@@ -302,7 +304,7 @@ make_mapping_dropdown_ui <- function(auxiliary_column_map, auxiliary_column, r, 
           noneSelectedText = get_copy("auxiliary", "placeholder")
         )
       )
-    )
+    ) %>% tagAppendAttributes(class = "constrained-col")
   )
 }
 
