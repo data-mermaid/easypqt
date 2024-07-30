@@ -21,6 +21,7 @@ app_ui <- function(request) {
       large(
         spaced(get_copy("preamble"))
       ),
+      shiny::hr(),
       left_right(
         # Get projects ----
         mod_select_project_ui("select_project"),

@@ -29,8 +29,6 @@ mod_ingestion_do_server <- function(id, r) {
 
       dry_run_success <- ingest_and_handle_errors(ingestion_data, r$project, r$mermaidr_token, dryrun = TRUE)
 
-      browser()
-
       # Do actual import if no errors in dry run ----
       if (dry_run_success[["success"]]) {
         import_success <- ingest_and_handle_errors(ingestion_data, r$project, r$mermaidr_token, dryrun = FALSE)

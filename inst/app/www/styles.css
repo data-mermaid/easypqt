@@ -78,10 +78,14 @@ hr {
   height: calc(var(--32px) + 1.5rem*2 + 2rem*2);
 }
 
-/* Position auth/reset */
+/* Positioning */
 .left-right {
   display: flex;
   justify-content: space-between;
+}
+
+.left-right h2 {
+  margin-top: 0;
 }
 
 /* Add top border to all accordion items */
