@@ -65,6 +65,7 @@ mod_select_project_server <- function(id, r) {
 
       if (!r$is_project_admin) {
         show_not_project_admin_modal(r)
+        r$step_select_valid_project_done <- FALSE
       } else {
         r$step_select_valid_project_done <- TRUE
       }
