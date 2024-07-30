@@ -13,7 +13,7 @@ select_project:
     Please <a href="https://datamermaid.org/contact-project?project_id={project_id}" target="_blank">contact the project administrators</a> to change your role to Admin.
 upload_annotations:
   title: Upload CoralNet annotations
-  text: Upload your data by clicking the "Browse..." button. Please ensure your data is in a Comma Separated Value (CSV) format (link for saving data to CSV: https://support.microsoft.com/en-us/office/save-a-workbook-to-text-format-txt-or-csv-3e9a9d6c-70da-4255-aa28-fcacf1f081e6).
+  text: 'Upload your data by clicking the "Browse..." button. Please ensure your data is in a Comma Separated Value (CSV) format (link for saving data to CSV: https://support.microsoft.com/en-us/office/save-a-workbook-to-text-format-txt-or-csv-3e9a9d6c-70da-4255-aa28-fcacf1f081e6).'
   missing_instructions: The uploaded annotations do not contain the required columns.
     To get the correct data from CoralNet, export the annotations as a CSV with the
     optional columns "Image metadata - date and auxiliary fields" checked, as shown
