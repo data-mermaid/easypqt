@@ -38,6 +38,7 @@ mod_reset_server <- function(id, r, show_ui = TRUE, show_confirm = TRUE) {
     # Only show the confirmation dialog if show_confirm = TRUE (e.g. not after ingestion success or failure)
     if (show_confirm) {
       shiny::observe({
+        browser()
         show_modal(
           get_copy("reset", "title"),
           spaced(
@@ -50,14 +51,15 @@ mod_reset_server <- function(id, r, show_ui = TRUE, show_confirm = TRUE) {
         )
       }) %>%
         shiny::bindEvent(input$reset)
+
+      shiny::observe({
+        r$reset_confirm_counter <- r$reset_confirm_counter + 1
+      }) %>%
+        shiny::bindEvent(input$reset_confirm)
     } else {
       # Otherwise, just trigger the counter reset
       shiny::observe({
-        if (is.null(r$reset_confirm_counter)) {
-          r$reset_confirm_counter <- 1
-        } else {
           r$reset_confirm_counter <- r$reset_confirm_counter + 1
-        }
       }) %>%
         shiny::bindEvent(input$reset)
     }
@@ -65,8 +67,9 @@ mod_reset_server <- function(id, r, show_ui = TRUE, show_confirm = TRUE) {
 
 
     shiny::observe({
-      # To refrain from needing to do req(r$reset > 0), since bindEvent will not pick it up if it's NULL
+      shiny::req(r$reset_confirm_counter > 0)
 
+      # To refrain from needing to do req(r$reset > 0), since bindEvent will not pick it up if it's NULL
       if (is.null(r$reset)) {
         r$reset <- 1
       } else {
@@ -90,8 +93,9 @@ mod_reset_server <- function(id, r, show_ui = TRUE, show_confirm = TRUE) {
       r$step_map_coralnet_labels_done <- FALSE
       r$step_map_coralnet_labels_fully_done <- FALSE
       r$preview_confirm_shown <- 0
+      r$reset_confirm_counter <- 0
     }) %>%
-      shiny::bindEvent(input$reset_confirm, r$reset_confirm_counter)
+      shiny::bindEvent(r$reset_confirm_counter)
 
     # Just close the modal on cancel
     shiny::observe({

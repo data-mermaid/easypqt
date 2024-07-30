@@ -64,7 +64,8 @@ app_server <- auth0_server(function(input, output, session) {
     step_map_coralnet_labels_accordion_made_done = FALSE,
     step_map_coralnet_labels_done = FALSE,
     step_map_coralnet_labels_fully_done = FALSE,
-    preview_confirm_shown = 0
+    preview_confirm_shown = 0,
+    reset_confirm_counter = 0
     # dev_scenario = "some_good_some_wrong"
     # dev_scenario = "transect_decimal"
   )
