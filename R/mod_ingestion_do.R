@@ -42,7 +42,6 @@ mod_ingestion_do_server <- function(id, r) {
       # Otherwise, show the error - either the dry run error, or the non-dry run error if dry run was successful but the actual import was not
 
       if (import_success[["success"]]) {
-
         collect_url_skeleton <- ifelse(r$prod, get_copy("ingestion_success", "collect_url_prod"), get_copy("ingestion_success", "collect_url_dev"))
         collect_url <- glue::glue(collect_url_skeleton, .envir = list(project = r$project))
 
@@ -57,15 +56,12 @@ mod_ingestion_do_server <- function(id, r) {
           ) %>%
             shiny::div(class = "space")
         )
-
       } else {
-
         modal_title <- get_copy("ingestion_error", "title")
         modal_content <- shiny::tagList(
           shiny::div(shiny::HTML(get_copy("ingestion_error", "text"))),
           shiny::div(class = "error", skeleton_to_text(get_copy("ingestion_error", "error"), list(project = r$project, error = import_success[["error"]])))
         )
-
       }
       modal_close <- button(ns("ingestion_close"), "Close") # TODO copy
 

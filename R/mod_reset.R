@@ -59,7 +59,7 @@ mod_reset_server <- function(id, r, show_ui = TRUE, show_confirm = TRUE) {
     } else {
       # Otherwise, just trigger the counter reset
       shiny::observe({
-          r$reset_confirm_counter <- r$reset_confirm_counter + 1
+        r$reset_confirm_counter <- r$reset_confirm_counter + 1
       }) %>%
         shiny::bindEvent(input$reset)
     }

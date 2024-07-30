@@ -67,7 +67,7 @@ mod_map_auxiliary_fields_server <- function(id, r) {
             spaced(get_copy("auxiliary", "preview_text")),
             DT::dataTableOutput(ns("data_preview")),
             shiny::h3(get_copy("auxiliary", "map")),
-spaced(get_copy("auxiliary", "map_text")),
+            spaced(get_copy("auxiliary", "map_text")),
             shiny::uiOutput(ns("inputs"))
           )
         )
