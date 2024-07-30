@@ -175,9 +175,9 @@ hr {
 
 /* Modal */
 
-.modal_content {
-  max-height: 75vh;
-  overflow-y: scroll;
+.modal-body {
+  max-height: 75vh !important;
+  overflow-y: auto !important;
 }
 
 /* Ingestion error */

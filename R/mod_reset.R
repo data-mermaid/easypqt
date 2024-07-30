@@ -38,7 +38,6 @@ mod_reset_server <- function(id, r, show_ui = TRUE, show_confirm = TRUE) {
     # Only show the confirmation dialog if show_confirm = TRUE (e.g. not after ingestion success or failure)
     if (show_confirm) {
       shiny::observe({
-        browser()
         show_modal(
           get_copy("reset", "title"),
           spaced(

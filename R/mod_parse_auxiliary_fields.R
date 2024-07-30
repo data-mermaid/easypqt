@@ -232,7 +232,7 @@ mod_map_auxiliary_fields_server <- function(id, r) {
           shiny::div(class = "validating-aux", get_copy("auxiliary_validating", "fix")),
           site_ui[["ui"]],
           management_ui[["ui"]],
-          transect_number_ui[["ui"]],
+          transect_number_ui[["ui"]]
         )
       }
     })
