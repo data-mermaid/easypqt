@@ -55,7 +55,7 @@ mod_ingestion_preview_and_confirm_server <- function(id, r) {
         title = shiny::h2(get_copy("preview", "title")),
         value = "preview-download-confirm",
         shiny::tagList(
-          get_copy("preview", "text"),
+          spaced(get_copy("preview", "text")),
           indent(
             left_right(
               shiny::div(),

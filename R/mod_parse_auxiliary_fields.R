@@ -61,13 +61,13 @@ mod_map_auxiliary_fields_server <- function(id, r) {
         title = shiny::h2(get_copy("auxiliary", "title")),
         value = "map-auxiliary-fields",
         shiny::tagList(
-          get_copy("auxiliary", "text"),
+          spaced(get_copy("auxiliary", "text")),
           indent(
             shiny::h3(get_copy("auxiliary", "preview")),
-            get_copy("auxiliary", "preview_text"),
+            spaced(get_copy("auxiliary", "preview_text")),
             DT::dataTableOutput(ns("data_preview")),
             shiny::h3(get_copy("auxiliary", "map")),
-            get_copy("auxiliary", "map_text"),
+spaced(get_copy("auxiliary", "map_text")),
             shiny::uiOutput(ns("inputs"))
           )
         )
@@ -284,12 +284,12 @@ make_mapping_dropdown_ui <- function(auxiliary_column_map, auxiliary_column, r, 
 
   shiny::fluidRow(
     shiny::column(
-      width = 6,
+      width = 3,
       # TODO: Vertically align with input
       shiny::tags$b(auxiliary_column_map[["label"]])
     ),
     shiny::column(
-      width = 6,
+      width = 3,
       shinyWidgets::pickerInput(
         inputId = ns(auxiliary_column),
         label = NULL,

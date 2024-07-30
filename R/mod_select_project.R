@@ -11,7 +11,7 @@ mod_select_project_ui <- function(id) {
 
   shiny::div(
     shiny::h2(get_copy("select_project", "title")),
-    shiny::div(get_copy("select_project", "text")),
+    spaced(get_copy("select_project", "text")),
     shinyWidgets::pickerInput(
       ns("project"),
       label = NULL,

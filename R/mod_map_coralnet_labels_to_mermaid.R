@@ -120,7 +120,7 @@ mod_map_coralnet_labels_to_mermaid_server <- function(id, r) {
         title = shiny::h2(get_copy("mapping", "title")),
         value = "map-coralnet-labels",
         shiny::tagList(
-          title = shiny::h2(get_copy("mapping", "text")),
+          spaced(get_copy("mapping", "text")),
           indent(
             shiny::div(
               class = "handsontable-parent",

@@ -18,14 +18,13 @@ app_ui <- function(request) {
         shiny::h1(get_copy("title")),
         shiny::hr()
       ),
-      shiny::div(get_copy("preamble")),
       left_right(
-        # Loading projects ----
-        # Get projects ----
-        mod_select_project_ui("select_project"),
-        # Reset
-        mod_reset_ui("reset"),
+        shiny::div(),
+        mod_reset_ui("reset")
       ),
+      shiny::div(get_copy("preamble")),
+      # Get projects ----
+      mod_select_project_ui("select_project"),
       # Upload CoralNet annotations ----
       mod_upload_data_ui("upload_data"),
       # Parse CoralNet annotations ----
