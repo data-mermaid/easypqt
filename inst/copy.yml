@@ -1,6 +1,11 @@
 title: Easy PQT
 loading: Loading Easy PQT...
-preamble: Welcome to Easy PQT! Easy PQT is designed to help you import your benthic photo quadrat data exported from CoralNet. We've mapped most of the labels in CoralNet to MERMAID's Benthic attributes and Growth forms. Please note that after you successfully imported your data, there is still information that needs to be filled, especially the mandatory fields such as depth, transect length surveyed, quadrat number start, quadrat size, number of quadrats, number of points per quadrat, and observers.
+preamble: Welcome to Easy PQT! Easy PQT is designed to help you import your benthic
+  photo quadrat data exported from CoralNet. We've mapped most of the labels in CoralNet
+  to MERMAID's Benthic attributes and Growth forms. Please note that after you successfully
+  imported your data, there is still information that needs to be filled, especially
+  the mandatory fields such as depth, transect length surveyed, quadrat number start,
+  quadrat size, number of quadrats, number of points per quadrat, and observers.
 select_project:
   title: Project
   text: Select the project you want to import your data into
@@ -13,7 +18,8 @@ select_project:
     Please <a href="https://datamermaid.org/contact-project?project_id={project_id}" target="_blank">contact the project administrators</a> to change your role to Admin.
 upload_data:
   title: Upload CoralNet annotations
-  text: 'Upload your data by clicking the "Browse..." button. Please ensure your data is in a Comma Separated Value (CSV) format (link for saving data to CSV: https://support.microsoft.com/en-us/office/save-a-workbook-to-text-format-txt-or-csv-3e9a9d6c-70da-4255-aa28-fcacf1f081e6).'
+  text: 'Upload your data by clicking the "Browse..." button. Please ensure your data
+    is in a Comma Separated Value (CSV) format (link for saving data to CSV: https://support.microsoft.com/en-us/office/save-a-workbook-to-text-format-txt-or-csv-3e9a9d6c-70da-4255-aa28-fcacf1f081e6).'
   missing_instructions: The uploaded annotations do not contain the required columns.
     To get the correct data from CoralNet, export the annotations as a CSV with the
     optional columns "Image metadata - date and auxiliary fields" checked, as shown
@@ -33,11 +39,17 @@ invalid_values: |-
   Valid values of {label} are: {valid_values}
 auxiliary:
   title: Map CoralNet auxiliary fields
-  text: In this section, you will need to map your auxiliary fields to match the fields that are required to import your data to MERMAID. After selecting the right column, MERMAID will validate your data to make sure it matches the available options in your project. Make sure that the Site and Management regime in your data are available in your project. After you receive a message "All auxiliary fields are valid!", then you're good to go.
+  text: In this section, you will need to map your auxiliary fields to match the fields
+    that are required to import your data to MERMAID. After selecting the right column,
+    MERMAID will validate your data to make sure it matches the available options
+    in your project. Make sure that the Site and Management regime in your data are
+    available in your project. After you receive a message "All auxiliary fields are
+    valid!", then you're good to go.
   preview: Auxiliary fields preview
   preview_text: Here's what your data look like
   map: Map auxiliary fields
-  map_text: Choose the right auxiliary field that has Site, Management, and Transect number data by selecting from the dropdown list for each field.
+  map_text: Choose the right auxiliary field that has Site, Management, and Transect
+    number data by selecting from the dropdown list for each field.
   placeholder: Select an auxiliary field
 auxiliary_validating:
   title: Validating fields
@@ -47,14 +59,26 @@ auxiliary_validating:
   fix: There are some issues with the auxiliary column values, as described below.
     Please fix invalid values in CoralNet before continuing.
 mapping:
-  title: "Map CoralNet Labels to MERMAID Attributes"
-  text: This section will match CoralNet labels to MERMAID benthic attributes and growth forms. If a label is not listed in MERMAID's database, an empty field highlighted with red will appear next to the unknown label. Please choose the right benthic attributes and/or growth forms by clicking the field and type and choose the right benthic attribute and/or growth form from the drop-down list then click "Confirm" when ready.
+  title: Map CoralNet Labels to MERMAID Attributes
+  text: This section will match CoralNet labels to MERMAID benthic attributes and
+    growth forms. If a label is not listed in MERMAID's database, an empty field highlighted
+    with red will appear next to the unknown label. Please choose the right benthic
+    attributes and/or growth forms by clicking the field and type and choose the right
+    benthic attribute and/or growth form from the drop-down list then click "Confirm"
+    when ready.
 reshaping:
   title: Reshaping data
   text: Reshaping data into format required for MERMAID...
 preview:
   title: Preview data and confirm ingestion
-  text: Your data is now reshaped to match the MERMAID template. You can see you reshaped data in the table below. Check the result and make sure everything is correct, then click "Continue with ingestion" to import your data to your project in the MERMAID app. Now your data has been imported and ready to be validated and submitted in the MERMAID app. To download, click "Download reshaped data" button. If the data is not correct, you can choose to start over the ingestion process by clicking the "Restart process" button or "Get help" to have our team to support you in ingesting your data
+  text: Your data is now reshaped to match the MERMAID template. You can see you reshaped
+    data in the table below. Check the result and make sure everything is correct,
+    then click "Continue with ingestion" to import your data to your project in the
+    MERMAID app. Now your data has been imported and ready to be validated and submitted
+    in the MERMAID app. To download, click "Download reshaped data" button. If the
+    data is not correct, you can choose to start over the ingestion process by clicking
+    the "Restart process" button or "Get help" to have our team to support you in
+    ingesting your data
   download: Download reshaped data
   file: MERMAID Easy PQT Data - {project_name}.csv
 ingestion:
