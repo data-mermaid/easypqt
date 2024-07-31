@@ -118,8 +118,8 @@ hr {
   color: var(--color-grey-80) !important;
 }
 
-.handsontable td.htInvalid {
-  background-color: pink !important;
+#confirm-disabled {
+  color: red;
 }
 
 /* Spacing */

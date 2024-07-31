@@ -99,7 +99,7 @@ mod_map_coralnet_labels_to_mermaid_server <- function(id, r) {
               td.appendChild(arrow);
 
              if (value === null) {
-              td.style.background = 'pink';
+              td.style.background = 'red';
              }
 
            td
@@ -129,6 +129,7 @@ mod_map_coralnet_labels_to_mermaid_server <- function(id, r) {
             ),
             shiny::div(
               class = "space",
+              shiny::div(id = "confirm-disabled", spaced(get_copy("mapping", "not_allowed_to_confirm"))),
               shinyjs::disabled(success_button(ns("save_mapping"), "Confirm")),
               shinyjs::hidden(button(ns("edit"), "Edit"))
             )
@@ -174,8 +175,10 @@ mod_map_coralnet_labels_to_mermaid_server <- function(id, r) {
       mapping_valid <- no_empty_mapping & all_valid_mapping
 
       if (mapping_valid) {
+        shinyjs::hide("confirm-disabled", asis = TRUE)
         shinyjs::enable("save_mapping")
       } else {
+        shinyjs::show("confirm-disabled", asis = TRUE)
         shinyjs::disable("save_mapping")
         r$coralnet_mermaid_mapping <- NULL
       }

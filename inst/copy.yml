@@ -87,6 +87,8 @@ mapping:
     from the dropdown list for each field. </p><p> Once all CoralNet labels are mapped
     to valid MERMAID Benthic Attributes, you can click the "Confirm" button to continue
     with the ingestion process.</p>
+  not_allowed_to_confirm: All CoralNet labels must be mapped to valid MERMAID Benthic
+    Attributes to continue.
 reshaping:
   title: Reshaping data
   text: Reshaping data into format required for MERMAID...
