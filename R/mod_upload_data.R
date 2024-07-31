@@ -9,7 +9,8 @@ mod_upload_data_ui <- function(id) {
   ns <- NS(id)
   shiny::tagList(
     shiny::uiOutput(ns("upload")),
-    mod_upload_instructions_ui(ns("instructions_invalid"), show_ui = FALSE)
+    mod_upload_instructions_ui(ns("instructions_invalid"), show_ui = FALSE),
+    mod_upload_instructions_ui(ns("instructions_invalid_date"), show_ui = FALSE)
   )
 }
 
@@ -93,16 +94,26 @@ mod_upload_data_server <- function(id, r) {
         # Only read in the required columns
         r$annotations_raw <- readr::read_delim(input$annotations$datapath, show_col_types = FALSE, col_select = r$required_annotations_columns, delim = r$csv_sep)
 
-        # Disable data upload after a single upload - need to reset to change data
-        shinyjs::disable("annotations")
+        # Check that the Date column is formatted properly - if not, show a modal that there is an issue
+        invalid_dates <- r$annotations_raw[["Date"]] %>%
+          lubridate::ymd(quiet = TRUE) %>%
+          is.na() %>%
+          any()
 
-        # Pointer etc of disabling
-        # Disable pointer events on actual button, add style
-        # Not allowed cursor on parent div, add style
-        shinyjs::runjs("document.getElementById('upload-parent').getElementsByClassName('input-group')[0].style.pointerEvents = 'none'; document.getElementById('upload-parent').style.cursor = 'not-allowed';")
+        if (invalid_dates) {
+          mod_upload_instructions_server("instructions_invalid_date", show_ui = FALSE)
+        } else {
+          # Disable data upload after a single upload - need to reset to change data
+          shinyjs::disable("annotations")
 
-        # Flag that valid data has been uploaded
-        r$step_upload_valid_data_done <- TRUE
+          # Pointer etc of disabling
+          # Disable pointer events on actual button, add style
+          # Not allowed cursor on parent div, add style
+          shinyjs::runjs("document.getElementById('upload-parent').getElementsByClassName('input-group')[0].style.pointerEvents = 'none'; document.getElementById('upload-parent').style.cursor = 'not-allowed';")
+
+          # Flag that valid data has been uploaded
+          r$step_upload_valid_data_done <- TRUE
+        }
       }
     }) %>%
       shiny::bindEvent(input$annotations)
