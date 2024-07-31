@@ -62,10 +62,12 @@ app_server <- auth0_server(function(input, output, session) {
     step_map_auxiliary_fields_accordion_made_done = FALSE,
     step_map_auxiliary_fields_accordion_fully_done = FALSE,
     step_map_coralnet_labels_accordion_made_done = FALSE,
+    step_map_coralnet_labels_accordion_opened = FALSE,
     step_map_coralnet_labels_done = FALSE,
     step_map_coralnet_labels_fully_done = FALSE,
     preview_confirm_shown = 0,
-    reset_confirm_counter = 0
+    reset_confirm_counter = 0,
+    fix_height = 0
     # dev_scenario = "some_good_some_wrong"
     # dev_scenario = "transect_decimal"
   )
@@ -163,7 +165,38 @@ app_server <- auth0_server(function(input, output, session) {
 
     # Open panel
     bslib::accordion_panel_open("accordion", "map-coralnet-labels")
-  })
+
+    r$step_map_coralnet_labels_accordion_opened <- TRUE
+
+    # Add JS to check for labels table existing, then fix its height
+    update_height_script <- '
+	function checkForTable() {
+  var table = document.getElementById("map_auxliary_fields-map_coralnet_labels-mapping_table");
+
+  if (table) {
+    var wtHolder = table.getElementsByClassName("handsontable")[0].getElementsByClassName("wtHolder")[0];
+    var newHeight = wtHolder.getElementsByClassName("wtHider")[0].offsetHeight;
+    if (newHeight > 250) {
+      var parent = document.getElementById("handsontable-parent");
+      parent.style.height = "calc("500px + 1rem)";
+      parent.style.overflowY = "auto";
+      wtHolder.style.height = "500px";
+    }
+
+    clearInterval(intervalId);
+  }
+};
+
+var intervalId = setInterval(checkForTable, 100);'
+
+    shinyjs::runjs(glue::glue('
+                              var script = document.createElement("script");
+var scriptContent = `{update_height_script}`;
+
+script.textContent = scriptContent; document.head.appendChild(script);
+                              '))
+  }) %>%
+    shiny::bindEvent(r$step_map_auxiliary_fields_accordion_fully_done)
 
   ### Close panel if all labels are good ----
   shiny::observe({

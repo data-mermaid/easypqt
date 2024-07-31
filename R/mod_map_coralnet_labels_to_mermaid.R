@@ -123,7 +123,7 @@ mod_map_coralnet_labels_to_mermaid_server <- function(id, r) {
           spaced(get_copy("mapping", "text")),
           indent(
             shiny::div(
-              class = "handsontable-parent",
+              id = "handsontable-parent",
               rhandsontable::rHandsontableOutput(ns("mapping_table")) %>%
                 shinycssloaders::withSpinner()
             ),
@@ -149,7 +149,7 @@ mod_map_coralnet_labels_to_mermaid_server <- function(id, r) {
     # If none of `mermaid_attribute` are NA, then enable exiting the widget
     # Flag that the mapping is valid, and save the final mapping
     shiny::observe({
-      shiny::req(r$step_map_coralnet_labels_accordion_made_done)
+      shiny::req(r$step_map_coralnet_labels_accordion_opened)
       # The data in the table is named after the output, so it's input$mapping_table
       # Need to convert it to an R data frame using rhandsontable::hot_to_r()
 

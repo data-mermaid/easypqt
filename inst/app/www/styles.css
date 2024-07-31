@@ -97,13 +97,13 @@ hr {
 /* Editable table */
 
 .ht_master.handsontable > .wtHolder {
-  max-height: 500px !important;
+  max-height: 250px !important;
   width: auto !important;
 }
 
-.handsontable-parent {
-  height: 500px; /* Causes double scroll bar, but does not work without it <3 */
-  overflow-y: scroll;
+#handsontable-parent {
+  height: calc(250px + 1rem); /* Causes double scroll bar, but does not work without it <3 */
+  overflow-y: auto;
 }
 
 .handsontable tbody th.ht__active_highlight, .handsontable thead th.ht__active_highlight {

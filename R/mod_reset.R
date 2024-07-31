@@ -92,10 +92,12 @@ mod_reset_server <- function(id, r, show_ui = TRUE, show_confirm = TRUE) {
       r$step_map_auxiliary_fields_valid_done <- FALSE
       r$step_map_auxiliary_fields_accordion_fully_done <- FALSE
       r$step_map_coralnet_labels_accordion_made_done <- FALSE
+      step_map_coralnet_labels_accordion_opened <- FALSE
       r$step_map_coralnet_labels_done <- FALSE
       r$step_map_coralnet_labels_fully_done <- FALSE
       r$preview_confirm_shown <- 0
       r$reset_confirm_counter <- 0
+      r$fix_height <- 0
     }) %>%
       shiny::bindEvent(r$reset_confirm_counter)
 
