@@ -193,7 +193,7 @@ hr {
 /* Modal */
 
 .modal-body {
-  max-height: 75vh !important;
+  max-height: 50vh !important;
   overflow-y: auto !important;
 }
 
