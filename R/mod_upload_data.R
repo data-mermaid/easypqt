@@ -83,7 +83,11 @@ mod_upload_data_server <- function(id, r) {
           r$upload_contains_required_cols <- TRUE
           r$auxiliary_columns <- potential_aux_columns
           r$required_annotations_columns <- c(required_annotations_columns_start, r$auxiliary_columns, required_annotations_columns_end)
+        } else {
+          r$upload_contains_required_cols <- FALSE
         }
+      } else {
+        r$upload_contains_required_cols <- FALSE
       }
 
       # If it does not contain the correct columns, show a modal and do not allow them to continue
@@ -92,17 +96,18 @@ mod_upload_data_server <- function(id, r) {
       } else {
         # If it does contain the correct columns, read in the data and proceed
         # Only read in the required columns
-        r$annotations_raw <- readr::read_delim(input$annotations$datapath, show_col_types = FALSE, col_select = r$required_annotations_columns, delim = r$csv_sep)
+        annotations_raw <- readr::read_delim(input$annotations$datapath, show_col_types = FALSE, col_select = r$required_annotations_columns, delim = r$csv_sep)
 
         # Check that the Date column is formatted properly - if not, show a modal that there is an issue
-        invalid_dates <- r$annotations_raw[["Date"]] %>%
+        invalid_dates <- annotations_raw[["Date"]] %>%
           lubridate::ymd(quiet = TRUE) %>%
           is.na() %>%
           any()
 
         if (invalid_dates) {
-          mod_upload_instructions_server("instructions_invalid_date", show_ui = FALSE)
+          mod_upload_instructions_server("instructions_invalid_date", show_ui = FALSE, invalid = TRUE)
         } else {
+          r$annotations_raw <- annotations_raw
           # Disable data upload after a single upload - need to reset to change data
           shinyjs::disable("annotations")
 

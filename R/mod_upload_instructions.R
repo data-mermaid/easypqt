@@ -22,7 +22,7 @@ mod_upload_instructions_ui <- function(id, show_ui = TRUE) {
 #' upload_instructions Server Functions
 #'
 #' @noRd
-mod_upload_instructions_server <- function(id, show_ui = TRUE) {
+mod_upload_instructions_server <- function(id, show_ui = TRUE, invalid = FALSE) {
   moduleServer(id, function(input, output, session) {
     ns <- session$ns
 
@@ -37,8 +37,11 @@ mod_upload_instructions_server <- function(id, show_ui = TRUE) {
       # If show_ui is FALSE, that means the instructions were called without the user explicitly asking, e.g. they uploaded the wrong data - so show the text that states that is the case
       shiny::showModal(
         shiny::modalDialog(
-          if (!show_ui) {
+          if (!show_ui & !invalid) {
             shiny::tags$p(get_copy("upload_data", "missing_instructions"))
+          },
+          if (invalid) {
+            shiny::tags$p(get_copy("upload_data", "invalid_instructions"))
           },
           shiny::tags$p(get_copy("upload_data", "instructions")),
           shiny::tags$img(

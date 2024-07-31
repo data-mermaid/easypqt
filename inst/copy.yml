@@ -12,8 +12,9 @@ preamble: <p>Welcome to Easy PQT! Easy PQT is designed to help you ingest your B
   surveyed, quadrat size, number of points per quadrat, and observers. </p> <p> To
   begin, please make sure your project is set up in MERMAID and that your CoralNet
   data includes auxiliary fields that correspond to your MERMAID Sites and Managements,
-  as well as Transect numbers. You will need to upload the image annotations file
-  obtained directly from CoralNet, including the date and auxiliary fields columns.
+  as well as Transect numbers and dates for each image. You will need to upload the
+  image annotations file obtained directly from CoralNet, including the date and auxiliary
+  fields columns.
 select_project:
   title: MERMAID Project
   text: Select the project you want to ingest your data into
@@ -39,6 +40,9 @@ upload_data:
     select Optional Columns, and the option "Image metadata - date and auxiliary fields"
     is checked.'
   missing_instructions: The uploaded annotations do not contain the required columns.
+  invalid_instructions: The uploaded annotations contain some invalid values. Using
+    the instructions below, please export the annotations file from CoralNet and upload
+    it directly into Easy PQT without making any changes to it.
 non_empty_fields: |-
   {fields} cannot contain empty values. The following fields contain empty values: {list}
   Please update the data directly in CoralNet then begin the ingestion process again.
