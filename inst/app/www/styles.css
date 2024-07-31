@@ -144,6 +144,23 @@ hr {
   margin-bottom: 1rem;
 }
 
+
+.popover-header {
+  margin-top: 0;
+  font-size: var(--24px);
+}
+
+.popover-inner-header {
+  margin: 0.5rem 0;
+  font-size: var(--24px);
+}
+
+.popover-body {
+  max-height: 400px;
+  overflow-y: auto;
+  font-size: var(--20x) !important;
+}
+
 /* Colours */
 
 /* Inputs */

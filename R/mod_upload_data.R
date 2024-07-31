@@ -7,8 +7,10 @@
 #' @noRd
 mod_upload_data_ui <- function(id) {
   ns <- NS(id)
-
-  shiny::uiOutput(ns("upload"))
+  shiny::tagList(
+    shiny::uiOutput(ns("upload")),
+    mod_upload_instructions_ui(ns("instructions_invalid"), show_ui = FALSE)
+  )
 }
 
 #' upload_data Server Functions
@@ -25,7 +27,11 @@ mod_upload_data_server <- function(id, r) {
           shiny::div(
             id = "upload-parent",
             shiny::h2(get_copy("upload_data", "title")),
-            spaced(get_copy("upload_data", "text")),
+            spaced(
+              get_copy("upload_data", "text"),
+              mod_upload_instructions_ui(ns("instructions")),
+              shiny::HTML("</p>")
+            ),
             shiny::fileInput(ns("annotations"),
               label = NULL,
               accept = ".csv"
@@ -37,6 +43,9 @@ mod_upload_data_server <- function(id, r) {
       })
     }) %>%
       shiny::bindEvent(r$step_select_valid_project_done, r$reset)
+
+    # Upload instructions ----
+    mod_upload_instructions_server("instructions")
 
     # Check the file contains the correct columns ----
     shiny::observe({
@@ -78,19 +87,7 @@ mod_upload_data_server <- function(id, r) {
 
       # If it does not contain the correct columns, show a modal and do not allow them to continue
       if (!r$upload_contains_required_cols) {
-        shiny::showModal(
-          shiny::modalDialog(
-            shiny::div(get_copy("upload_data", "missing_instructions")),
-            shiny::tags$img(
-              src = get_config("upload_data_missing_img_path"),
-              alt = get_copy("upload_data", "missing_img_alt"),
-              style = "width: 100%"
-            ),
-            footer = close_button,
-            size = "m",
-            easyClose = TRUE
-          )
-        )
+        mod_upload_instructions_server("instructions_invalid", show_ui = FALSE)
       } else {
         # If it does contain the correct columns, read in the data and proceed
         # Only read in the required columns

@@ -3,18 +3,17 @@ loading: Loading Easy PQT...
 preamble: <p>Welcome to Easy PQT! Easy PQT is designed to help you ingest your Benthic
   Photo Quadrat data exported from CoralNet into MERMAID.</p> <p> Easy PQT will walk
   you through selecting a MERMAID project to ingest into, uploading your CoralNet
-  annotations, matching CoralNet auxiliary fields to required MERMAID fields, and
-  mapping CoralNet labels to MERMAID Benthic Attributes and Growth Forms. We've pre-mapped
-  most of the labels in CoralNet to MERMAID's Benthic Attributes and Growth Forms
-  in order to make the ingestion process as easy as possible. </p> <p> Please note
-  that after you have successfully ingested your data, there is still information
+  image annotations, matching CoralNet auxiliary fields to required MERMAID fields,
+  and mapping CoralNet labels to MERMAID Benthic Attributes and Growth Forms. We've
+  pre-mapped most of the labels in CoralNet to MERMAID's Benthic Attributes and Growth
+  Forms in order to make the ingestion process as easy as possible. </p> <p> Please
+  note that after you have successfully ingested your data, there is still information
   that needs to be filled out, including the mandatory fields of depth, transect length
   surveyed, quadrat size, number of points per quadrat, and observers. </p> <p> To
   begin, please make sure your project is set up in MERMAID and that your CoralNet
   data includes auxiliary fields that correspond to your MERMAID Sites and Managements,
-  as well as Transect numbers. You will need to upload the annotations Comma Separated
-  Value (CSV) file obtained directly from CoralNet, including the date and auxiliary
-  fields columns.</p>
+  as well as Transect numbers. You will need to upload the image annotations file
+  obtained directly from CoralNet, including the date and auxiliary fields columns.
 select_project:
   title: MERMAID Project
   text: Select the project you want to ingest your data into
@@ -28,16 +27,18 @@ upload_data:
   text: <p>Upload your data by clicking the "Browse..." button or by dragging the
     file directly into the upload field. </p> <p> Please ensure your data is the annotations
     file exported directly from CoralNet, including the date and auxiliary fields
-    columns.</p>
-  missing_instructions: <p>The uploaded annotations do not contain the required columns.
-    To get the correct data from CoralNet, export the annotations as a CSV with the
-    optional columns "Image metadata - date and auxiliary fields" checked, as shown
-    below.</p>
-  missing_img_alt: 'A screen shot of the "Image Actions" screen in CoralNet, showing
-    the Action: "Export Annotations, CSV" for these images: "All N image results".
-    The instructions read "Export annotations for these images in CSV format - one
-    row per annotation". There is a section to select Optional Columns, and the option
-    "Image metadata - date and auxiliary fields" is checked.'
+    columns.
+  instructions: The image annotations file can be found by navigating to "Images"
+    within a CoralNet project. Under "Image Actions", select "Export Annotations,
+    CSV", and select the optional columns "Image metadata - date and auxiliary fields",
+    as shown below.
+  instructions_img_alt: 'A screen shot of the "Image" page in CoralNet, highlighting
+    the "Image Actions" section with the Action: "Export Annotations, CSV" for these
+    images: "All N image results" selected. The instructions read "Export annotations
+    for these images in CSV format - one row per annotation". There is a section to
+    select Optional Columns, and the option "Image metadata - date and auxiliary fields"
+    is checked.'
+  missing_instructions: The uploaded annotations do not contain the required columns.
 non_empty_fields: |-
   {fields} cannot contain empty values. The following fields contain empty values: {list}
   Please update the data directly in CoralNet then begin the ingestion process again.
