@@ -62,12 +62,10 @@ app_server <- auth0_server(function(input, output, session) {
     step_map_auxiliary_fields_accordion_made_done = FALSE,
     step_map_auxiliary_fields_accordion_fully_done = FALSE,
     step_map_coralnet_labels_accordion_made_done = FALSE,
-    step_map_coralnet_labels_accordion_opened = FALSE,
     step_map_coralnet_labels_done = FALSE,
     step_map_coralnet_labels_fully_done = FALSE,
     preview_confirm_shown = 0,
-    reset_confirm_counter = 0,
-    fix_height = 0
+    reset_confirm_counter = 0
     # dev_scenario = "some_good_some_wrong"
     # dev_scenario = "transect_decimal"
   )
@@ -159,14 +157,12 @@ app_server <- auth0_server(function(input, output, session) {
   ## Map labels ----
 
   shiny::observe({
-    shiny::req(r$accordion_map_coralnet_labels)
+    shiny::req(r$step_map_auxiliary_fields_accordion_fully_done)
     # Insert panel
     bslib::accordion_panel_insert("accordion", r$accordion_map_coralnet_labels)
 
     # Open panel
     bslib::accordion_panel_open("accordion", "map-coralnet-labels")
-
-    r$step_map_coralnet_labels_accordion_opened <- TRUE
 
     # Add JS to check for labels table existing, then fix its height
     update_height_script <- '
