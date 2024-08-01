@@ -143,7 +143,7 @@ app_server <- auth0_server(function(input, output, session) {
     # Open panel
     bslib::accordion_panel_open("accordion", "map-auxiliary-fields")
 
-    scroll_to_open_accordion_js()
+    scroll_to_accordion("map_auxiliary_fields")
   }) %>%
     shiny::bindEvent(r$step_map_auxiliary_fields_accordion_made_done)
 
@@ -166,7 +166,7 @@ app_server <- auth0_server(function(input, output, session) {
     # Open panel
     bslib::accordion_panel_open("accordion", "map-coralnet-labels")
 
-    scroll_to_open_accordion_js()
+    scroll_to_accordion("map-coralnet-labels")
 
     # Add JS to check for labels table existing, then fix its height
     shiny::insertUI("head", where = "beforeEnd", shiny::includeScript(app_sys("adjustMappingTableHeight.js")))
@@ -185,14 +185,16 @@ app_server <- auth0_server(function(input, output, session) {
   ## Preview/download/confirm ---
 
   shiny::observe({
+    shiny::req(r$preview_confirm_shown > 0)
     # Insert panel
     bslib::accordion_panel_insert("accordion", r$accordion_preview_download_confirm)
 
     # Open panel
     bslib::accordion_panel_open("accordion", "preview-download-confirm")
 
-    scroll_to_open_accordion_js()
-  })
+    scroll_to_accordion("preview-download-confirm")
+  }) %>%
+    shiny::bindEvent(r$preview_confirm_shown)
 
   ## Remove panels on reset ----
 

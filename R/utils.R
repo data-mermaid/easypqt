@@ -170,20 +170,11 @@ tidy_config <- function() {
   tidy_yaml("config")
 }
 
-scroll_to_open_accordion_js <- function() {
+scroll_to_accordion <- function(id) {
+  id <- glue::glue('"{id}"')
+  # WIP, does not work for same reason table height checking does not initially - this code is run too soon
+  # TODO
   shinyjs::runjs(
-    "const accordionItems = document.querySelectorAll('.accordion-collapse');
-const acc = document.getElementById('accordion');
-
-accordionItems.forEach((el)=>{
-    el.addEventListener('shown.bs.collapse',(e)=>{
-        var scrollOffset = acc.scrollTop + el.parentNode.offsetTop;
-        acc.scroll({
-            top: scrollOffset,
-            left: 0,
-            behavior: 'smooth'
-        });
-    })
-});"
+    glue::glue("var section = $('.accordion-item[data-value='$$$id$$$']'); $('html, body').animate({ scrollTop: $(section).offset().top}, 'smooth');", .open = "$$$", .close = "$$$")
   )
 }
