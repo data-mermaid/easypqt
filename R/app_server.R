@@ -142,6 +142,8 @@ app_server <- auth0_server(function(input, output, session) {
 
     # Open panel
     bslib::accordion_panel_open("accordion", "map-auxiliary-fields")
+
+    scroll_to_open_accordion_js()
   }) %>%
     shiny::bindEvent(r$step_map_auxiliary_fields_accordion_made_done)
 
@@ -164,33 +166,10 @@ app_server <- auth0_server(function(input, output, session) {
     # Open panel
     bslib::accordion_panel_open("accordion", "map-coralnet-labels")
 
+    scroll_to_open_accordion_js()
+
     # Add JS to check for labels table existing, then fix its height
-    update_height_script <- '
-	function checkForTable() {
-  var table = document.getElementById("map_auxliary_fields-map_coralnet_labels-mapping_table");
-
-  if (table) {
-    var wtHolder = table.getElementsByClassName("handsontable")[0].getElementsByClassName("wtHolder")[0];
-    var newHeight = wtHolder.getElementsByClassName("wtHider")[0].offsetHeight;
-    if (newHeight > 250) {
-      var parent = document.getElementById("handsontable-parent");
-      parent.style.height = "calc("500px + 1rem)";
-      parent.style.overflowY = "auto";
-      wtHolder.style.height = "500px";
-    }
-
-    clearInterval(intervalId);
-  }
-};
-
-var intervalId = setInterval(checkForTable, 100);'
-
-    shinyjs::runjs(glue::glue('
-                              var script = document.createElement("script");
-var scriptContent = `{update_height_script}`;
-
-script.textContent = scriptContent; document.head.appendChild(script);
-                              '))
+    shiny::insertUI("head", where = "beforeEnd", shiny::includeScript(app_sys("adjustMappingTableHeight.js")))
   }) %>%
     shiny::bindEvent(r$step_map_auxiliary_fields_accordion_fully_done)
 
@@ -211,6 +190,8 @@ script.textContent = scriptContent; document.head.appendChild(script);
 
     # Open panel
     bslib::accordion_panel_open("accordion", "preview-download-confirm")
+
+    scroll_to_open_accordion_js()
   })
 
   ## Remove panels on reset ----

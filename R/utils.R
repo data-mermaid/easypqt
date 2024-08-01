@@ -169,3 +169,21 @@ tidy_copy <- function() {
 tidy_config <- function() {
   tidy_yaml("config")
 }
+
+scroll_to_open_accordion_js <- function() {
+  shinyjs::runjs(
+    "const accordionItems = document.querySelectorAll('.accordion-collapse');
+const acc = document.getElementById('accordion');
+
+accordionItems.forEach((el)=>{
+    el.addEventListener('shown.bs.collapse',(e)=>{
+        var scrollOffset = acc.scrollTop + el.parentNode.offsetTop;
+        acc.scroll({
+            top: scrollOffset,
+            left: 0,
+            behavior: 'smooth'
+        });
+    })
+});"
+  )
+}
