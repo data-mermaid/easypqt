@@ -144,20 +144,8 @@ enable_picker_input <- function(id) {
   shinyjs::runjs(glue::glue("let selector = $('#{id}'); selector.prop('disabled', false); selector.selectpicker('destroy'); selector.selectpicker();"))
 }
 
-iconlink <- function(id, name = "info-circle", aria_label = "info") {
-  htmltools::tags$a(shiny::icon(name = name),
-    id = id,
-    href = "#", `aria-label` = aria_label
-  )
-}
-
-help_text <- function(id, title, content) {
-  iconlink(id = id) %>%
-    bsplus::bs_embed_popover(title = title, content = content, placement = "right", container = "body", trigger = "focus", html = TRUE)
-}
-
 tidy_yaml <- function(file) {
-  file <- here::here("inst", glue::glue("{file}.yml"))
+  file <- app_sys(glue::glue("{file}.yml"))
 
   yaml::read_yaml(file) %>% yaml::write_yaml(file)
 }

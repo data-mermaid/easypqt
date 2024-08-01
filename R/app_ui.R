@@ -7,7 +7,6 @@ app_ui <- function(request) {
   shiny::tagList(
     golem_add_external_resources(),
     waiter::useWaiter(),
-    bsplus::use_bs_popover(),
     waiter::waiterShowOnLoad(html = shiny::h1(get_copy("loading")), color = "#174B82"),
     bslib::page_fixed(
       theme = bslib::bs_theme(version = 5, primary = "#174B82"),

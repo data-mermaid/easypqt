@@ -1,13 +1,15 @@
 Package: easypqt
-Title: An Amazing Shiny App
+Title: Import Bethic Photo Quadrat data from CoralNet into MERMAID
 Version: 0.0.0.9000
 Authors@R: 
-    person(given = "firstname",
-           family = "lastname",
+    c(person(given = "Sharla",
+           family = "Gelfand",
            role = c("aut", "cre"),
-           email = "your@email.com")
-Description: What the package does (one paragraph).
-License: What license is it under?
+           email = "sharla.gelfand@gmail.com"),
+      person(given = "Wildlife Conservation Society",
+             role = c("cph", "fnd")))
+Description: Easily import Benthic Photo Quadrat from CoralNet into MERMAID
+License: MIT + file LICENSE
 Imports: 
     auth0,
     bslib,
@@ -25,7 +27,6 @@ Imports:
     readr,
     rhandsontable,
     shiny (>= 1.7.5.1),
-    shinycssloaders,
     shinyjs,
     shinyWidgets,
     usethis,

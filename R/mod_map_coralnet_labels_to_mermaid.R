@@ -124,8 +124,7 @@ mod_map_coralnet_labels_to_mermaid_server <- function(id, r) {
           indent(
             shiny::div(
               id = "handsontable-parent",
-              rhandsontable::rHandsontableOutput(ns("mapping_table")) %>%
-                shinycssloaders::withSpinner()
+              rhandsontable::rHandsontableOutput(ns("mapping_table"))
             ),
             shiny::div(
               class = "space",
@@ -167,10 +166,6 @@ mod_map_coralnet_labels_to_mermaid_server <- function(id, r) {
           known_mapping()[["mermaid_attribute"]]
         )) %>%
         nrow() == 0
-
-      if (!all_valid_mapping) {
-        # TODO - show invalid modal?
-      }
 
       mapping_valid <- no_empty_mapping & all_valid_mapping
 

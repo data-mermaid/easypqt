@@ -142,8 +142,7 @@ mod_map_auxiliary_fields_server <- function(id, r) {
       cat("Checking aux \n")
       show_modal(
         title = get_copy("auxiliary_validating", "title"),
-        get_copy("auxiliary_validating", "checking"),
-        shiny::br(), # TODO
+        spaced(get_copy("auxiliary_validating", "checking")),
         footer = NULL
       )
       Sys.sleep(1)

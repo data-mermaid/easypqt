@@ -29,8 +29,7 @@ mod_reshape_annotations_server <- function(id, r) {
       cat("Reshaping \n")
       show_modal(
         title = get_copy("reshaping", "title"),
-        get_copy("reshaping", "text"),
-        shiny::br(), # TODO
+        spaced(get_copy("reshaping", "text")),
         footer = NULL
       )
       Sys.sleep(1)

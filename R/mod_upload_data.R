@@ -53,7 +53,7 @@ mod_upload_data_server <- function(id, r) {
       cols <- readr::read_csv(input$annotations$datapath, n_max = 0, show_col_types = FALSE)
 
       # Check if it is semicolon separated
-      if (ncol(cols) == 1 & all(stringr::str_detect(names(cols), ";"))) {
+      if (ncol(cols) == 1 & all(grepl(";", names(cols)))) {
         r$csv_sep <- ";"
         cols <- readr::read_delim(input$annotations$datapath, n_max = 0, show_col_types = FALSE, delim = r$csv_sep)
       } else {
