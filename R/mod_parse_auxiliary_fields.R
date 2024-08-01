@@ -139,6 +139,7 @@ mod_map_auxiliary_fields_server <- function(id, r) {
 
       shiny::req(r$step_map_auxiliary_fields_done)
 
+      cat("Checking aux \n")
       show_modal(
         title = get_copy("auxiliary_validating", "title"),
         get_copy("auxiliary_validating", "checking"),
@@ -186,6 +187,8 @@ mod_map_auxiliary_fields_server <- function(id, r) {
         empty_fields_text <- skeleton_to_text(empty_fields_skeleton, empty_fields_glue)
 
         shiny::removeModal()
+
+        cat("Empty aux \n")
         show_modal(
           title = get_copy("auxiliary_validating", "title"), empty_fields_text
         )
@@ -222,11 +225,14 @@ mod_map_auxiliary_fields_server <- function(id, r) {
 
         # Show modal that all is good
         # Show checking modal
+
+        cat("All aux valid \n")
         show_modal(
           title = get_copy("auxiliary_validating", "title"),
           get_copy("auxiliary_validating", "all_valid")
         )
       } else {
+        cat("Issues with aux \n")
         show_modal(
           title = get_copy("auxiliary_validating", "title"),
           shiny::div(class = "validating-aux", get_copy("auxiliary_validating", "fix")),

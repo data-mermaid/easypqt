@@ -218,6 +218,8 @@ mod_map_coralnet_labels_to_mermaid_server <- function(id, r) {
       r$annotations_mapped <- r$annotations %>%
         dplyr::left_join(r$coralnet_mermaid_mapping, get_config("coralnet_labelset_column")[["coralnet_col"]]) %>%
         dplyr::rename(mermaid_attributes_cols)
+
+      r$step_map_coralnet_joined_done <- TRUE
     })
   })
 }

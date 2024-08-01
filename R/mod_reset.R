@@ -38,6 +38,7 @@ mod_reset_server <- function(id, r, show_ui = TRUE, show_confirm = TRUE) {
     # Only show the confirmation dialog if show_confirm = TRUE (e.g. not after ingestion success or failure)
     if (show_confirm) {
       shiny::observe({
+        cat("Reset \n")
         show_modal(
           get_copy("reset", "title"),
           spaced(
@@ -96,6 +97,8 @@ mod_reset_server <- function(id, r, show_ui = TRUE, show_confirm = TRUE) {
       r$step_map_coralnet_labels_fully_done <- FALSE
       r$preview_confirm_shown <- 0
       r$reset_confirm_counter <- 0
+      r$do_ingestion <- FALSE
+      r$step_map_coralnet_joined_done <- FALSE
     }) %>%
       shiny::bindEvent(r$reset_confirm_counter)
 

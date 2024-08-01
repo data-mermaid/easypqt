@@ -22,6 +22,8 @@ mod_ingestion_do_server <- function(id, r) {
     ns <- session$ns
 
     shiny::observe({
+      shiny::req(r$do_ingestion)
+
       ingestion_data <- r$ingestion_data_with_defaults
       ingestion_data %>% dplyr::select(-`Sample date: Year *`) -> ingestion_data_error
 
@@ -63,6 +65,7 @@ mod_ingestion_do_server <- function(id, r) {
       }
       modal_close <- button(ns("ingestion_close"), "Close") # TODO copy
 
+      cat("Ingestion done \n")
       show_modal(
         title = modal_title,
         modal_content,
