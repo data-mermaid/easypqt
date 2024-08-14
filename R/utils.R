@@ -166,3 +166,13 @@ scroll_to_accordion <- function(id) {
     glue::glue("var section = $('.accordion-item[data-value='$$$id$$$']'); $('html, body').animate({ scrollTop: $(section).offset().top}, 'smooth');", .open = "$$$", .close = "$$$")
   )
 }
+
+colours <- list(
+  depths = "#1c124a",
+  polyps = "#beb6eb",
+  fins = "#f3f1fc",
+  currents_light = "#acbaee",
+  currents_dark = "#3d6eb5",
+  coral = "#cf675b",
+  coral_dark = "#c5483a"
+)

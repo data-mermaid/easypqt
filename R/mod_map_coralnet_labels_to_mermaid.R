@@ -99,7 +99,8 @@ mod_map_coralnet_labels_to_mermaid_server <- function(id, r) {
               td.appendChild(arrow);
 
              if (value === null) {
-              td.style.background = 'red';
+              // Use Coral, not dark coral
+              td.style.background = '#cf675b';
              }
 
            td
