@@ -99,12 +99,12 @@ mod_upload_data_server <- function(id, r) {
         annotations_raw <- readr::read_delim(input$annotations$datapath, show_col_types = FALSE, col_select = r$required_annotations_columns, delim = r$csv_sep)
 
         # Check that the Date column is formatted properly - if not, show a modal that there is an issue
-        invalid_dates <- annotations_raw[["Date"]] %>%
-          lubridate::ymd(quiet = TRUE) %>%
-          is.na() %>%
-          any()
+        valid_dates <- annotations_raw[["Date"]] %>%
+          unique() %>%
+          stringr::str_detect("[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]") %>%
+          all()
 
-        if (invalid_dates) {
+        if (!valid_dates) {
           mod_upload_instructions_server("instructions_invalid_date", show_ui = FALSE, invalid = TRUE)
         } else {
           r$annotations_raw <- annotations_raw
