@@ -61,7 +61,10 @@ mod_ingestion_preview_and_confirm_server <- function(id, r) {
               shiny::div(),
               download
             ),
-            DT::DTOutput(ns("table")),
+            shiny::div(
+              style = "overflow-x: auto",
+              DT::DTOutput(ns("table"))
+            ),
             shiny::hr(),
             shiny::h3(get_copy("ingestion", "title")),
             shiny::div(get_copy("ingestion", "continue")),
