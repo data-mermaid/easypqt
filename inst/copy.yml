@@ -114,12 +114,12 @@ ingestion:
   help_button: Get help
   help_link: https://datamermaid.org/contact-us
 reset:
-  button: Reset Easy PQT
+  button: Restart Easy PQT
   title: <p>This will reset any progress made in Easy PQT, including the selected
     project, CoralNet annotations data uploaded, and any mappings (auxiliary fields
-    and CoralNet labels).</p> <p> Do you want to proceed with resetting Easy PQT?</p>
-  confirm: Reset Easy PQT
-  cancel: Do not reset Easy PQT
+    and CoralNet labels).</p> <p> Do you want to proceed with restarting Easy PQT?</p>
+  confirm: Restart Easy PQT
+  cancel: Do not restart Easy PQT
 ingestion_error:
   title: Error ingesting data
   text: |-
