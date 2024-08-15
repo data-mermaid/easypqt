@@ -193,8 +193,13 @@ hr {
 
 /* Modal */
 
+/* All modal elements have both top and bottom padding, so remove the bottom padding so it's not so much execessive spacing */
+.modal-header, .modal-body {
+  padding-bottom: 0;
+}
+
 .modal-body {
-  max-height: 50vh !important;
+  max-height: 75vh !important;
   overflow-y: auto !important;
 }
 
