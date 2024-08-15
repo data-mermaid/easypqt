@@ -10,7 +10,7 @@
 mod_reset_ui <- function(id, show_ui = TRUE) {
   ns <- NS(id)
 
-  reset <- warning_button(ns("reset"), "Restart")
+  reset <- warning_button(ns("reset"), get_copy("reset", "button"))
 
   if (!show_ui) {
     reset <- shinyjs::hidden(reset)

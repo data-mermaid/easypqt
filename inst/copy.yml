@@ -106,15 +106,18 @@ ingestion:
   continue: If the data looks correct, click the button below to continue with ingestion
   continue_button: Continue with ingestion
   do_not_continue: 'If the data does not look correct, select from the following options:
-    "Restart process" to start the ingestion process from the beginning or "Get help"
+    "Restart Easy PQT" to start the ingestion process from the beginning or "Get help"
     to have our team support you in the ingestion process.'
-  reset_button: Restart process
+  reset_button: Restart Easy PQT
   help_button: Get help
   help_link: https://datamermaid.org/contact-us
 reset:
-  title: Are you sure you want to reset the project, data, and all mappings?
-  confirm: Reset all
-  cancel: Do not reset
+  button: Reset Easy PQT
+  title: <p>This will reset any progress made in Easy PQT, including the selected project, CoralNet annotations data uploaded,
+    and any mappings (auxiliary fields and CoralNet labels).</p> <p> Do you want to proceed
+    with resetting Easy PQT?</p>
+  confirm: Reset Easy PQT
+  cancel: Do not reset Easy PQT
 ingestion_error:
   title: Error ingesting data
   text: |-
