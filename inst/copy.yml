@@ -75,8 +75,8 @@ auxiliary_validating:
   column_valid: ✔ Values of {column} are valid.
   fix: <p>There are some issues with the auxiliary column values, as described below.
     You may need to fix invalid values in CoralNet, or add/edit values (Site or Management)
-    in the MERMAID app to match the CoralNet annotations.</p> Once you have made changes,
-    please restart Easy PQT before continuing with ingestion.
+    in the MERMAID app to match the CoralNet annotations.</p><p>Once you have made
+    changes, please restart Easy PQT before continuing with ingestion.</p>
 mapping:
   title: Map CoralNet Labels to MERMAID Attributes
   text: <p>This section will help you map CoralNet labels to MERMAID Benthic Attributes
@@ -115,9 +115,9 @@ ingestion:
   help_link: https://datamermaid.org/contact-us
 reset:
   button: Restart Easy PQT
-  title: <p>This will reset any progress made in Easy PQT, including the selected
-    project, CoralNet annotations data uploaded, and any mappings (auxiliary fields
-    and CoralNet labels).</p> <p> Do you want to proceed with restarting Easy PQT?</p>
+  text: <p>This will reset any progress made in Easy PQT, including the selected project,
+    CoralNet annotations data uploaded, and any mappings (auxiliary fields and CoralNet
+    labels).</p> <p> Do you want to proceed with restarting Easy PQT?</p>
   confirm: Restart Easy PQT
   cancel: Do not restart Easy PQT
 ingestion_error:
