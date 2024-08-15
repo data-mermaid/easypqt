@@ -133,7 +133,7 @@ app_server <- auth0_server(function(input, output, session) {
 
   # Insert and open accordions / close them when that step is done, since they go into global ns ----
 
-  ##  Map auxiliary fields ----
+  ## Map auxiliary fields ----
   shiny::observe({
     shiny::req(r$step_map_auxiliary_fields_accordion_made_done)
 
@@ -143,7 +143,7 @@ app_server <- auth0_server(function(input, output, session) {
     # Open panel
     bslib::accordion_panel_open("accordion", "map-auxiliary-fields")
 
-    scroll_to_accordion("map_auxiliary_fields")
+    scroll_to_accordion("map-auxiliary-fields")
   }) %>%
     shiny::bindEvent(r$step_map_auxiliary_fields_accordion_made_done)
 
@@ -166,10 +166,10 @@ app_server <- auth0_server(function(input, output, session) {
     # Open panel
     bslib::accordion_panel_open("accordion", "map-coralnet-labels")
 
-    scroll_to_accordion("map-coralnet-labels")
-
     # Add JS to check for labels table existing, then fix its height
     shiny::insertUI("head", where = "beforeEnd", shiny::includeScript(app_sys("adjustMappingTableHeight.js")))
+
+    scroll_to_accordion("map-coralnet-labels")
   }) %>%
     shiny::bindEvent(r$step_map_auxiliary_fields_accordion_fully_done)
 

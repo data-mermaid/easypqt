@@ -91,6 +91,11 @@ hr {
   margin-top: 1rem;
 }
 
+/* Add bottom border to all acordion items, when open and closed */
+.accordion-header {
+  border-bottom: var(--bs-accordion-border-width) solid var(--bs-accordion-border-color) !important;
+}
+
 /* Editable table */
 
 .ht_master.handsontable > .wtHolder {
@@ -189,6 +194,10 @@ hr {
 
 .bttn-simple.disabled, .bttn-simple:hover {
   opacity: 0.5 !important;
+}
+
+.reset-confirm-cancel .bttn-simple {
+  width: 49%;
 }
 
 /* Modal */

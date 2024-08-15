@@ -41,10 +41,13 @@ mod_reset_server <- function(id, r, show_ui = TRUE, show_confirm = TRUE) {
         cat("Reset \n")
         show_modal(
           get_copy("reset", "title"),
-          spaced(
-            left_right(
-              warning_button(ns("reset_confirm"), get_copy("reset", "confirm")),
-              button(ns("reset_cancel"), get_copy("reset", "cancel"))
+          shiny::div(
+            class = "reset-confirm-cancel",
+            spaced(
+              left_right(
+                button(ns("reset_cancel"), get_copy("reset", "cancel")),
+                warning_button(ns("reset_confirm"), get_copy("reset", "confirm"))
+              )
             )
           ),
           footer = NULL
