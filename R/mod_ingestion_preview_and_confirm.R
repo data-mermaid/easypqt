@@ -26,7 +26,7 @@ mod_ingestion_preview_and_confirm_server <- function(id, r) {
 
       # Make asterisks in table red to match collect app
       ingestion_data_table <- r$ingestion_data
-      names(ingestion_data_table) <- stringr::str_replace(names(ingestion_data_table) , "\\*", glue::glue("<span style='color: {colour}'>*</span>", colour = colours[["coral"]]))
+      names(ingestion_data_table) <- stringr::str_replace(names(ingestion_data_table) , " \\*", glue::glue("<span style='color: {colour}'>*</span>", colour = colours[["coral"]]))
 
       DT::datatable(ingestion_data_table, rownames = FALSE, options = list(dom = "tp"), selection = "none", escape = FALSE)
     })
