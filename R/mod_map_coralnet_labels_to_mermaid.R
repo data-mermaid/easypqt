@@ -18,16 +18,12 @@ mod_map_coralnet_labels_to_mermaid_server <- function(id, r) {
     ns <- session$ns
 
     known_mapping <- shiny::reactive({
-      shiny::req(r$all_aux_fields_valid)
-
       # Get known mapping from endpoint
       # TODO, actually get from endpoint
       easypqt::coralnet_mermaid_attributes
     })
 
     annotations_labels <- shiny::reactive({
-      shiny::req(r$all_aux_fields_valid)
-
       col <- get_config("coralnet_labelset_column")[["coralnet_col"]]
 
       r$annotations[col] %>%
@@ -36,7 +32,7 @@ mod_map_coralnet_labels_to_mermaid_server <- function(id, r) {
 
     # Check uploaded mapping (r$coralnet_upload) against `coralnet_mermaid_attributes` ----
     coralnet_mermaid_mapping <- shiny::reactive({
-      shiny::req(r$all_aux_fields_valid)
+      shiny::req(r$step_map_auxiliary_fields_accordion_fully_done)
 
       coralnet_col <- get_config("coralnet_labelset_column")[["coralnet_col"]]
       mermaid_col <- get_config("coralnet_labelset_column")[["mermaid_join"]]
@@ -53,7 +49,7 @@ mod_map_coralnet_labels_to_mermaid_server <- function(id, r) {
         ) %>%
         dplyr::select(-.is_na)
     }) %>%
-      shiny::bindEvent(r$all_aux_fields_valid)
+      shiny::bindEvent(r$step_map_auxiliary_fields_accordion_fully_done)
 
     # Create an editable table to be shown -----
     output$mapping_table <- rhandsontable::renderRHandsontable({
@@ -82,26 +78,33 @@ mod_map_coralnet_labels_to_mermaid_server <- function(id, r) {
         rhandsontable::hot_col(coralnet_label_display, readOnly = TRUE) %>%
         # Enable column sorting
         rhandsontable::hot_cols(columnSorting = TRUE) %>%
-        # Highlight cells that need to be filled out %>%
-        rhandsontable::hot_col(mermaid_benthic_attribute_display, renderer = "
-           function (instance, td, row, col, prop, value, cellProperties) {
-             Handsontable.renderers.NumericRenderer.apply(this, arguments);
-             if (value === null) {
-              td.style.background = 'pink';
-             }
-           }") %>%
         rhandsontable::hot_col(mermaid_benthic_attribute_display,
-          type = "dropdown",
-          # type = "autocomplete",
+          type = "autocomplete",
           source = benthic_attribute_levels,
           strict = TRUE
         ) %>%
         rhandsontable::hot_col(mermaid_growth_form_display,
-          # type = "autocomplete",
-          type = "dropdown",
+          type = "autocomplete",
           source = c(NA_character_, r$growth_forms), # To allow it to be empty?
           strict = TRUE
-        )
+        ) %>%
+        # Highlight cells that need to be filled out %>%
+        rhandsontable::hot_col(mermaid_benthic_attribute_display, renderer = "
+           function (instance, td, row, col, prop, value, cellProperties) {
+             Handsontable.renderers.NumericRenderer.apply(this, arguments);
+              // Add down arrow back in, it goes missing for some reason <3
+              var arrow = document.createElement('div');
+              arrow.classList.add('htAutocompleteArrow');
+              arrow.innerHTML = '&#9660';
+              td.appendChild(arrow);
+
+             if (value === null) {
+              // Use Coral, not dark coral
+              td.style.background = '#cf675b';
+             }
+
+           td
+           }")
     })
     # The flow is:
     # Show the mapping that there is, but make the MERMAID attribute editable if that's not what they want to map it to
@@ -111,28 +114,30 @@ mod_map_coralnet_labels_to_mermaid_server <- function(id, r) {
 
     # Put the editable table in an accordion ----
     shiny::observe({
+      shiny::req(r$step_map_auxiliary_fields_accordion_fully_done)
       shiny::req(coralnet_mermaid_mapping())
-      shiny::req(r$all_aux_fields_valid)
 
       r$accordion_map_coralnet_labels <- bslib::accordion_panel(
         title = shiny::h2(get_copy("mapping", "title")),
         value = "map-coralnet-labels",
         shiny::tagList(
-          title = shiny::h2(get_copy("mapping", "text")),
+          spaced(get_copy("mapping", "text")),
           indent(
             shiny::div(
-              class = "handsontable-parent",
-              rhandsontable::rHandsontableOutput(ns("mapping_table")) %>%
-                shinycssloaders::withSpinner()
+              id = "handsontable-parent",
+              rhandsontable::rHandsontableOutput(ns("mapping_table"))
             ),
             shiny::div(
               class = "space",
+              shiny::div(id = "confirm-disabled", spaced(get_copy("mapping", "not_allowed_to_confirm"))),
               shinyjs::disabled(success_button(ns("save_mapping"), "Confirm")),
-              shinyjs::disabled(button(ns("edit"), "Edit"))
+              shinyjs::hidden(button(ns("edit"), "Edit"))
             )
           )
         )
       )
+
+      r$step_map_coralnet_labels_accordion_made_done <- TRUE
     })
 
     edited_coralnet_mermaid_mapping <- shiny::reactive({
@@ -145,6 +150,7 @@ mod_map_coralnet_labels_to_mermaid_server <- function(id, r) {
     # If none of `mermaid_attribute` are NA, then enable exiting the widget
     # Flag that the mapping is valid, and save the final mapping
     shiny::observe({
+      shiny::req(r$step_map_coralnet_labels_accordion_made_done)
       # The data in the table is named after the output, so it's input$mapping_table
       # Need to convert it to an R data frame using rhandsontable::hot_to_r()
 
@@ -162,34 +168,25 @@ mod_map_coralnet_labels_to_mermaid_server <- function(id, r) {
         )) %>%
         nrow() == 0
 
-      if (!all_valid_mapping) {
-        # TODO - show invalid modal?
-      }
-
       mapping_valid <- no_empty_mapping & all_valid_mapping
 
       if (mapping_valid) {
+        shinyjs::hide("confirm-disabled", asis = TRUE)
         shinyjs::enable("save_mapping")
-        r$coralnet_mapping_valid <- TRUE
       } else {
+        shinyjs::show("confirm-disabled", asis = TRUE)
         shinyjs::disable("save_mapping")
-        r$coralnet_mapping_valid <- FALSE
         r$coralnet_mermaid_mapping <- NULL
       }
     })
 
     # When the label mapping has been confirmed ----
     shiny::observe({
-      if (r$dev) {
-        shiny::req(r$auxiliary_columns_map$site$value)
-        r$confirm_map_aux_fields <- TRUE
-      } else {
-        r$confirm_map_aux_fields <- input$confirm
-      }
       r$coralnet_mermaid_mapping <- edited_coralnet_mermaid_mapping()
-      r$coralnet_labels_on_edit <- TRUE
-      # Disable confirm, enable "edit"
+      r$step_map_coralnet_labels_done <- TRUE
+      # Disable confirm, show and enable "edit"
       shinyjs::disable("save_mapping")
+      shinyjs::show("edit")
       shinyjs::enable("edit")
       # Disable the table by making fields read only
       disable_mapping_table(ns("mapping_table"))
@@ -201,11 +198,13 @@ mod_map_coralnet_labels_to_mermaid_server <- function(id, r) {
       shinyjs::disable("edit")
       shinyjs::enable("save_mapping")
       enable_mapping_table(ns("mapping_table"))
+      r$step_map_coralnet_labels_done <- FALSE
     }) %>%
       shiny::bindEvent(input$edit)
 
     # Create a new version of the annotations with the mapping ----
     shiny::observe({
+      shiny::req(r$step_map_coralnet_labels_done)
       shiny::req(r$coralnet_mermaid_mapping)
 
       mermaid_attributes_cols <- get_config("mermaid_attributes_columns") %>%
@@ -215,6 +214,8 @@ mod_map_coralnet_labels_to_mermaid_server <- function(id, r) {
       r$annotations_mapped <- r$annotations %>%
         dplyr::left_join(r$coralnet_mermaid_mapping, get_config("coralnet_labelset_column")[["coralnet_col"]]) %>%
         dplyr::rename(mermaid_attributes_cols)
+
+      r$step_map_coralnet_joined_done <- TRUE
     })
   })
 }
@@ -224,10 +225,7 @@ disable_mapping_table <- function(id) {
 
   # Disable pointer events on actual table, add style
   # Not allowed cursor on parent div, add style
-  shinyjs::runjs(glue::glue("let tempTable = document.getElementById('$id$');
-                            tempTable.getElementsByClassName('ht_master')[0].style.pointerEvents = 'none';
-                            tempTable.getElementsByClassName('ht_clone_top')[0].style.pointerEvents = 'none';
-                            tempTable.style.cursor = 'not-allowed';", .open = "$", .close = "$"))
+  shinyjs::runjs(glue::glue("let tempTable = document.getElementById('$id$'); tempTable.getElementsByClassName('ht_master')[0].style.pointerEvents = 'none'; tempTable.getElementsByClassName('ht_clone_top')[0].style.pointerEvents = 'none'; tempTable.style.cursor = 'not-allowed';", .open = "$", .close = "$"))
 }
 
 enable_mapping_table <- function(id) {
@@ -235,8 +233,5 @@ enable_mapping_table <- function(id) {
 
   # Allow pointer events on actual table, remove style
   # Regular cursor on parent div, remove style
-  shinyjs::runjs(glue::glue("let tempTable = document.getElementById('$id$');
-                            tempTable.getElementsByClassName('ht_master')[0].style.pointerEvents = '';
-                            tempTable.getElementsByClassName('ht_clone_top')[0].style.pointerEvents = '';
-                            tempTable.style.cursor = '';", .open = "$", .close = "$"))
+  shinyjs::runjs(glue::glue("let tempTable = document.getElementById('$id$');  tempTable.getElementsByClassName('ht_master')[0].style.pointerEvents = '';  tempTable.getElementsByClassName('ht_clone_top')[0].style.pointerEvents = '';  tempTable.style.cursor = '';", .open = "$", .close = "$"))
 }

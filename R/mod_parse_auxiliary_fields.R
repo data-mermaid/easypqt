@@ -1,4 +1,4 @@
-#' parse_annotations UI Function
+#' map_auxliary_fields UI Function
 #'
 #' @description A shiny Module.
 #'
@@ -7,7 +7,7 @@
 #' @noRd
 #'
 #' @importFrom shiny NS tagList
-mod_parse_annotations_ui <- function(id) {
+mod_map_auxiliary_fields_ui <- function(id) {
   ns <- NS(id)
   tagList(
     shiny::div(),
@@ -16,91 +16,86 @@ mod_parse_annotations_ui <- function(id) {
     # TODO
     # Check valid values of fields ----
     # Map labelsets ----
-    mod_map_coralnet_labels_to_mermaid_ui(ns("map_coralnet_labels"))
+    mod_map_coralnet_labels_to_mermaid_ui(ns("map_coralnet_labels")),
+    mod_reset_ui(ns("reset"), show_ui = FALSE)
   )
 }
 
-#' parse_annotations Server Functions
+#' map_auxliary_fields Server Functions
 #'
 #' @noRd
-mod_parse_annotations_server <- function(id, r) {
+mod_map_auxiliary_fields_server <- function(id, r) {
   moduleServer(id, function(input, output, session) {
     ns <- session$ns
-
-    # Map auxiliary fields ----
 
     # Once the annotations file has been verified to contain the correct fields, need to determine which of the auxiliary fields contain Site, Management, and Transect Number
 
     # Use a dropdown for each rather than radio buttons - just a bit more complicated to disable etc and to work within a data table
 
-    # It would be nice to allow them to optionally preview the data in here to remind themselves which of the auxiliary columns is which?
-
     # Generate dropdown UI ----
     # (Shown once annotations are uploaded)
     shiny::observe({
-      shiny::req(r$annotations_raw)
+      shiny::req(r$step_upload_valid_data_done)
 
       aux_fields_data <- r$annotations_raw %>%
         dplyr::select(dplyr::all_of(r$auxiliary_columns)) %>%
         dplyr::distinct()
 
-      r$hide_annotation_preview_nav <- nrow(aux_fields_data) < r$page_length
-
       output$data_preview <- aux_fields_data %>%
         DT::datatable(
           rownames = FALSE,
           options = list(dom = "tp", pageLength = r$page_length),
-          selection = "none"
+          selection = "none",
+          callback = DT::JS("$.fn.dataTable.ext.errMode = 'none';") # To eliminate JS popups with mismatch of cols / accordion / table updating, it's just annoying
         ) %>%
         DT::renderDataTable()
 
-      inputs <- purrr::imap(
-        # Just do this once, do not listen to changes in the mapping
-        shiny::isolate(r$auxiliary_columns_map),
+      output$inputs <- purrr::imap(
+        r$auxiliary_columns_map,
         \(x, y) {
           make_mapping_dropdown_ui(x, y, r, ns)
         }
-      )
+      ) %>%
+        shiny::renderUI()
 
       r$accordion_map_annotation_fields <- bslib::accordion_panel(
         title = shiny::h2(get_copy("auxiliary", "title")),
-        value = "map-annotation-fields",
+        value = "map-auxiliary-fields",
         shiny::tagList(
-          get_copy("auxiliary", "text"),
+          spaced(get_copy("auxiliary", "text")),
+          shiny::hr(),
           indent(
             shiny::h3(get_copy("auxiliary", "preview")),
-            get_copy("auxiliary", "preview_text"),
+            spaced(get_copy("auxiliary", "preview_text")),
             DT::dataTableOutput(ns("data_preview")),
+            shiny::hr(),
             shiny::h3(get_copy("auxiliary", "map")),
-            get_copy("auxiliary", "map_text"),
-            inputs
+            spaced(get_copy("auxiliary", "map_text")),
+            shiny::uiOutput(ns("inputs"))
           )
         )
       )
 
-      r$accordion_map_annotation_made <- TRUE
-    })
+      r$step_map_auxiliary_fields_accordion_made_done <- TRUE
+    }) %>%
+      shiny::bindEvent(r$step_upload_valid_data_done)
 
-    # Observe each dropdown, and disable an Aux field in other dropdowns if it's already selected - because an auxiliary field cannot map to more than one of Site, Management, or Transect Number
+    # Observe each dropdown, and disable an Aux field in other dropdowns if it's already selected ----
+    # because an auxiliary field cannot map to more than one of Site, Management, or Transect Number
 
-    # Update list of mapped columns ----
+    ## Update list of mapped columns ----
     purrr::walk(
       names(get_config("auxiliary_columns_map")),
       \(x)
-      shiny::observe(priority = 1, {
-        shiny::req(r$annotations_raw)
-        if (r$dev) {
-          shiny::req(input$site)
-        }
+      shiny::observe({
         r$auxiliary_columns_map[[x]]["value"] <- list(input[[x]])
-        r$aux_mapping_ui_created <- TRUE
-      })
+      }) %>%
+        shiny::bindEvent(input[[x]])
     )
 
-    # Go through each and disable other columns' aux fields ----
+    ## Go through each and disable other columns' aux fields ----
     shiny::observe({
-      shiny::req(r$annotations_raw)
-      shiny::req(r$aux_mapping_ui_created)
+      shiny::req(r$step_map_auxiliary_fields_accordion_made_done)
 
       # Go through each, and disable the other selected options
       purrr::walk(
@@ -130,25 +125,25 @@ mod_parse_annotations_server <- function(id, r) {
       )
     })
 
-    # Once all auxiliary mapping fields have been filled out, flag them for checking non-empty/valid ----
+    ## Once all auxiliary mapping fields have been filled out, flag them for checking non-empty/valid ----
     shiny::observe({
-      shiny::req(r$annotations_raw)
+      shiny::req(r$step_map_auxiliary_fields_accordion_made_done)
 
       cols_mapped <- r$auxiliary_columns_map %>%
         purrr::map("value") %>%
         purrr::compact()
 
-      r$aux_mapped <- length(cols_mapped) == length(r$auxiliary_columns_map)
+      r$step_map_auxiliary_fields_done <- length(cols_mapped) == length(r$auxiliary_columns_map)
 
       # Check that fields are not empty ----
       # Check that Date, Site, Management, and Transect Number are not empty
 
-      shiny::req(r$aux_mapped)
+      shiny::req(r$step_map_auxiliary_fields_done)
 
+      cat("Checking aux \n")
       show_modal(
         title = get_copy("auxiliary_validating", "title"),
-        get_copy("auxiliary_validating", "checking"),
-        shiny::br(), # TODO
+        spaced(get_copy("auxiliary_validating", "checking")),
         footer = NULL
       )
       Sys.sleep(1)
@@ -192,6 +187,8 @@ mod_parse_annotations_server <- function(id, r) {
         empty_fields_text <- skeleton_to_text(empty_fields_skeleton, empty_fields_glue)
 
         shiny::removeModal()
+
+        cat("Empty aux \n")
         show_modal(
           title = get_copy("auxiliary_validating", "title"), empty_fields_text
         )
@@ -201,7 +198,6 @@ mod_parse_annotations_server <- function(id, r) {
 
       # Check valid values of auxiliary fields ----
       # Validate fields ----
-      # browser()
       shiny::req(r$no_empty_fields)
 
       # Get project template/options ----
@@ -225,42 +221,43 @@ mod_parse_annotations_server <- function(id, r) {
       shiny::removeModal()
 
       if (site_ui[["valid"]] & management_ui[["valid"]] & transect_number_ui[["valid"]]) {
-        r$all_aux_fields_valid <- TRUE
+        r$step_map_auxiliary_fields_valid_done <- TRUE
 
         # Show modal that all is good
         # Show checking modal
+
+        cat("All aux valid \n")
         show_modal(
           title = get_copy("auxiliary_validating", "title"),
           get_copy("auxiliary_validating", "all_valid")
         )
       } else {
-        r$all_aux_fields_valid <- FALSE
-
+        cat("Issues with aux \n")
         show_modal(
           title = get_copy("auxiliary_validating", "title"),
           shiny::div(class = "validating-aux", get_copy("auxiliary_validating", "fix")),
+          shiny::hr(),
           site_ui[["ui"]],
+          shiny::hr(),
           management_ui[["ui"]],
+          shiny::hr(),
           transect_number_ui[["ui"]],
+          footer = warning_button(ns("incorrect_reset"), get_copy("ingestion", "reset_button"))
         )
       }
     })
 
-    # Once all auxiliary mapping have been checked, disable the inputs - cannot edit them anymore
     shiny::observe({
       # IF they are all good, then:
-      shiny::req(r$all_aux_fields_valid)
-      shiny::req(r$no_empty_fields)
-      r$aux_fields_on_edit <- TRUE
+      shiny::req(r$step_map_auxiliary_fields_valid_done)
+
+      # Once all auxiliary mapping have been checked, disable the inputs - cannot edit them anymore
       # Disable all inputs
       disable_picker_input(ns("site"))
       disable_picker_input(ns("management"))
       disable_picker_input(ns("transect_number"))
-    }) %>%
-      shiny::bindEvent(r$all_aux_fields_valid)
 
-    # Rename columns in data according to auxiliary fields mapping ----
-    shiny::observe({
+      # Rename columns in data according to auxiliary fields mapping ----
       mapped_cols_names <- r$auxiliary_columns_map %>%
         purrr::map("column")
       mapped_cols_aux <- r$auxiliary_columns_map %>%
@@ -277,21 +274,28 @@ mod_parse_annotations_server <- function(id, r) {
       r$annotations <- r$annotations %>%
         dplyr::select(-dplyr::all_of(extra_aux_fields))
     }) %>%
-      shiny::bindEvent(r$all_aux_fields_valid)
+      shiny::bindEvent(r$step_map_auxiliary_fields_valid_done)
 
     # Show date/site/management, confirm and continue ----
     # TODO
 
     # Map CoralNet labelsets to MERMAID ----
     mod_map_coralnet_labels_to_mermaid_server("map_coralnet_labels", r)
+
+    ## Restart if needed ----
+    shiny::observe({
+      shiny::removeModal()
+      mod_reset_server("reset", r, show_ui = FALSE, show_confirm = FALSE)
+    }) %>%
+      shiny::bindEvent(input$incorrect_reset)
   })
 }
 
 ## To be copied in the UI
-# mod_parse_annotations_ui("parse_annotations_1")
+# mod_map_auxiliary_fields_ui("map_auxliary_fields")
 
 ## To be copied in the server
-# mod_parse_annotations_server("parse_annotations_1")
+# mod_map_auxiliary_fields_server("map_auxliary_fields")
 
 
 make_mapping_dropdown_ui <- function(auxiliary_column_map, auxiliary_column, r, ns) {
@@ -299,7 +303,7 @@ make_mapping_dropdown_ui <- function(auxiliary_column_map, auxiliary_column, r, 
 
   shiny::fluidRow(
     shiny::column(
-      width = 6,
+      width = 3,
       # TODO: Vertically align with input
       shiny::tags$b(auxiliary_column_map[["label"]])
     ),
@@ -317,7 +321,7 @@ make_mapping_dropdown_ui <- function(auxiliary_column_map, auxiliary_column, r, 
           noneSelectedText = get_copy("auxiliary", "placeholder")
         )
       )
-    )
+    ) %>% tagAppendAttributes(class = "constrained-col")
   )
 }
 

@@ -1,92 +1,145 @@
 title: Easy PQT
 loading: Loading Easy PQT...
-preamble: Placeholder text for introducing Easy PQT
+preamble: <p>Welcome to Easy PQT! Easy PQT is designed to help you ingest your Benthic
+  Photo Quadrat data exported from CoralNet into MERMAID.</p> <p> Easy PQT will walk
+  you through selecting a MERMAID project to ingest into, uploading your CoralNet
+  image annotations, matching CoralNet auxiliary fields to required MERMAID fields,
+  and mapping CoralNet labels to MERMAID Benthic Attributes and Growth Forms. We've
+  pre-mapped most of the labels in CoralNet to MERMAID's Benthic Attributes and Growth
+  Forms in order to make the ingestion process as easy as possible. </p> <p> Please
+  note that after you have successfully ingested your data, there is still information
+  that needs to be filled out, including the mandatory fields of depth, transect length
+  surveyed, quadrat size, number of points per quadrat, and observers. </p> <p> To
+  begin, please make sure your project is set up in MERMAID (with Sites and Managements)
+  and that your CoralNet data includes auxiliary fields that correspond to your MERMAID
+  Sites and Managements, as well as Transect numbers and dates for each image. You
+  will need to upload the image annotations file obtained directly from CoralNet,
+  including the date and auxiliary fields columns.
 select_project:
-  title: Project
-  text: Placeholder text for describing project selection input
-  placeholder: Select a project for ingestion
+  title: MERMAID Project
+  text: Select the project you want to ingest your data into
+  placeholder: Select a project
   not_admin: |-
-    Unable to ingest into project {project_name}.
-    <br><br>
-    You role in this MERMAID project is <i>{role}</i>, but the Admin role is required to use Easy PQT.
-    <br><br>
-    Please <a href="https://datamermaid.org/contact-project?project_id={project_id}" target="_blank">contact the project administrators</a> to change your role to Admin.
-upload_annotations:
+    <p>Unable to ingest into project {project_name}.</p>
+    <p>You role in this MERMAID project is <i>{role}</i>, but the Admin role is required to use Easy PQT.</p>
+    <p>Please <a href="https://datamermaid.org/contact-project?project_id={project_id}" target="_blank">contact the project administrators</a> to change your role to Admin.</p>
+upload_data:
   title: Upload CoralNet annotations
-  text: Placeholder text for describing upload annotations input
+  text: <p>Upload your data by clicking the "Browse..." button or by dragging the
+    file directly into the upload field. </p> <p> Please ensure your data is the annotations
+    file exported directly from CoralNet, including the date and auxiliary fields
+    columns.
+  instructions: The image annotations file can be found by navigating to "Images"
+    within a CoralNet project. Under "Image Actions", select "Export Annotations,
+    CSV", and select the optional columns "Image metadata - date and auxiliary fields",
+    as shown below.
+  instructions_img_alt: 'A screen shot of the "Image" page in CoralNet, highlighting
+    the "Image Actions" section with the Action: "Export Annotations, CSV" for these
+    images: "All N image results" selected. The instructions read "Export annotations
+    for these images in CSV format - one row per annotation". There is a section to
+    select Optional Columns, and the option "Image metadata - date and auxiliary fields"
+    is checked.'
   missing_instructions: The uploaded annotations do not contain the required columns.
-    To get the correct data from CoralNet, export the annotations as a CSV with the
-    optional columns "Image metadata - date and auxiliary fields" checked, as shown
-    below.
-  missing_img_alt: 'A screen shot of the "Image Actions" screen in CoralNet, showing
-    the Action: "Export Annotations, CSV" for these images: "All N image results".
-    The instructions read "Export annotations for these images in CSV format - one
-    row per annotation". There is a section to select Optional Columns, and the option
-    "Image metadata - date and auxiliary fields" is checked.'
+  invalid_instructions: The uploaded annotations contain some invalid values. Using
+    the instructions below, please export the annotations file from CoralNet and upload
+    it directly into Easy PQT without making any changes to it.
 non_empty_fields: |-
   {fields} cannot contain empty values. The following fields contain empty values: {list}
-  Please update the data directly in CoralNet then begin the import process again.
+  Please update the data directly in CoralNet then begin the ingestion process again.
 transect_number_not_integer: 'Transect Number must be an integer. The following are
   invalid: {invalid_values}'
 invalid_values: |-
   The annotations contain invalid values of {label}. The following are invalid: {invalid_values}
   Valid values of {label} are: {valid_values}
 auxiliary:
-  title: Map CoralNet auxiliary fields
-  text: Placeholder text for introducing mapping auxiliary fields
+  title: Match CoralNet auxiliary fields
+  text: In this section, you will match the auxiliary fields in your CoralNet annotations
+    to the fields that are required to ingest your data to MERMAID. Select the auxiliary
+    fields that correspond to Site, Management, and Transect number. After matching
+    columns, Easy PQT will validate the data to ensure it matches the available options
+    in your MERMAID project. If it does not, you will receive information on which
+    fields do not match,
   preview: Auxiliary fields preview
-  preview_text: Placeholder text for auxiliary fields preview
-  map: Map auxiliary fields
-  map_text: Placeholder text for mapping auxiliary fields
+  preview_text: The following table shows the auxiliary fields in your uploaded CoralNet
+    annotations. Use this information to help match Site, Management, and Transect
+    number to auxiliary fields, below.
+  map: Match auxiliary fields
+  map_text: Choose the auxiliary field for Site, Management, and Transect number using
+    the inputs below.
   placeholder: Select an auxiliary field
 auxiliary_validating:
   title: Validating fields
   checking: Checking auxiliary fields...
-  all_valid: ✔ All auxiliary fields are valid!
+  all_valid: <p>✔ All auxiliary fields are valid! </p><p> Continue on to map CoralNet
+    labels to MERMAID attributes.</p>
   column_valid: ✔ Values of {column} are valid.
-  fix: There are some issues with the auxiliary column values, as described below.
-    Please fix invalid values in CoralNet before continuing.
+  fix: <p>There are some issues with the auxiliary column values, as described below.
+    You may need to fix invalid values in CoralNet, or add/edit values (Site or Management)
+    in the MERMAID app to match the CoralNet annotations.</p><p>Once you have made
+    changes, please restart Easy PQT before continuing with ingestion.</p>
 mapping:
-  title: "Map CoralNet Labels to MERMAID Attributes"
-  text: Placeholder text for mapping CoralNet labels to MERMAID benthic attributes / growth forms
+  title: Map CoralNet Labels to MERMAID Attributes
+  text: <p>This section will help you map CoralNet labels to MERMAID Benthic Attributes
+    and Growth Forms. We have pre-mapped many CoralNet labels to attributes in MERMAID.
+    If you have a CoralNet label that is not mapped to an attribute, it will appear
+    as an empty value. </p><p> Note that Growth Form can remain empty, but Benthic
+    Attribute is a required field. Blank Benthic Attributes are highlighted in red
+    to indicate that they must be mapped before you can continue. Please select the
+    correct Benthic Attributes and/or Growth Forms by selecting the correct value
+    from the dropdown list for each field. </p><p> Once all CoralNet labels are mapped
+    to valid MERMAID Benthic Attributes, you can click the "Confirm" button to continue
+    with the ingestion process.</p>
+  not_allowed_to_confirm: All CoralNet labels must be mapped to valid MERMAID Benthic
+    Attributes to continue.
 reshaping:
   title: Reshaping data
   text: Reshaping data into format required for MERMAID...
 preview:
   title: Preview data and confirm ingestion
-  text: Placeholder text for preview/confirm
+  text: Your data is now reshaped to match the format required for ingestion into
+    MERMAID, as shown in the table below. You can download a copy of the reformatted
+    data by clicking the "Download reshaped data" button. Check the data to confirm
+    everything is correct, either through a downloaded copy or by using the interactive
+    table.
   download: Download reshaped data
   file: MERMAID Easy PQT Data - {project_name}.csv
 ingestion:
   title: Continue to ingestion
   continue: If the data looks correct, click the button below to continue with ingestion
   continue_button: Continue with ingestion
-  do_not_continue: If the data does not look correct, select from the following options
-    to restart the whole process or get help with ingestion
-  reset_button: Restart process
+  do_not_continue: 'If the data does not look correct, select from the following options:
+    "Restart Easy PQT" to start the ingestion process from the beginning or "Get help"
+    to have our team support you in the ingestion process.'
+  reset_button: Restart Easy PQT
   help_button: Get help
   help_link: https://datamermaid.org/contact-us
 reset:
-  title: Are you sure you want to reset the project, data, and all mappings?
-  confirm: Reset all
-  cancel: Do not reset
+  button: Restart Easy PQT
+  text: <p>This will reset any progress made in Easy PQT, including the selected project,
+    CoralNet annotations data uploaded, and any mappings (auxiliary fields and CoralNet
+    labels).</p> <p> Do you want to proceed with restarting Easy PQT?</p>
+  confirm: Restart Easy PQT
+  cancel: Do not restart Easy PQT
 ingestion_error:
   title: Error ingesting data
   text: |-
-    There was an error ingesting the data.
-    <br><br>
-    Please <a href="https://datamermaid.org/contact-us" target="_blank">contact us</a> with the subject "Easy PQT ingestion error", and paste the following into the message body:'
+    <p>There was an error ingesting the data.
+    </p><p>
+    Please <a href="https://datamermaid.org/contact-us" target="_blank">contact us</a> with the subject "Easy PQT ingestion error", and paste the following into the message body:</p>'
   error: |-
-    project_id:
+    project_id:<br>
     {project}
     <br><br>
-    Error message:
+    Error message:<br>
     {error}
 ingestion_success:
   title: Ingestion successful!
-  text: Data was successfully ingested into MERMAID. Click the button below to open
-    the records in the MERMAID App to validate and submit records. Note that the data
-    is not successfully imported into MERMAID until this step has been completed.
+  text: <p>Data was successfully ingested into MERMAID. Click the button below to
+    open the records in the MERMAID App to validate and submit records.</p> <p>You
+    will also have to fill in the following fields with their correct values:</p>
+    <ul> <li>Depth</li> <li>Transect length surveyed</li> <li>Quadrat size</li> <li>Observers</li>
+    </ul> <p>Note that the data is not successfully ingested into MERMAID until you
+    have validated and submitted the records in the MERMAID app.</p>
   button: Go to the MERMAID App
   collect_url_prod: https://app.datamermaid.org/projects/{project}/collecting
   collect_url_dev: https://dev-app.datamermaid.org/projects/{project}/collecting

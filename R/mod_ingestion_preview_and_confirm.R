@@ -9,7 +9,7 @@
 #' @importFrom shiny NS tagList
 mod_ingestion_preview_and_confirm_ui <- function(id) {
   ns <- NS(id)
-  shiny::tagList()
+  mod_reset_ui(ns("reset"), show_ui = FALSE)
 }
 
 #' ingestion_preview Server Functions
@@ -22,12 +22,17 @@ mod_ingestion_preview_and_confirm_server <- function(id, r) {
     # Preview and download reshaped data ----
 
     output$table <- DT::renderDataTable(server = TRUE, {
-      shiny::req(r$ingestion_data)
-      DT::datatable(r$ingestion_data, rownames = FALSE, options = list(dom = "tp"), selection = "none")
+      shiny::req(r$step_map_coralnet_labels_fully_done)
+
+      # Make asterisks in table red to match collect app
+      ingestion_data_table <- r$ingestion_data
+      names(ingestion_data_table) <- stringr::str_replace(names(ingestion_data_table), " \\*", glue::glue("<span style='color: {colour}'>*</span>", colour = colours[["coral"]]))
+
+      DT::datatable(ingestion_data_table, rownames = FALSE, options = list(dom = "tp"), selection = "none", escape = FALSE)
     })
 
     shiny::observe({
-      shiny::req(r$ingestion_data)
+      shiny::req(r$step_map_coralnet_labels_fully_done)
       # Only do this once, not every time the mapping is updated/confirmed
       shiny::req(r$preview_confirm_shown == 0)
 
@@ -55,13 +60,18 @@ mod_ingestion_preview_and_confirm_server <- function(id, r) {
         title = shiny::h2(get_copy("preview", "title")),
         value = "preview-download-confirm",
         shiny::tagList(
-          get_copy("preview", "text"),
+          spaced(get_copy("preview", "text")),
           indent(
             left_right(
               shiny::div(),
               download
             ),
-            DT::DTOutput(ns("table")),
+            shiny::div(
+              style = "overflow-x: auto",
+              DT::DTOutput(ns("table"))
+            ),
+            shiny::hr(),
+            shiny::h3(get_copy("ingestion", "title")),
             shiny::div(get_copy("ingestion", "continue")),
             continue_button,
             shiny::div(get_copy("ingestion", "do_not_continue")),
@@ -92,24 +102,9 @@ mod_ingestion_preview_and_confirm_server <- function(id, r) {
     ## Incorrect: start over -----
     # Confirm to reset, clear everything
     shiny::observe({
-      show_modal(
-        get_copy("reset", "title"),
-        spaced(
-          left_right(
-            warning_button(ns("reset_confirm"), get_copy("reset", "confirm")),
-            button(ns("reset_cancel"), get_copy("reset", "cancel"))
-          )
-        ),
-        footer = NULL
-      )
+      mod_reset_server("reset", r, show_ui = FALSE)
     }) %>%
       shiny::bindEvent(input$incorrect_reset)
-
-    shiny::observe({
-      shinyjs::runjs("window.history.pushState({}, document.title, window.location.pathname);") # Remove code etc from URL so it can restart cleanly
-      shinyjs::refresh()
-    }) %>%
-      shiny::bindEvent(input$reset_confirm)
 
     shiny::observe({
       shiny::removeModal()

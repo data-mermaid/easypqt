@@ -152,7 +152,7 @@
     },
     "bslib": {
       "Package": "bslib",
-      "Version": "0.7.0",
+      "Version": "0.8.0",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
@@ -170,7 +170,7 @@
         "rlang",
         "sass"
       ],
-      "Hash": "8644cc53f43828f19133548195d7e59e"
+      "Hash": "b299c6741ca9746fb227debcb0f9fb6c"
     },
     "cachem": {
       "Package": "cachem",
@@ -727,8 +727,8 @@
       "RemoteHost": "api.github.com",
       "RemoteRepo": "mermaidr",
       "RemoteUsername": "data-mermaid",
-      "RemoteRef": "HEAD",
-      "RemoteSha": "cb9b7f06920e31bcedee18a4e52174ae67c747a0",
+      "RemoteRef": "dev",
+      "RemoteSha": "cb1f318fa92e3f5999362e078d5e7f9d07382a37",
       "Requirements": [
         "R",
         "curl",
@@ -752,7 +752,7 @@
         "usethis",
         "vctrs"
       ],
-      "Hash": "37b58d2a88ae474dcc6a096ab83cb05d"
+      "Hash": "7800854b846d105802cb09213975591d"
     },
     "mime": {
       "Package": "mime",
@@ -1144,20 +1144,6 @@
       ],
       "Hash": "bc918b6911c4e928e24a9928295de834"
     },
-    "shinycssloaders": {
-      "Package": "shinycssloaders",
-      "Version": "1.0.0",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Requirements": [
-        "R",
-        "digest",
-        "glue",
-        "grDevices",
-        "shiny"
-      ],
-      "Hash": "f39bb3c44a9b496723ec7e86f9a771d8"
-    },
     "shinyjs": {
       "Package": "shinyjs",
       "Version": "2.1.0",
@@ -1458,10 +1444,10 @@
     },
     "yaml": {
       "Package": "yaml",
-      "Version": "2.3.9",
+      "Version": "2.3.10",
       "Source": "Repository",
       "Repository": "CRAN",
-      "Hash": "9cb28d11799d93c953f852083d55ee9e"
+      "Hash": "51dab85c6c98e50a18d7551e9d49f76c"
     },
     "zip": {
       "Package": "zip",

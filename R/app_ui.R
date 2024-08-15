@@ -7,9 +7,20 @@ app_ui <- function(request) {
   shiny::tagList(
     golem_add_external_resources(),
     waiter::useWaiter(),
-    waiter::waiterShowOnLoad(html = shiny::h1(get_copy("loading")), color = "#174B82"),
+    waiter::waiterShowOnLoad(
+      html = shiny::h1(get_copy("loading")),
+      color = colours[["currents_dark"]]
+    ),
     bslib::page_fixed(
-      theme = bslib::bs_theme(version = 5, primary = "#174B82"),
+      theme = bslib::bs_theme(
+        version = 5,
+        primary = colours[["currents_dark"]]
+      ) %>% bslib::bs_add_variables(
+        "progress-bar-bg" = colours[["currents_dark"]],
+        "link-hover-color" = colours[["currents_light"]],
+        "link-color" = colours[["currents_dark"]],
+        .where = "declarations"
+      ),
       title = get_copy("title"),
       lang = "en",
       # Header
@@ -18,21 +29,26 @@ app_ui <- function(request) {
         shiny::h1(get_copy("title")),
         shiny::hr()
       ),
-      shiny::div(get_copy("preamble")),
+      large(
+        spaced(
+          get_copy("preamble"),
+          mod_upload_instructions_ui("instructions"),
+          shiny::HTML("</p>")
+        )
+      ),
+      shiny::hr(),
       left_right(
-        # Loading projects ----
         # Get projects ----
         mod_select_project_ui("select_project"),
-        # Reset
-        mod_reset_ui("reset"),
+        mod_reset_ui("reset")
       ),
       # Upload CoralNet annotations ----
-      mod_upload_annotations_ui("upload_annotations"),
+      mod_upload_data_ui("upload_data"),
       # Parse CoralNet annotations ----
       bslib::accordion(
         id = "accordion",
         multiple = TRUE,
-        mod_parse_annotations_ui("parse_annotations"),
+        mod_map_auxiliary_fields_ui("map_auxliary_fields"),
         # Reshape annotations ----
         mod_reshape_annotations_ui("reshape_annotations"),
         # Preview/confirm ingestion ----
@@ -58,11 +74,12 @@ golem_add_external_resources <- function() {
     app_sys("app/www")
   )
   shiny::tags$head(
-    favicon(),
+    favicon(ext = "png"),
     bundle_resources(
       path = app_sys("app/www"),
       app_title = get_copy("title")
     ),
-    shinyjs::useShinyjs()
+    shinyjs::useShinyjs(),
+    shiny::tags$link(rel="stylesheet", type="text/css", href="www/styles.css?version=2")
   )
 }

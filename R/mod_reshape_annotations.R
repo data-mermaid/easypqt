@@ -24,12 +24,12 @@ mod_reshape_annotations_server <- function(id, r) {
     shiny::observe({
       # Show modal for reshaping data -> only if over a certain # of rows?
 
-      shiny::req(r$annotations_mapped)
+      shiny::req(r$step_map_coralnet_joined_done)
 
+      cat("Reshaping \n")
       show_modal(
         title = get_copy("reshaping", "title"),
-        get_copy("reshaping", "text"),
-        shiny::br(), # TODO
+        spaced(get_copy("reshaping", "text")),
         footer = NULL
       )
       Sys.sleep(1)
@@ -69,7 +69,7 @@ mod_reshape_annotations_server <- function(id, r) {
         dplyr::ungroup() %>%
         dplyr::left_join(ingestion_data, by = c("...su", "Name"))
 
-      ## Number of quadrats: determined by count of quadrats in SU
+      ## Number of quadrats: determined by count of quadrats in SU ----
       ingestion_data <- ingestion_data %>%
         dplyr::group_by(...su) %>%
         dplyr::mutate(`Number of quadrats *` = dplyr::n_distinct(`Quadrat *`)) %>%
@@ -81,11 +81,15 @@ mod_reshape_annotations_server <- function(id, r) {
         dplyr::add_count(...su, name = "total_transect_points") %>%
         dplyr::mutate(`Number of points per quadrat *` = total_transect_points / `Number of quadrats *`)
 
-      ## Number of points: count of points with benthic attribute/growth form in a quadrat
+      ## Number of points: count of points with benthic attribute/growth form in a quadrat ----
       ingestion_data <- ingestion_data %>%
         dplyr::add_count(...su, `Quadrat *`, `Benthic attribute *`, `Growth form`, name = "Number of points *")
 
-      # Select only relevant fields
+      ## Sample unit notes: image name ----
+      ingestion_data <- ingestion_data %>%
+        dplyr::rename(`Sample unit notes` = Name)
+
+      # Select only relevant fields ----
       r$ingestion_data <- ingestion_data %>%
         dplyr::select(dplyr::any_of(names(r$template)))
 
@@ -110,7 +114,8 @@ mod_reshape_annotations_server <- function(id, r) {
         dplyr::mutate(`First quadrat number` = 1)
 
       ## Observer emails: hit "me" endpoint ----
-      observer_email <- r$me[["email"]] %>% unique()
+      observer_email <- r$me[["email"]] %>%
+        unique()
       ingestion_data_with_defaults <- ingestion_data_with_defaults %>%
         dplyr::mutate(`Observer emails *` = observer_email)
 
@@ -121,7 +126,11 @@ mod_reshape_annotations_server <- function(id, r) {
       r$ingestion_data_with_defaults <- ingestion_data_with_defaults
 
       shiny::removeModal()
-    })
+
+      # Set back to FALSE so that any updated to mapping resets it
+      r$step_map_coralnet_joined_done <- FALSE
+    }) %>%
+      shiny::bindEvent(r$step_map_coralnet_joined_done)
   })
 }
 

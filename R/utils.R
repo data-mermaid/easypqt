@@ -5,13 +5,15 @@ get_config <- function(key) {
 get_copy <- function(key, secondary_key = NULL) {
   copy <- yaml::read_yaml(app_sys("copy.yml"))
   if (is.null(secondary_key)) {
-    copy[[key]]
+    copy <- copy[[key]]
   } else {
-    copy[[key]][[secondary_key]]
+    copy <- copy[[key]][[secondary_key]]
   }
+
+  shiny::HTML(copy)
 }
 
-close_button <- shiny::modalButton("Close")
+close_button <- shiny::modalButton("Close") # TODO copy
 
 modal <- function(..., title = NULL, footer, size = "m", disable_footer = FALSE) {
   if (disable_footer) {
@@ -59,6 +61,10 @@ open_utils <- function() {
   open_file("utils")
 }
 
+open_copy <- function() {
+  usethis::edit_file("inst/copy.yml")
+}
+
 open_config <- function() {
   usethis::edit_file("inst/config.yml")
 }
@@ -81,6 +87,10 @@ indent <- function(...) {
 
 spaced <- function(...) {
   shiny::div(class = "space", ...)
+}
+
+large <- function(...) {
+  shiny::div(class = "large", ...)
 }
 
 left_right <- function(...) {
@@ -129,3 +139,41 @@ button <- function(id, label, ...) {
 disable_picker_input <- function(id) {
   shinyjs::runjs(glue::glue("let selector = $('#{id}'); selector.prop('disabled', true); selector.selectpicker('destroy'); selector.selectpicker();"))
 }
+
+enable_picker_input <- function(id) {
+  shinyjs::runjs(glue::glue("let selector = $('#{id}'); selector.prop('disabled', false); selector.selectpicker('destroy'); selector.selectpicker();"))
+}
+
+tidy_yaml <- function(file) {
+  file <- app_sys(glue::glue("{file}.yml"))
+
+  yaml::read_yaml(file) %>% yaml::write_yaml(file)
+}
+
+tidy_copy <- function() {
+  tidy_yaml("copy")
+}
+
+tidy_config <- function() {
+  tidy_yaml("config")
+}
+
+scroll_to_accordion <- function(id) {
+  # Add JS to check for accordion existing, then scroll to it
+  id <- glue::glue('"{id}"')
+  script <- app_sys("scrollToAccordion.js") %>% readLines() %>% paste0(collapse = "") %>% glue:::glue(.open = "$$$", .close = "$$$", id = id)
+  t <- tempfile(fileext = ".js")
+  writeLines(script, t)
+
+  shiny::insertUI("head", where = "beforeEnd", shiny::includeScript(t))
+}
+
+colours <- list(
+  depths = "#1c124a",
+  polyps = "#beb6eb",
+  fins = "#f3f1fc",
+  currents_light = "#acbaee",
+  currents_dark = "#3d6eb5",
+  coral = "#cf675b",
+  coral_dark = "#c5483a"
+)
