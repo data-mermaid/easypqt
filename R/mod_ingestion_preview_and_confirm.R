@@ -23,7 +23,12 @@ mod_ingestion_preview_and_confirm_server <- function(id, r) {
 
     output$table <- DT::renderDataTable(server = TRUE, {
       shiny::req(r$step_map_coralnet_labels_fully_done)
-      DT::datatable(r$ingestion_data, rownames = FALSE, options = list(dom = "tp"), selection = "none")
+
+      # Make asterisks in table red to match collect app
+      ingestion_data_table <- r$ingestion_data
+      names(ingestion_data_table) <- stringr::str_replace(names(ingestion_data_table) , "\\*", glue::glue("<span style='color: {colour}'>*</span>", colour = colours[["coral"]]))
+
+      DT::datatable(ingestion_data_table, rownames = FALSE, options = list(dom = "tp"), selection = "none", escape = FALSE)
     })
 
     shiny::observe({
