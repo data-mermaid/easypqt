@@ -16,7 +16,8 @@ mod_map_auxiliary_fields_ui <- function(id) {
     # TODO
     # Check valid values of fields ----
     # Map labelsets ----
-    mod_map_coralnet_labels_to_mermaid_ui(ns("map_coralnet_labels"))
+    mod_map_coralnet_labels_to_mermaid_ui(ns("map_coralnet_labels")),
+    mod_reset_ui(ns("reset"), show_ui = FALSE)
   )
 }
 
@@ -235,9 +236,13 @@ mod_map_auxiliary_fields_server <- function(id, r) {
         show_modal(
           title = get_copy("auxiliary_validating", "title"),
           shiny::div(class = "validating-aux", get_copy("auxiliary_validating", "fix")),
+          shiny::hr(),
           site_ui[["ui"]],
+          shiny::hr(),
           management_ui[["ui"]],
-          transect_number_ui[["ui"]]
+          shiny::hr(),
+          transect_number_ui[["ui"]],
+          footer = warning_button(ns("incorrect_reset"), get_copy("ingestion", "reset_button"))
         )
       }
     })
@@ -276,6 +281,13 @@ mod_map_auxiliary_fields_server <- function(id, r) {
 
     # Map CoralNet labelsets to MERMAID ----
     mod_map_coralnet_labels_to_mermaid_server("map_coralnet_labels", r)
+
+    ## Restart if needed ----
+    shiny::observe({
+      shiny::removeModal()
+      mod_reset_server("reset", r, show_ui = FALSE, show_confirm = FALSE)
+    }) %>%
+      shiny::bindEvent(input$incorrect_reset)
   })
 }
 

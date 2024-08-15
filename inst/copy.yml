@@ -10,11 +10,11 @@ preamble: <p>Welcome to Easy PQT! Easy PQT is designed to help you ingest your B
   note that after you have successfully ingested your data, there is still information
   that needs to be filled out, including the mandatory fields of depth, transect length
   surveyed, quadrat size, number of points per quadrat, and observers. </p> <p> To
-  begin, please make sure your project is set up in MERMAID and that your CoralNet
-  data includes auxiliary fields that correspond to your MERMAID Sites and Managements,
-  as well as Transect numbers and dates for each image. You will need to upload the
-  image annotations file obtained directly from CoralNet, including the date and auxiliary
-  fields columns.
+  begin, please make sure your project is set up in MERMAID (with Sites and Managements)
+  and that your CoralNet data includes auxiliary fields that correspond to your MERMAID
+  Sites and Managements, as well as Transect numbers and dates for each image. You
+  will need to upload the image annotations file obtained directly from CoralNet,
+  including the date and auxiliary fields columns.
 select_project:
   title: MERMAID Project
   text: Select the project you want to ingest your data into
@@ -73,8 +73,10 @@ auxiliary_validating:
   all_valid: <p>✔ All auxiliary fields are valid! </p><p> Continue on to map CoralNet
     labels to MERMAID attributes.</p>
   column_valid: ✔ Values of {column} are valid.
-  fix: There are some issues with the auxiliary column values, as described below.
-    Please fix invalid values in CoralNet before continuing.
+  fix: <p>There are some issues with the auxiliary column values, as described below.
+    You may need to fix invalid values in CoralNet, or add/edit values (Site or Management)
+    in the MERMAID app to match the CoralNet annotations.</p> Once you have made changes,
+    please restart Easy PQT before continuing with ingestion.
 mapping:
   title: Map CoralNet Labels to MERMAID Attributes
   text: <p>This section will help you map CoralNet labels to MERMAID Benthic Attributes
@@ -113,9 +115,9 @@ ingestion:
   help_link: https://datamermaid.org/contact-us
 reset:
   button: Reset Easy PQT
-  title: <p>This will reset any progress made in Easy PQT, including the selected project, CoralNet annotations data uploaded,
-    and any mappings (auxiliary fields and CoralNet labels).</p> <p> Do you want to proceed
-    with resetting Easy PQT?</p>
+  title: <p>This will reset any progress made in Easy PQT, including the selected
+    project, CoralNet annotations data uploaded, and any mappings (auxiliary fields
+    and CoralNet labels).</p> <p> Do you want to proceed with resetting Easy PQT?</p>
   confirm: Reset Easy PQT
   cancel: Do not reset Easy PQT
 ingestion_error:

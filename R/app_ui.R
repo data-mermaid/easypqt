@@ -80,6 +80,6 @@ golem_add_external_resources <- function() {
       app_title = get_copy("title")
     ),
     shinyjs::useShinyjs(),
-    shiny::tags$link(rel="stylesheet", type="text/css", href="www/styles.css?version=1")
+    shiny::tags$link(rel="stylesheet", type="text/css", href="www/styles.css?version=2")
   )
 }
