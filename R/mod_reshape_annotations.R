@@ -69,7 +69,7 @@ mod_reshape_annotations_server <- function(id, r) {
         dplyr::ungroup() %>%
         dplyr::left_join(ingestion_data, by = c("...su", "Name"))
 
-      ## Number of quadrats: determined by count of quadrats in SU
+      ## Number of quadrats: determined by count of quadrats in SU ----
       ingestion_data <- ingestion_data %>%
         dplyr::group_by(...su) %>%
         dplyr::mutate(`Number of quadrats *` = dplyr::n_distinct(`Quadrat *`)) %>%
@@ -81,11 +81,15 @@ mod_reshape_annotations_server <- function(id, r) {
         dplyr::add_count(...su, name = "total_transect_points") %>%
         dplyr::mutate(`Number of points per quadrat *` = total_transect_points / `Number of quadrats *`)
 
-      ## Number of points: count of points with benthic attribute/growth form in a quadrat
+      ## Number of points: count of points with benthic attribute/growth form in a quadrat ----
       ingestion_data <- ingestion_data %>%
         dplyr::add_count(...su, `Quadrat *`, `Benthic attribute *`, `Growth form`, name = "Number of points *")
 
-      # Select only relevant fields
+      ## Sample unit notes: image name ----
+      ingestion_data <- ingestion_data %>%
+        dplyr::rename(`Sample unit notes` = Name)
+
+      # Select only relevant fields ----
       r$ingestion_data <- ingestion_data %>%
         dplyr::select(dplyr::any_of(names(r$template)))
 

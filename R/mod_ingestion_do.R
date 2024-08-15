@@ -25,7 +25,6 @@ mod_ingestion_do_server <- function(id, r) {
       shiny::req(r$do_ingestion)
 
       ingestion_data <- r$ingestion_data_with_defaults
-      ingestion_data %>% dplyr::select(-`Sample date: Year *`) -> ingestion_data_error
 
       # Do dry run, handle errors if they come up -----
 
