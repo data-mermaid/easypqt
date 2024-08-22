@@ -120,6 +120,8 @@ reset:
     labels).</p> <p> Do you want to proceed with restarting Easy PQT?</p>
   confirm: Restart Easy PQT
   cancel: Do not restart Easy PQT
+ingestion_running:
+  title: Ingesting data into MERMAID....
 ingestion_error:
   title: Error ingesting data
   text: |-
