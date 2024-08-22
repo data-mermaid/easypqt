@@ -40,7 +40,7 @@ upload_data:
     select Optional Columns, and the option "Image metadata - date and auxiliary fields"
     is checked.'
   missing_instructions: The uploaded annotations do not contain the required columns.
-  invalid_instructions: The uploaded annotations contain some invalid values. Using
+  invalid_instructions: The uploaded annotations contain some invalid values for <b>Date</b>. Using
     the instructions below, please export the annotations file from CoralNet and upload
     it directly into Easy PQT without making any changes to it.
 non_empty_fields: |-
