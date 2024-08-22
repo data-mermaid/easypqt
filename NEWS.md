@@ -1,4 +1,4 @@
-# easypqt 0.2.0
+# easypqt 0.1.1
 
 * Allow for additional optional columns to be uploaded, identify auxiliary fields properly
 * Clarify in error modal that Date field is invalid
