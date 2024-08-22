@@ -56,7 +56,7 @@ mod_reshape_annotations_server <- function(id, r) {
 
       ingestion_data <- ingestion_data %>%
         dplyr::rowwise() %>%
-        dplyr::mutate(...su = glue::glue_collapse(c(`Site *`, `Management *`, `Transect number *`), sep = "******")) %>%
+        dplyr::mutate(...su = glue::glue_collapse(c(`Site *`, Date, `Management *`, `Transect number *`), sep = "******")) %>%
         dplyr::ungroup() %>%
         dplyr::group_by()
 
