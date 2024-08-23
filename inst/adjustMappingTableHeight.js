@@ -9,7 +9,6 @@ $(document).ready(function () {
       var newHeight = wtHolder.getElementsByClassName("wtHider")[0].offsetHeight;
       if (newHeight > 250) {
         var parent = document.getElementById("handsontable-parent");
-        parent.style.height = "calc(500px + 1rem)";
         parent.style.overflowY = "auto";
         wtHolder.style.height = "500px";
       }

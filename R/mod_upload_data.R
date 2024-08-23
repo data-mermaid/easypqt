@@ -73,19 +73,12 @@ mod_upload_data_server <- function(id, r) {
       if (contains_known_required_columns) {
         last_start_col <- required_annotations_columns_start[length(required_annotations_columns_start)]
         last_start_col_index <- which(cols == last_start_col)
-        first_end_col <- required_annotations_columns_end[1]
-        first_end_col_index <- which(cols == first_end_col)
+        first_aux_index <- last_start_col_index + 1
+        last_aux_index <- last_start_col_index + get_config("required_annotations_columns_aux")
 
-        potential_aux_columns <- cols[(last_start_col_index + 1):(first_end_col_index - 1)]
-        contains_n_aux_columns <- length(potential_aux_columns) == get_config("required_annotations_columns_aux")
-
-        if (contains_known_required_columns & contains_n_aux_columns) {
-          r$upload_contains_required_cols <- TRUE
-          r$auxiliary_columns <- potential_aux_columns
-          r$required_annotations_columns <- c(required_annotations_columns_start, r$auxiliary_columns, required_annotations_columns_end)
-        } else {
-          r$upload_contains_required_cols <- FALSE
-        }
+        r$auxiliary_columns <- cols[first_aux_index:last_aux_index]
+        r$upload_contains_required_cols <- TRUE
+        r$required_annotations_columns <- c(required_annotations_columns_start, r$auxiliary_columns, required_annotations_columns_end)
       } else {
         r$upload_contains_required_cols <- FALSE
       }

@@ -26,6 +26,11 @@ mod_ingestion_do_server <- function(id, r) {
 
       ingestion_data <- r$ingestion_data_with_defaults
 
+      # Show modal that ingesting is happening -----
+
+      show_modal(title = get_copy("ingestion_running", "title"), footer = NULL)
+      Sys.sleep(2)
+
       # Do dry run, handle errors if they come up -----
 
       dry_run_success <- ingest_and_handle_errors(ingestion_data, r$project, r$mermaidr_token, dryrun = TRUE)
