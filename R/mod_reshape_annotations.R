@@ -93,6 +93,10 @@ mod_reshape_annotations_server <- function(id, r) {
       r$ingestion_data <- ingestion_data %>%
         dplyr::select(dplyr::any_of(names(r$template)))
 
+      # Make unique ----
+      r$ingestion_data <- r$ingestion_data %>%
+        dplyr::distinct()
+
       # Add default fields ----
 
       ingestion_data_with_defaults <- r$ingestion_data
