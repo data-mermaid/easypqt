@@ -1,3 +1,7 @@
+# easypqt 0.1.2
+
+* Fix bug with duplicated records
+
 # easypqt 0.1.1
 
 * Allow for additional optional columns to be uploaded, identify auxiliary fields properly
