@@ -19,8 +19,7 @@ mod_map_coralnet_labels_to_mermaid_server <- function(id, r) {
 
     known_mapping <- shiny::reactive({
       # Get known mapping from endpoint
-      # TODO, actually get from endpoint
-      easypqt::coralnet_mermaid_attributes
+      mermaidr::mermaid_get_classification_labelmappings("CoralNet")
     })
 
     annotations_labels <- shiny::reactive({
@@ -42,7 +41,7 @@ mod_map_coralnet_labels_to_mermaid_server <- function(id, r) {
       annotations_labels() %>%
         dplyr::left_join(known_mapping(), by = setNames(mermaid_col, coralnet_col)) %>%
         # Put blanks first, then arrange alphabetically
-        dplyr::mutate(.is_na = is.na(mermaid_attribute)) %>%
+        dplyr::mutate(.is_na = is.na(benthic_attribute)) %>%
         dplyr::arrange(
           dplyr::desc(.is_na),
           !!as.name(coralnet_col)
@@ -56,15 +55,15 @@ mod_map_coralnet_labels_to_mermaid_server <- function(id, r) {
       # List of possible dropdown values for benthic attribute and growth form
 
       # For benthic attribute, the levels are the known mapping + anything in `benthic_attributes` that isn't in the known mapping
-      benthic_attribute_levels <- c(known_mapping()[["mermaid_attribute"]], r$benthic_attributes) %>%
+      benthic_attribute_levels <- c(known_mapping()[["benthic_attribute"]], r$benthic_attributes) %>%
         unique() %>%
         sort()
 
       # For growth form, it's `r$growth_forms`
 
       coralnet_label_display <- get_config("coralnet_labelset_column")[["table_label"]]
-      mermaid_benthic_attribute_display <- get_config("mermaid_attributes_columns")[["mermaid_attribute"]][["table_label"]]
-      mermaid_growth_form_display <- get_config("mermaid_attributes_columns")[["mermaid_growth_form"]][["table_label"]]
+      mermaid_benthic_attribute_display <- get_config("mermaid_attributes_columns")[["benthic_attribute"]][["table_label"]]
+      mermaid_growth_form_display <- get_config("mermaid_attributes_columns")[["growth_form"]][["table_label"]]
 
       coralnet_mermaid_mapping() %>%
         rhandsontable::rhandsontable(
@@ -146,8 +145,8 @@ mod_map_coralnet_labels_to_mermaid_server <- function(id, r) {
     })
 
     # Enable confirming of mapping widget ----
-    # Closing disabled unless all of `mermaid_attribute` are not NA
-    # If none of `mermaid_attribute` are NA, then enable exiting the widget
+    # Closing disabled unless all of `benthic_attribute` are not NA
+    # If none of `benthic_attribute` are NA, then enable exiting the widget
     # Flag that the mapping is valid, and save the final mapping
     shiny::observe({
       shiny::req(r$step_map_coralnet_labels_accordion_made_done)
@@ -155,16 +154,16 @@ mod_map_coralnet_labels_to_mermaid_server <- function(id, r) {
       # Need to convert it to an R data frame using rhandsontable::hot_to_r()
 
       no_empty_mapping <- edited_coralnet_mermaid_mapping() %>%
-        dplyr::filter(is.na(mermaid_attribute)) %>%
+        dplyr::filter(is.na(benthic_attribute)) %>%
         nrow() == 0
 
       all_valid_mapping <- edited_coralnet_mermaid_mapping() %>%
-        dplyr::filter(!is.na(mermaid_attribute)) %>%
+        dplyr::filter(!is.na(benthic_attribute)) %>%
         dplyr::as_tibble() %>%
-        dplyr::filter(!mermaid_attribute %in% c(
+        dplyr::filter(!benthic_attribute %in% c(
           r$benthic_attributes,
           # TODO -> discrepancy here between known_mapping and r$benthic_attributes
-          known_mapping()[["mermaid_attribute"]]
+          known_mapping()[["benthic_attribute"]]
         )) %>%
         nrow() == 0
 

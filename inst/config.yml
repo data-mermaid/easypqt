@@ -43,14 +43,14 @@ additional_columns_map:
     value: Date
 coralnet_labelset_column:
   coralnet_col: Label
-  mermaid_join: coralnet_label
+  mermaid_join: provider_label
   table_label: CoralNet label
 mermaid_attributes_columns:
-  mermaid_attribute:
+  benthic_attribute:
     table_label: MERMAID Benthic attribute
     label: Benthic attribute
     column: Benthic attribute *
-  mermaid_growth_form:
+  growth_form:
     table_label: MERMAID Growth form
     label: Growth form
     column: Growth form

@@ -40,7 +40,7 @@ good_data_large <- good_data %>%
     relationship = "many-to-many"
   )
 
-coralnet_labels <- coralnet_mermaid_attributes %>%
+coralnet_labels <- mermaidr::mermaid_get_classification_labelmappings("CoralNet") %>%
   select(Label = coralnet_label) %>%
   sample_n(nrow(good_data_large), replace = TRUE)
 
