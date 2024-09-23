@@ -19,7 +19,11 @@ mod_map_coralnet_labels_to_mermaid_server <- function(id, r) {
 
     known_mapping <- shiny::reactive({
       # Get known mapping from endpoint
-      mermaidr::mermaid_get_classification_labelmappings("CoralNet")
+      mermaidr::mermaid_get_classification_labelmappings("CoralNet") %>%
+        dplyr::select(dplyr::all_of(c(
+          get_config("coralnet_labelset_column")[["mermaid_join"]],
+          names(get_config("mermaid_attributes_columns"))
+        )))
     })
 
     annotations_labels <- shiny::reactive({
