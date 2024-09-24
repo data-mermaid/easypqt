@@ -51,7 +51,7 @@ app_server <- auth0_server(function(input, output, session) {
     aux_mapped = FALSE,
     preview_confirm_shown = 0,
     dev = FALSE,
-    prod = TRUE,
+    prod = FALSE,
     reset = NULL,
     # dev_scenario = "empties"
     # dev_scenario = "wrong_values"
