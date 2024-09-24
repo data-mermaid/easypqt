@@ -1,5 +1,9 @@
 # easypqt 0.1.2
 
+* Add logo, update favicon
+
+# easypqt 0.1.2
+
 * Fix bug with duplicated records
 
 # easypqt 0.1.1

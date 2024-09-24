@@ -97,6 +97,10 @@ left_right <- function(...) {
   shiny::div(class = "left-right", ...)
 }
 
+logo_header <- function(...) {
+  shiny::div(class = "left-right header", ...)
+}
+
 primary_button <- function(id, label, ...) {
   shinyWidgets::actionBttn(
     id,

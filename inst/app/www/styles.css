@@ -43,8 +43,17 @@ html {
 
 /* Sizing */
 
+.header {
+  align-items: center;
+  padding: 1.5rem 0;
+  margin-bottom: -2rem;
+}
+
+.logo {
+  height: 3rem;
+}
+
 h1 {
-  padding-top: 1.5rem;
   margin-bottom: 0;
   font-size: var(--25pt);
 }

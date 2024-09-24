@@ -25,8 +25,14 @@ app_ui <- function(request) {
       lang = "en",
       # Header
       shiny::div(
-        # class = "sticky-header",
-        shiny::h1(get_copy("title")),
+        logo_header(
+          shiny::h1(get_copy("title")),
+          shiny::tags$img(
+            class = "logo",
+            src = get_config("logo_img_path"),
+            alt = get_copy("logo_alt")
+          )
+        ),
         shiny::hr()
       ),
       large(
@@ -74,12 +80,12 @@ golem_add_external_resources <- function() {
     app_sys("app/www")
   )
   shiny::tags$head(
-    favicon(ext = "png"),
+    favicon(ext = "svg"),
     bundle_resources(
       path = app_sys("app/www"),
       app_title = get_copy("title")
     ),
     shinyjs::useShinyjs(),
-    shiny::tags$link(rel="stylesheet", type="text/css", href="www/styles.css?version=2")
+    shiny::tags$link(rel = "stylesheet", type = "text/css", href = "www/styles.css?version=4")
   )
 }
