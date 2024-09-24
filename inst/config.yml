@@ -55,3 +55,4 @@ mermaid_attributes_columns:
     label: Growth form
     column: Growth form
 upload_data_img_path: www/coralnet-image-annotations-export.png
+logo_img_path: www/logo.png
