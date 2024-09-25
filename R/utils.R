@@ -165,7 +165,10 @@ tidy_config <- function() {
 scroll_to_accordion <- function(id) {
   # Add JS to check for accordion existing, then scroll to it
   id <- glue::glue('"{id}"')
-  script <- app_sys("scrollToAccordion.js") %>% readLines() %>% paste0(collapse = "") %>% glue:::glue(.open = "$$$", .close = "$$$", id = id)
+  script <- app_sys("scrollToAccordion.js") %>%
+    readLines() %>%
+    paste0(collapse = "") %>%
+    glue:::glue(.open = "$$$", .close = "$$$", id = id)
   t <- tempfile(fileext = ".js")
   writeLines(script, t)
 

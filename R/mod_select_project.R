@@ -39,10 +39,15 @@ mod_select_project_server <- function(id, r) {
     shiny::observe({
       projects <- setNames(r$projects$id, r$projects$name)
 
-      shinyWidgets::updatePickerInput(
-        session = session,
-        inputId = "project", choices = projects, selected = character(0)
-      )
+      # If they have no projects, show a modal with this information - they need a project in order to use easyPQT!
+      if (length(projects) == 0) {
+        show_modal(get_copy("select_project", "no_projects"))
+      } else {
+        shinyWidgets::updatePickerInput(
+          session = session,
+          inputId = "project", choices = projects, selected = character(0)
+        )
+      }
     }) %>%
       shiny::bindEvent(r$projects)
 

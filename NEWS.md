@@ -1,5 +1,9 @@
 # easypqt 0.1.2
 
+* Handle case where user does not have any projects, show modal informing them to set up a project
+
+# easypqt 0.1.3
+
 * Add logo, update favicon
 
 # easypqt 0.1.2
