@@ -24,6 +24,8 @@ select_project:
     <p>Unable to ingest into project {project_name}.</p>
     <p>You role in this MERMAID project is <i>{role}</i>, but the Admin role is required to use Easy PQT.</p>
     <p>Please <a href="https://datamermaid.org/contact-project?project_id={project_id}" target="_blank">contact the project administrators</a> to change your role to Admin.</p>
+  no_projects: You do not have any MERMAID projects. In order to continue with the
+    ingestion process, please create a project in MERMAID with Sites and Managements.
 upload_data:
   title: Upload CoralNet annotations
   text: <p>Upload your data by clicking the "Browse..." button or by dragging the
@@ -41,9 +43,9 @@ upload_data:
     select Optional Columns, and the option "Image metadata - date and auxiliary fields"
     is checked.'
   missing_instructions: The uploaded annotations do not contain the required columns.
-  invalid_instructions: The uploaded annotations contain some invalid values for <b>Date</b>. Using
-    the instructions below, please export the annotations file from CoralNet and upload
-    it directly into Easy PQT without making any changes to it.
+  invalid_instructions: The uploaded annotations contain some invalid values for <b>Date</b>.
+    Using the instructions below, please export the annotations file from CoralNet
+    and upload it directly into Easy PQT without making any changes to it.
 non_empty_fields: |-
   {fields} cannot contain empty values. The following fields contain empty values: {list}
   Please update the data directly in CoralNet then begin the ingestion process again.
