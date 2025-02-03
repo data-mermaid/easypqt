@@ -5,7 +5,8 @@ required_annotations_columns_aux: 5
 required_annotations_columns_end:
 - Row
 - Column
-- Label
+- Label code
+- Label ID
 required_annotations_columns_dev:
 - Name
 - Date
@@ -16,7 +17,8 @@ required_annotations_columns_dev:
 - Aux5
 - Row
 - Column
-- Label
+- Label code
+- Label ID
 auxiliary_columns_dev:
 - Aux1
 - Aux2
