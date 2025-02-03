@@ -53,9 +53,6 @@ app_server <- auth0_server(function(input, output, session) {
     dev = FALSE,
     prod = FALSE,
     reset = NULL,
-    # dev_scenario = "empties"
-    # dev_scenario = "wrong_values"
-    dev_scenario = "good_data",
     upload_contains_required_cols = FALSE,
     step_select_valid_project_done = FALSE,
     step_upload_valid_data_done = FALSE,
@@ -66,8 +63,6 @@ app_server <- auth0_server(function(input, output, session) {
     step_map_coralnet_labels_fully_done = FALSE,
     preview_confirm_shown = 0,
     reset_confirm_counter = 0
-    # dev_scenario = "some_good_some_wrong"
-    # dev_scenario = "transect_decimal"
   )
 
   # Get login info and hit initial endpoints ----
