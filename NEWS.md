@@ -1,4 +1,8 @@
-# easypqt 0.1.2
+# easypqt 0.1.5
+
+* Add Google Analytics
+
+# easypqt 0.1.4
 
 * Handle case where user does not have any projects, show modal informing them to set up a project
 
