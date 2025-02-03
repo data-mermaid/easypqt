@@ -196,6 +196,18 @@
       ],
       "Hash": "9b2191ede20fa29828139b9900922e51"
     },
+    "cellranger": {
+      "Package": "cellranger",
+      "Version": "1.1.0",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Requirements": [
+        "R",
+        "rematch",
+        "tibble"
+      ],
+      "Hash": "f61dbaec772ccd2e17705c1e872e9e7c"
+    },
     "cli": {
       "Package": "cli",
       "Version": "3.6.1",
@@ -721,14 +733,14 @@
     },
     "mermaidr": {
       "Package": "mermaidr",
-      "Version": "1.1.2",
+      "Version": "1.2.3",
       "Source": "GitHub",
       "RemoteType": "github",
       "RemoteHost": "api.github.com",
       "RemoteRepo": "mermaidr",
       "RemoteUsername": "data-mermaid",
       "RemoteRef": "HEAD",
-      "RemoteSha": "644e1126e58ef12dcda140349803e00eeda8d10b",
+      "RemoteSha": "d002de72f1d1f47d9cdac6a3e867ba4b3bf4b5d1",
       "Requirements": [
         "R",
         "curl",
@@ -743,6 +755,7 @@
         "openxlsx",
         "purrr",
         "readr",
+        "readxl",
         "rlang",
         "snakecase",
         "stringr",
@@ -752,7 +765,7 @@
         "usethis",
         "vctrs"
       ],
-      "Hash": "ac0c5438c82ec0ad8cb2fb5f0aeef911"
+      "Hash": "029e1fd9d24be4cf5a593b1f42ccded0"
     },
     "mime": {
       "Package": "mime",
@@ -980,6 +993,28 @@
         "vroom"
       ],
       "Hash": "9de96463d2117f6ac49980577939dfb3"
+    },
+    "readxl": {
+      "Package": "readxl",
+      "Version": "1.4.3",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Requirements": [
+        "R",
+        "cellranger",
+        "cpp11",
+        "progress",
+        "tibble",
+        "utils"
+      ],
+      "Hash": "8cf9c239b96df1bbb133b74aef77ad0a"
+    },
+    "rematch": {
+      "Package": "rematch",
+      "Version": "2.0.0",
+      "Source": "Repository",
+      "Repository": "RSPM",
+      "Hash": "cbff1b666c6fa6d21202f07e2318d4f1"
     },
     "renv": {
       "Package": "renv",
