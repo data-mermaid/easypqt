@@ -19,23 +19,28 @@ mod_map_coralnet_labels_to_mermaid_server <- function(id, r) {
 
     known_mapping <- shiny::reactive({
       # Get known mapping from endpoint
-      # TODO, actually get from endpoint
-      easypqt::coralnet_mermaid_attributes
+      mermaidr::mermaid_get_classification_labelmappings("CoralNet") %>%
+        dplyr::select(dplyr::all_of(c(
+          get_config("coralnet_labelset_id_column")[["mermaid_join"]],
+          get_config("mermaid_attributes_columns") %>% purrr::map_chr("api_column")
+        )))
     })
 
     annotations_labels <- shiny::reactive({
-      col <- get_config("coralnet_labelset_column")[["coralnet_col"]]
-
-      r$annotations[col] %>%
-        dplyr::distinct()
+      r$annotations[c(
+        get_config("coralnet_labelset_code_column")[["coralnet_col"]],
+        get_config("coralnet_labelset_id_column")[["coralnet_col"]]
+      )] %>%
+        dplyr::distinct() %>%
+        dplyr::mutate(dplyr::across(get_config("coralnet_labelset_id_column")[["coralnet_col"]], as.character))
     })
 
     # Check uploaded mapping (r$coralnet_upload) against `coralnet_mermaid_attributes` ----
     coralnet_mermaid_mapping <- shiny::reactive({
       shiny::req(r$step_map_auxiliary_fields_accordion_fully_done)
 
-      coralnet_col <- get_config("coralnet_labelset_column")[["coralnet_col"]]
-      mermaid_col <- get_config("coralnet_labelset_column")[["mermaid_join"]]
+      coralnet_col <- get_config("coralnet_labelset_id_column")[["coralnet_col"]]
+      mermaid_col <- get_config("coralnet_labelset_id_column")[["mermaid_join"]]
 
       # Create table of mapping that does exist by left joining annotations' labels to the known mapping
 
@@ -45,9 +50,9 @@ mod_map_coralnet_labels_to_mermaid_server <- function(id, r) {
         dplyr::mutate(.is_na = is.na(mermaid_attribute)) %>%
         dplyr::arrange(
           dplyr::desc(.is_na),
-          !!as.name(coralnet_col)
+          mermaid_attribute
         ) %>%
-        dplyr::select(-.is_na)
+        dplyr::select(-.is_na, - dplyr::all_of(coralnet_col))
     }) %>%
       shiny::bindEvent(r$step_map_auxiliary_fields_accordion_fully_done)
 
@@ -62,7 +67,7 @@ mod_map_coralnet_labels_to_mermaid_server <- function(id, r) {
 
       # For growth form, it's `r$growth_forms`
 
-      coralnet_label_display <- get_config("coralnet_labelset_column")[["table_label"]]
+      coralnet_label_display <- get_config("coralnet_labelset_code_column")[["table_label"]]
       mermaid_benthic_attribute_display <- get_config("mermaid_attributes_columns")[["mermaid_attribute"]][["table_label"]]
       mermaid_growth_form_display <- get_config("mermaid_attributes_columns")[["mermaid_growth_form"]][["table_label"]]
 
@@ -212,7 +217,7 @@ mod_map_coralnet_labels_to_mermaid_server <- function(id, r) {
       mermaid_attributes_cols <- setNames(names(mermaid_attributes_cols), mermaid_attributes_cols)
 
       r$annotations_mapped <- r$annotations %>%
-        dplyr::left_join(r$coralnet_mermaid_mapping, get_config("coralnet_labelset_column")[["coralnet_col"]]) %>%
+        dplyr::left_join(r$coralnet_mermaid_mapping, get_config("coralnet_labelset_code_column")[["coralnet_col"]]) %>%
         dplyr::rename(mermaid_attributes_cols)
 
       r$step_map_coralnet_joined_done <- TRUE
