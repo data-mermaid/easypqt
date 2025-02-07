@@ -1,3 +1,8 @@
+# easypqt 0.2.0
+
+* Require CoralNet export that returns both shortcode and ID
+* Move to using MERMAID's labelmappings endpoint instead of static file
+
 # easypqt 0.1.5
 
 * Add Google Analytics

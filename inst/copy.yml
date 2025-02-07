@@ -34,8 +34,8 @@ upload_data:
     columns.
   instructions: The image annotations file can be found by navigating to "Images"
     within a CoralNet project. Under "Image Actions", select "Export Annotations,
-    CSV", and select the optional columns "Image metadata - date and auxiliary fields",
-    as shown below.
+    CSV". Select "Both" for the Label format, and select the optional columns "Image
+    metadata - date and auxiliary fields", as shown below.
   instructions_img_alt: 'A screen shot of the "Image" page in CoralNet, highlighting
     the "Image Actions" section with the Action: "Export Annotations, CSV" for these
     images: "All N image results" selected. The instructions read "Export annotations
