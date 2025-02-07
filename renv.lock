@@ -739,8 +739,8 @@
       "RemoteHost": "api.github.com",
       "RemoteRepo": "mermaidr",
       "RemoteUsername": "data-mermaid",
-      "RemoteRef": "dev",
-      "RemoteSha": "650d5f091e0e28e190178826bdb7e8441901db7a",
+      "RemoteRef": "HEAD",
+      "RemoteSha": "d002de72f1d1f47d9cdac6a3e867ba4b3bf4b5d1",
       "Requirements": [
         "R",
         "curl",
@@ -765,7 +765,7 @@
         "usethis",
         "vctrs"
       ],
-      "Hash": "2aa979c73c30b87f2f6ffd7e1729366b"
+      "Hash": "029e1fd9d24be4cf5a593b1f42ccded0"
     },
     "mime": {
       "Package": "mime",
