@@ -5,7 +5,8 @@ required_annotations_columns_aux: 5
 required_annotations_columns_end:
 - Row
 - Column
-- Label
+- Label code
+- Label ID
 required_annotations_columns_dev:
 - Name
 - Date
@@ -16,7 +17,8 @@ required_annotations_columns_dev:
 - Aux5
 - Row
 - Column
-- Label
+- Label code
+- Label ID
 auxiliary_columns_dev:
 - Aux1
 - Aux2
@@ -41,18 +43,24 @@ additional_columns_map:
     label: Date
     column: Date
     value: Date
-coralnet_labelset_column:
-  coralnet_col: Label
-  mermaid_join: coralnet_label
-  table_label: CoralNet label
+coralnet_labelset_id_column:
+  coralnet_col: Label ID
+  mermaid_join: provider_id
+  table_label: ~
+coralnet_labelset_code_column:
+  coralnet_col: Label code
+  mermaid_join: ~
+  table_label: CoralNet label code
 mermaid_attributes_columns:
   mermaid_attribute:
     table_label: MERMAID Benthic attribute
     label: Benthic attribute
     column: Benthic attribute *
+    api_column: benthic_attribute
   mermaid_growth_form:
     table_label: MERMAID Growth form
     label: Growth form
     column: Growth form
+    api_column: growth_form
 upload_data_img_path: www/coralnet-image-annotations-export.png
 logo_img_path: www/logo.png
