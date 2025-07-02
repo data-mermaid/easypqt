@@ -2050,14 +2050,15 @@
         "tidyverse"
       ],
       "VignetteBuilder": "knitr",
-      "Author": "Sharla Gelfand [aut, cre], Wildlife Conservation Society [cph, fnd]",
-      "Maintainer": "Sharla Gelfand <sharla.gelfand@gmail.com>",
       "RemoteType": "github",
       "RemoteHost": "api.github.com",
-      "RemoteUsername": "data-mermaid",
       "RemoteRepo": "mermaidr",
-      "RemoteRef": "master",
-      "RemoteSha": "3b2fb12365376e544e173f7f7d2e508d20f96d62"
+      "RemoteUsername": "data-mermaid",
+      "RemoteRef": "dev",
+      "RemoteSha": "0854a17adb184bb897498604e892d2c8664d130f",
+      "NeedsCompilation": "no",
+      "Author": "Sharla Gelfand [aut, cre], Wildlife Conservation Society [cph, fnd]",
+      "Maintainer": "Sharla Gelfand <sharla.gelfand@gmail.com>"
     },
     "mime": {
       "Package": "mime",
