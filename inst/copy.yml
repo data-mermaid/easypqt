@@ -24,7 +24,19 @@ provider_introduction:
     as Transect numbers and dates for each image. You will need to upload the image
     annotations file obtained directly from CoralNet, including the date and auxiliary
     fields columns.
-  reefcloud: ~
+  reefcloud: <p> Easy PQT will walk you through selecting a MERMAID project to ingest
+    into, uploading your ReefCloud image annotations, matching ReefCloud fields to
+    required MERMAID fields, and mapping ReefCloud labels to MERMAID Benthic Attributes
+    and Growth Forms. We've pre-mapped most of the labels in ReefCloud to MERMAID's
+    Benthic Attributes and Growth Forms in order to make the ingestion process as
+    easy as possible. </p> <p> Please note that after you have successfully ingested
+    your data, there is still information that needs to be filled out, including the
+    mandatory fields of transect length surveyed, quadrat size, number of points per
+    quadrat, and observers. </p> <p> To begin, please make sure your project is set
+    up in MERMAID (with Sites and Managements) and that your ReefCloud data Sites
+    and Managements match these, as well as Transect numbers and dates for each image.
+    You will need to upload the point classifications file obtained directly from
+    CoralNet.
 select_project:
   title: MERMAID Project
   text: Select the project you want to ingest your data into
