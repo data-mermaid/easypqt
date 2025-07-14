@@ -28,6 +28,7 @@ auxiliary_columns_dev:
 - Aux3
 - Aux4
 - Aux5
+reefcloud_template_path: reefcloud_template.csv
 auxiliary_columns_map:
   site:
     label: Site
