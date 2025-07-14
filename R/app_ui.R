@@ -39,7 +39,6 @@ app_ui <- function(request) {
         spaced(
           get_copy("introduction"),
           mod_select_provider_ui("provider"),
-          mod_upload_instructions_ui("instructions"),
           shiny::HTML("</p>")
         )
       ),

@@ -9,15 +9,18 @@
 mod_select_provider_ui <- function(id) {
   ns <- NS(id)
 
-  shiny::div(
-    shiny::h2(get_copy("select_provider", "title")),
-    spaced(get_copy("select_provider", "text")),
-    shinyWidgets::radioGroupButtons(
-      inputId = ns("provider"),
-      choices = names(get_config("provider")),
-      selected = character(0),
-      individual = TRUE,
-    )
+  shiny::tagList(
+    shiny::div(
+      shiny::h2(get_copy("select_provider", "title")),
+      spaced(get_copy("select_provider", "text")),
+      shinyWidgets::radioGroupButtons(
+        inputId = ns("provider"),
+        choices = names(get_config("provider")),
+        selected = character(0),
+        individual = TRUE,
+      )
+    ),
+    shiny::uiOutput(ns("provider_instructions"))
   )
 }
 
@@ -29,7 +32,6 @@ mod_select_provider_server <- function(id, r) {
     ns <- session$ns
 
     shiny::observe({
-      browser()
       # Update r$provider with selected provider ----
       r$provider <- input$provider
 
@@ -37,20 +39,25 @@ mod_select_provider_server <- function(id, r) {
       r$provider_machine <- get_config("provider")[[r$provider]]
 
       # Disable provider selection
-      disable_picker_input(ns("provider"))
+      shinyjs::disable("provider")
     }) %>%
       shiny::bindEvent(input$provider)
 
-    # Disable provider selection
-    shiny::observe({
-      shiny::req(r$ready_to_map_aux)
-      disable_picker_input(ns("project"))
-    }) %>%
-      shiny::bindEvent(r$ready_to_map_aux)
+    output$provider_instructions <- shiny::renderUI({
+    # Once provider is selected, show the introduction for it
+      shiny::req(r$provider)
+
+      shiny::div(
+        get_copy("provider_introduction", r$provider_machine),
+        mod_upload_instructions_ui("instructions")
+      )
+    })
+
+    # Instructions server ----
 
     # Reset and re-enable provider selection on reset ----
     shiny::observe({
-      enable_picker_input(ns("provider"))
+      shinyjs::enable("provider")
 
       shinyWidgets::updatePickerInput(
         session = session,

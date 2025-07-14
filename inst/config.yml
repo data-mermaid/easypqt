@@ -65,5 +65,7 @@ mermaid_attributes_columns:
     label: Growth form
     column: Growth form
     api_column: growth_form
-upload_data_img_path: www/coralnet-image-annotations-export.png
+upload_data_img_path:
+  coralnet: www/coralnet-image-annotations-export.png
+  reefcloud: ~
 logo_img_path: www/logo.png

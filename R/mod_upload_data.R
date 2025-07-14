@@ -46,7 +46,7 @@ mod_upload_data_server <- function(id, r) {
       shiny::bindEvent(r$step_select_valid_project_done, r$reset)
 
     # Upload instructions ----
-    mod_upload_instructions_server("instructions")
+    mod_upload_instructions_server("instructions", r)
 
     # Check the file contains the correct columns ----
     shiny::observe({
@@ -85,7 +85,7 @@ mod_upload_data_server <- function(id, r) {
 
       # If it does not contain the correct columns, show a modal and do not allow them to continue
       if (!r$upload_contains_required_cols) {
-        mod_upload_instructions_server("instructions_invalid", show_ui = FALSE)
+        mod_upload_instructions_server("instructions_invalid", r, show_ui = FALSE)
       } else {
         # If it does contain the correct columns, read in the data and proceed
         # Only read in the required columns
@@ -93,7 +93,6 @@ mod_upload_data_server <- function(id, r) {
 
         # Check that the Date column is formatted properly - if not, show a modal that there is an issue
         date_validation <- check_valid_dates(annotations_raw[["Date"]])
-
         if (!date_validation[["valid"]]) {
           mod_upload_instructions_server("instructions_invalid_date", show_ui = FALSE, invalid = TRUE)
         } else {

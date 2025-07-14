@@ -100,7 +100,7 @@ app_server <- auth0_server(function(input, output, session) {
   mod_select_provider_server("provider", r)
 
   # Upload instructions ----
-  mod_upload_instructions_server("instructions")
+  mod_upload_instructions_server("instructions", r)
 
   # Reset ----
   mod_reset_server("reset", r)
