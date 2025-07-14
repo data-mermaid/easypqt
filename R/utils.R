@@ -11,7 +11,7 @@ get_copy <- function(key, secondary_key = NULL, tertiary_key = NULL) {
   }
 
   if (!is.null(tertiary_key)) {
-    copy <- copy[[secondary_key]]
+    copy <- copy[[tertiary_key]]
   }
 
   shiny::HTML(copy)
