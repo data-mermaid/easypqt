@@ -23,6 +23,14 @@ mod_select_project_server <- function(id, r) {
     output$select_project <- shiny::renderUI({
       shiny::req(r$provider)
 
+      # Use users' projects to make dropdown
+      projects <- setNames(r$projects$id, r$projects$name)
+
+      # If they have no projects, show a modal with this information - they need a project in order to use easyPQT!
+      if (length(projects) == 0) {
+        show_modal(get_copy("select_project", "no_projects"))
+      }
+
       shiny::div(
         shiny::h2(get_copy("select_project", "title")),
         spaced(get_copy("select_project", "text")),
@@ -30,7 +38,7 @@ mod_select_project_server <- function(id, r) {
           ns("project"),
           label = NULL,
           multiple = TRUE,
-          choices = NULL,
+          choices = projects,
           options = shinyWidgets::pickerOptions(
             liveSearch = TRUE,
             size = 10,
@@ -40,23 +48,6 @@ mod_select_project_server <- function(id, r) {
         )
       )
     })
-
-    # Update project selection dropdown based on user's projects ----
-
-    shiny::observe({
-      projects <- setNames(r$projects$id, r$projects$name)
-
-      # If they have no projects, show a modal with this information - they need a project in order to use easyPQT!
-      if (length(projects) == 0) {
-        show_modal(get_copy("select_project", "no_projects"))
-      } else {
-        shinyWidgets::updatePickerInput(
-          session = session,
-          inputId = "project", choices = projects, selected = character(0)
-        )
-      }
-    }) %>%
-      shiny::bindEvent(r$projects)
 
     shiny::observe({
       # Update r$project with selected project ----
