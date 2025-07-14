@@ -96,6 +96,9 @@ app_server <- auth0_server(function(input, output, session) {
     waiter::waiter_hide()
   })
 
+  # Provider selection ----
+  mod_select_provider_server("provider", r)
+
   # Upload instructions ----
   mod_upload_instructions_server("instructions")
 
