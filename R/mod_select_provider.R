@@ -33,10 +33,10 @@ mod_select_provider_server <- function(id, r) {
 
     shiny::observe({
       # Update r$provider with selected provider ----
-      r$provider <- input$provider
+      r$provider_full <- input$provider
 
       # Update provider machine name (no caps etc)
-      r$provider_machine <- get_config("provider")[[r$provider]]
+      r$provider <- get_config("provider")[[r$provider_full]]
 
       # Disable provider selection
       shinyjs::disable("provider")
@@ -48,7 +48,7 @@ mod_select_provider_server <- function(id, r) {
       shiny::req(r$provider)
 
       shiny::div(
-        get_copy("provider_introduction", r$provider_machine),
+        get_copy("provider_introduction", r$provider),
         mod_upload_instructions_ui("instructions")
       )
     })

@@ -39,15 +39,15 @@ mod_upload_instructions_server <- function(id, r, show_ui = TRUE, invalid = FALS
       shiny::showModal(
         shiny::modalDialog(
           if (!show_ui & !invalid) {
-            shiny::tags$p(get_copy("upload_data", "missing_instructions", r$provider_machine))
+            shiny::tags$p(get_copy("upload_data", "missing_instructions", r$provider))
           },
           if (invalid) {
-            shiny::tags$p(get_copy("upload_data", "invalid_instructions", r$provider_machine))
+            shiny::tags$p(get_copy("upload_data", "invalid_instructions", r$provider))
           },
-          shiny::tags$p(get_copy("upload_data", "instructions", r$provider_machine)),
+          shiny::tags$p(get_copy("upload_data", "instructions", r$provider)),
           shiny::tags$img(
-            src = get_config("upload_data_img_path")[[r$provider_machine]],
-            alt = get_copy("upload_data", "instructions_img_alt", r$provider_machine),
+            src = get_config("upload_data_img_path")[[r$provider]],
+            alt = get_copy("upload_data", "instructions_img_alt", r$provider),
             style = "width: 100%"
           ),
           footer = close_button,
