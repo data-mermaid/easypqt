@@ -44,7 +44,7 @@ mod_select_provider_server <- function(id, r) {
       shiny::bindEvent(input$provider)
 
     output$provider_instructions <- shiny::renderUI({
-    # Once provider is selected, show the introduction for it
+      # Once provider is selected, show the introduction for it
       shiny::req(r$provider)
 
       shiny::div(

@@ -52,7 +52,7 @@ mod_map_coralnet_labels_to_mermaid_server <- function(id, r) {
           dplyr::desc(.is_na),
           mermaid_attribute
         ) %>%
-        dplyr::select(-.is_na, - dplyr::all_of(coralnet_col))
+        dplyr::select(-.is_na, -dplyr::all_of(coralnet_col))
     }) %>%
       shiny::bindEvent(r$step_map_auxiliary_fields_accordion_fully_done)
 
