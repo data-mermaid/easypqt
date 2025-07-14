@@ -17,7 +17,7 @@ mod_map_auxiliary_fields_ui <- function(id) {
     # Check valid values of fields ----
     # Map labelsets ----
     mod_map_coralnet_labels_to_mermaid_ui(ns("map_coralnet_labels")),
-    mod_reset_ui(ns("reset"), show_ui = FALSE)
+    mod_reset_ui(ns("reset"))
   )
 }
 

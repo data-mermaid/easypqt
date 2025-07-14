@@ -7,26 +7,34 @@
 #' @noRd
 #'
 #' @importFrom shiny NS tagList
-mod_reset_ui <- function(id, show_ui = TRUE) {
+mod_reset_ui <- function(id) {
   ns <- NS(id)
-
-  reset <- warning_button(ns("reset"), get_copy("reset", "button"))
-
-  if (!show_ui) {
-    reset <- shinyjs::hidden(reset)
-  }
-
-  shiny::div(
-    reset
-  )
+  shiny::uiOutput(ns("reset"))
 }
 
 #' reset Server Functions
 #'
 #' @noRd
-mod_reset_server <- function(id, r, show_ui = TRUE, show_confirm = TRUE) {
+mod_reset_server <- function(id, r, show_ui = TRUE, show_confirm = TRUE, show_on_provider = TRUE) {
   moduleServer(id, function(input, output, session) {
     ns <- session$ns
+
+    # Enable only showing once they have selected a provider ---
+    output$reset <- shiny::renderUI({
+      if (show_on_provider) {
+        shiny::req(r$provider)
+      }
+
+      reset <- warning_button(ns("reset"), get_copy("reset", "button"))
+
+      if (!show_ui) {
+        reset <- shinyjs::hidden(reset)
+      }
+
+      shiny::div(
+        reset
+      )
+    })
 
     if (!show_ui) {
       # Emulate a click on the UI

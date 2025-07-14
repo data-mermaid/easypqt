@@ -9,22 +9,7 @@
 mod_select_project_ui <- function(id) {
   ns <- NS(id)
 
-  shiny::div(
-    shiny::h2(get_copy("select_project", "title")),
-    spaced(get_copy("select_project", "text")),
-    shinyWidgets::pickerInput(
-      ns("project"),
-      label = NULL,
-      multiple = TRUE,
-      choices = NULL,
-      options = shinyWidgets::pickerOptions(
-        liveSearch = TRUE,
-        size = 10,
-        maxOptions = 1,
-        noneSelectedText = get_copy("select_project", "placeholder")
-      )
-    )
-  )
+  shiny::uiOutput(ns("select_project"))
 }
 
 #' select_project Server Functions
@@ -33,6 +18,28 @@ mod_select_project_ui <- function(id) {
 mod_select_project_server <- function(id, r) {
   moduleServer(id, function(input, output, session) {
     ns <- session$ns
+
+    # Show project selection once they have selected a provider ----
+    output$select_project <- shiny::renderUI({
+      shiny::req(r$provider)
+
+      shiny::div(
+        shiny::h2(get_copy("select_project", "title")),
+        spaced(get_copy("select_project", "text")),
+        shinyWidgets::pickerInput(
+          ns("project"),
+          label = NULL,
+          multiple = TRUE,
+          choices = NULL,
+          options = shinyWidgets::pickerOptions(
+            liveSearch = TRUE,
+            size = 10,
+            maxOptions = 1,
+            noneSelectedText = get_copy("select_project", "placeholder")
+          )
+        )
+      )
+    })
 
     # Update project selection dropdown based on user's projects ----
 
@@ -84,7 +91,7 @@ mod_select_project_server <- function(id, r) {
     }) %>%
       shiny::bindEvent(r$ready_to_map_aux)
 
-    # Reset and re-enable project selection on refresh ----
+    # Reset, re-enable, and hide project selection on refresh ----
     shiny::observe({
       enable_picker_input(ns("project"))
 
@@ -95,6 +102,8 @@ mod_select_project_server <- function(id, r) {
       )
 
       r$is_project_admin <- FALSE
+
+      # TODO -> hide project selection when reset
     }) %>%
       shiny::bindEvent(r$reset)
   })
