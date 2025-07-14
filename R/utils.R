@@ -2,12 +2,16 @@ get_config <- function(key) {
   yaml::read_yaml(app_sys("config.yml"))[[key]]
 }
 
-get_copy <- function(key, secondary_key = NULL) {
+get_copy <- function(key, secondary_key = NULL, tertiary_key = NULL) {
   copy <- yaml::read_yaml(app_sys("copy.yml"))
-  if (is.null(secondary_key)) {
-    copy <- copy[[key]]
-  } else {
-    copy <- copy[[key]][[secondary_key]]
+
+  copy <- copy[[key]]
+  if (!is.null(secondary_key)) {
+    copy <- copy[[secondary_key]]
+  }
+
+  if (!is.null(tertiary_key)) {
+    copy <- copy[[secondary_key]]
   }
 
   shiny::HTML(copy)
