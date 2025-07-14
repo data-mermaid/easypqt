@@ -92,21 +92,17 @@ invalid_values: |-
   The annotations contain invalid values of {label}. The following are invalid: {invalid_values}
   Valid values of {label} are: {valid_values}
 auxiliary:
-  title:
-    coralnet: Match CoralNet auxiliary fields
-    reefcloud: ~
-  text:
-    coralnet: In this section, you will match the auxiliary fields in your CoralNet
-      annotations to the fields that are required to ingest your data to MERMAID.
-      Select the auxiliary fields that correspond to Site, Management, and Transect
-      number. After matching columns, Easy PQT will validate the data to ensure it
-      matches the available options in your MERMAID project. If it does not, you will
-      receive information on which fields do not match,
+  title: Match CoralNet auxiliary fields
+  text: In this section, you will match the auxiliary fields in your CoralNet annotations
+    to the fields that are required to ingest your data to MERMAID. Select the auxiliary
+    fields that correspond to Site, Management, and Transect number. After matching
+    columns, Easy PQT will validate the data to ensure it matches the available options
+    in your MERMAID project. If it does not, you will receive information on which
+    fields do not match,
   preview: Auxiliary fields preview
-  preview_text:
-    coralnet: The following table shows the auxiliary fields in your uploaded CoralNet
-      annotations. Use this information to help match Site, Management, and Transect
-      number to auxiliary fields, below.
+  preview_text: The following table shows the auxiliary fields in your uploaded CoralNet
+    annotations. Use this information to help match Site, Management, and Transect
+    number to auxiliary fields, below.
   map: Match auxiliary fields
   map_text: Choose the auxiliary field for Site, Management, and Transect number using
     the inputs below.
