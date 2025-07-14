@@ -50,19 +50,21 @@ select_project:
 upload_data:
   title:
     coralnet: Upload CoralNet annotations
-    reefcloud: ~
+    reefcloud: Upload ReefCloud annotations
   text:
     coralnet: <p>Upload your data by clicking the "Browse..." button or by dragging
       the file directly into the upload field. </p> <p> Please ensure your data is
       the annotations file exported directly from CoralNet, including the date and
       auxiliary fields columns.
-    reefcloud: ~
+    reefcloud: <p>Upload your data by clicking the "Browse..." button or by dragging
+      the file directly into the upload field. </p> <p> Please ensure your data is
+      the point classifications file exported directly from ReefCloud.
   instructions:
     coralnet: The image annotations file can be found by navigating to "Images" within
       a CoralNet project. Under "Image Actions", select "Export Annotations, CSV".
       Select "Both" for the Label format, and select the optional columns "Image metadata
       - date and auxiliary fields", as shown below.
-    reefcloud: ~
+    reefcloud: TODO
   instructions_img_alt:
     coralnet: 'A screen shot of the "Image" page in CoralNet, highlighting the "Image
       Actions" section with the Action: "Export Annotations, CSV" for these images:
@@ -70,7 +72,7 @@ upload_data:
       these images in CSV format - one row per annotation". There is a section to
       select Optional Columns, and the option "Image metadata - date and auxiliary
       fields" is checked.'
-    reefcloud: ~
+    reefcloud: TODO
   missing_instructions:
     coralnet: The uploaded annotations do not contain the required columns.
     reefcloud: ~
