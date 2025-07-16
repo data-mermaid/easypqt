@@ -94,7 +94,6 @@ mod_reset_server <- function(id, r, show_ui = TRUE, show_confirm = TRUE, show_on
 
       # General resets
       r$upload_contains_required_cols <- FALSE
-      r$auxiliary_columns_map <- get_config("auxiliary_columns_map")
       r$auxiliary_columns <- NULL
       r$required_annotations_columns <- NULL
       r$step_select_valid_project_done <- FALSE

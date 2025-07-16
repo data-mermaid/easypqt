@@ -9,16 +9,8 @@
 #' @importFrom shiny NS tagList
 mod_map_auxiliary_fields_ui <- function(id) {
   ns <- NS(id)
-  tagList(
-    shiny::div(),
-    # Parse CoralNet annotations auxiliary fields ----
-    # Show date/site/management, confirm and continue ----
-    # TODO
-    # Check valid values of fields ----
-    # Map labelsets ----
-    mod_map_coralnet_labels_to_mermaid_ui(ns("map_coralnet_labels")),
-    mod_reset_ui(ns("reset"))
-  )
+  # No UI for this, since an accordion is created/opened in server
+  tagList()
 }
 
 #' map_auxliary_fields Server Functions
@@ -51,7 +43,7 @@ mod_map_auxiliary_fields_server <- function(id, r) {
         DT::renderDataTable()
 
       output$inputs <- purrr::imap(
-        r$auxiliary_columns_map,
+        r$columns_map,
         \(x, y) {
           make_mapping_dropdown_ui(x, y, r, ns)
         }
@@ -85,10 +77,10 @@ mod_map_auxiliary_fields_server <- function(id, r) {
 
     ## Update list of mapped columns ----
     purrr::walk(
-      names(get_config("auxiliary_columns_map")),
+      names(get_config("coralnet_columns_map")),
       \(x)
       shiny::observe({
-        r$auxiliary_columns_map[[x]]["value"] <- list(input[[x]])
+        r$columns_map[[x]]["value"] <- list(input[[x]])
       }) %>%
         shiny::bindEvent(input[[x]])
     )
@@ -99,9 +91,9 @@ mod_map_auxiliary_fields_server <- function(id, r) {
 
       # Go through each, and disable the other selected options
       purrr::walk(
-        names(r$auxiliary_columns_map),
+        names(r$columns_map),
         \(x) {
-          disable_options <- r$auxiliary_columns_map[names(r$auxiliary_columns_map) != x] %>%
+          disable_options <- r$columns_map[names(r$columns_map) != x] %>%
             purrr::map("value") %>%
             purrr::compact() %>%
             unlist(use.names = FALSE)
@@ -125,126 +117,15 @@ mod_map_auxiliary_fields_server <- function(id, r) {
       )
     })
 
-    ## Once all auxiliary mapping fields have been filled out, flag them for checking non-empty/valid ----
+     ## Once all auxiliary mapping fields have been filled out, flag them for checking non-empty/valid ----
     shiny::observe({
       shiny::req(r$step_map_auxiliary_fields_accordion_made_done)
 
-      cols_mapped <- r$auxiliary_columns_map %>%
+      cols_mapped <- r$columns_map %>%
         purrr::map("value") %>%
         purrr::compact()
 
-      r$step_map_auxiliary_fields_done <- length(cols_mapped) == length(r$auxiliary_columns_map)
-
-      # Check that fields are not empty ----
-      # Check that Date, Site, Management, and Transect Number are not empty
-
-      shiny::req(r$step_map_auxiliary_fields_done)
-
-      cat("Checking aux \n")
-      show_modal(
-        title = get_copy("auxiliary_validating", "title"),
-        spaced(get_copy("auxiliary_validating", "checking")),
-        footer = NULL
-      )
-      Sys.sleep(1)
-
-      # Iterate through and check if any values are empty
-      check_fields <- append(get_config("additional_columns_map"), r$auxiliary_columns_map)
-
-      empty_fields <- purrr::map(
-        check_fields,
-        \(x) {
-          # Get values for field
-          values <- r$annotations_raw[x$value]
-          names(values) <- "field"
-
-          # Check if any are NA
-          na_values <- values %>% dplyr::filter(is.na(field))
-          any_na <- nrow(na_values) > 0
-
-          # Return label of field if any are NA
-          if (any_na) {
-            x$label
-          } else {
-            # Otherwise, return NULL
-            NULL
-          }
-        }
-      ) %>%
-        purrr::compact()
-
-      if (length(empty_fields) > 0) {
-        r$no_empty_fields <- FALSE
-        empty_fields_skeleton <- get_copy("non_empty_fields")
-        empty_fields_list <- make_formatted_list(empty_fields)
-
-        all_fields <- check_fields %>%
-          purrr::map("label") %>%
-          glue::glue_collapse(sep = ", ", last = ", and ")
-
-        empty_fields_glue <- list(fields = all_fields, list = empty_fields_list)
-
-        empty_fields_text <- skeleton_to_text(empty_fields_skeleton, empty_fields_glue)
-
-        shiny::removeModal()
-
-        cat("Empty aux \n")
-        show_modal(
-          title = get_copy("auxiliary_validating", "title"), empty_fields_text
-        )
-      } else {
-        r$no_empty_fields <- TRUE
-      }
-
-      # Check valid values of auxiliary fields ----
-      # Validate fields ----
-      shiny::req(r$no_empty_fields)
-
-      # Get project template/options ----
-      # Show modal that we are getting this?
-      template_and_options <- mermaidr::mermaid_import_get_template_and_options(r$project, "benthicpqt", token = r$mermaidr_token)
-      r$template <- template_and_options$Template
-      r$template_choices <- template_and_options[names(template_and_options) != "Template"] %>%
-        purrr::map("choices") %>%
-        purrr::compact()
-
-      # Check that sites are ones already entered in the project ----
-      site_ui <- check_valid_values(r, "site")
-
-      # Check that managements are ones already entered in the project ----
-      management_ui <- check_valid_values(r, "management")
-
-      # Check that transect number is an integer ----
-      transect_number_ui <- check_integer_values(r, "transect_number")
-
-      # Hide checking modal
-      shiny::removeModal()
-
-      if (site_ui[["valid"]] & management_ui[["valid"]] & transect_number_ui[["valid"]]) {
-        r$step_map_auxiliary_fields_valid_done <- TRUE
-
-        # Show modal that all is good
-        # Show checking modal
-
-        cat("All aux valid \n")
-        show_modal(
-          title = get_copy("auxiliary_validating", "title"),
-          get_copy("auxiliary_validating", "all_valid")
-        )
-      } else {
-        cat("Issues with aux \n")
-        show_modal(
-          title = get_copy("auxiliary_validating", "title"),
-          shiny::div(class = "validating-aux", get_copy("auxiliary_validating", "fix")),
-          shiny::hr(),
-          site_ui[["ui"]],
-          shiny::hr(),
-          management_ui[["ui"]],
-          shiny::hr(),
-          transect_number_ui[["ui"]],
-          footer = warning_button(ns("incorrect_reset"), get_copy("ingestion", "reset_button"))
-        )
-      }
+      r$step_fields_setup_done <- length(cols_mapped) == length(r$columns_map)
     })
 
     shiny::observe({
@@ -258,9 +139,9 @@ mod_map_auxiliary_fields_server <- function(id, r) {
       disable_picker_input(ns("transect_number"))
 
       # Rename columns in data according to auxiliary fields mapping ----
-      mapped_cols_names <- r$auxiliary_columns_map %>%
+      mapped_cols_names <- r$columns_map %>%
         purrr::map("column")
-      mapped_cols_aux <- r$auxiliary_columns_map %>%
+      mapped_cols_aux <- r$columns_map %>%
         purrr::map("value")
       mapped_cols <- setNames(mapped_cols_aux, mapped_cols_names) %>%
         unlist()
@@ -279,9 +160,6 @@ mod_map_auxiliary_fields_server <- function(id, r) {
     # Show date/site/management, confirm and continue ----
     # TODO
 
-    # Map CoralNet labelsets to MERMAID ----
-    mod_map_coralnet_labels_to_mermaid_server("map_coralnet_labels", r)
-
     ## Restart if needed ----
     shiny::observe({
       shiny::removeModal()
@@ -297,9 +175,8 @@ mod_map_auxiliary_fields_server <- function(id, r) {
 ## To be copied in the server
 # mod_map_auxiliary_fields_server("map_auxliary_fields")
 
-
 make_mapping_dropdown_ui <- function(auxiliary_column_map, auxiliary_column, r, ns) {
-  selected <- null_if_dev(r$dev, glue::glue("Aux{number}", number = which(names(shiny::isolate(r$auxiliary_columns_map)) == auxiliary_column)))
+  selected <- null_if_dev(r$dev, glue::glue("Aux{number}", number = which(names(shiny::isolate(r$columns_map)) == auxiliary_column)))
 
   shiny::fluidRow(
     shiny::column(
@@ -322,81 +199,5 @@ make_mapping_dropdown_ui <- function(auxiliary_column_map, auxiliary_column, r, 
         )
       )
     ) %>% tagAppendAttributes(class = "constrained-col")
-  )
-}
-
-check_valid_values <- function(r, lookup) {
-  aux_lookup <- r$auxiliary_columns_map[[lookup]]
-  template_lookup <- aux_lookup[["column"]]
-  actual_lookup <- aux_lookup[["value"]]
-
-  valid_values <- r$template_choices[[template_lookup]][["value"]]
-  actual_values <- unique(r$annotations_raw[[actual_lookup]])
-
-  invalid_values <- setdiff(actual_values, valid_values)
-
-  all_valid <- length(invalid_values) == 0
-
-  column <- r$auxiliary_columns_map[[lookup]][["label"]]
-
-  if (!all_valid) {
-    invalid_values_skeleton <- get_copy("invalid_values")
-    invalid_values <- make_formatted_list(invalid_values)
-    valid_values <- make_formatted_list(valid_values)
-
-    invalid_values_envir <- list(
-      label = r$auxiliary_columns_map[[lookup]][["label"]],
-      invalid_values = invalid_values,
-      valid_values = valid_values
-    )
-
-    res <- skeleton_to_text(invalid_values_skeleton, invalid_values_envir)
-  } else {
-    res <- glue::glue(get_copy("auxiliary_validating", "column_valid"))
-  }
-
-  list(
-    valid = all_valid,
-    ui =
-      shiny::tagList(
-        shiny::h3(column),
-        shiny::div(class = "validating-aux", res)
-      )
-  )
-}
-
-check_integer_values <- function(r, lookup) {
-  values <- r$annotations_raw[r$auxiliary_columns_map[[lookup]][["value"]]]
-  column <- r$auxiliary_columns_map[[lookup]][["label"]]
-  names(values) <- "value"
-
-  values_with_numeric <- values %>%
-    dplyr::mutate(numeric_value = as.integer(value) %>% suppressWarnings())
-
-  invalid_values <- values_with_numeric %>%
-    dplyr::filter(is.na(numeric_value) |
-      as.character(numeric_value) != value) # Handles decimals
-
-  all_valid <- nrow(invalid_values) == 0
-
-  if (!all_valid) {
-    # Show the invalid ones only
-
-    transect_number_invalid_skeleton <- get_copy("transect_number_not_integer")
-    invalid_values <- make_formatted_list(invalid_values[["value"]])
-
-    res <- skeleton_to_text(transect_number_invalid_skeleton, list(invalid_values = invalid_values))
-  } else {
-    res <- glue::glue(get_copy("auxiliary_validating", "column_valid"))
-    # TODO
-  }
-
-  list(
-    valid = all_valid,
-    ui =
-      shiny::tagList(
-        shiny::h3(r$auxiliary_columns_map[[lookup]][["label"]]),
-        shiny::div(class = "validating-aux", res)
-      )
   )
 }

@@ -50,11 +50,11 @@ app_ui <- function(request) {
       ),
       # Upload CoralNet annotations ----
       mod_upload_data_ui("upload_data"),
-      # Parse CoralNet annotations ----
       bslib::accordion(
         id = "accordion",
         multiple = TRUE,
-        mod_map_auxiliary_fields_ui("map_auxliary_fields"),
+        # Parse CoralNet annotations ----
+        mod_parse_annotations_ui("parse_annotations"),
         # Reshape annotations ----
         mod_reshape_annotations_ui("reshape_annotations"),
         # Preview/confirm ingestion ----

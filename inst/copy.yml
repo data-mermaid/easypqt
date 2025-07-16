@@ -36,7 +36,7 @@ provider_introduction:
     up in MERMAID (with Sites and Managements) and that your ReefCloud data Sites
     and Managements match these, as well as Transect numbers and dates for each image.
     You will need to upload the point classifications file obtained directly from
-    CoralNet.
+    ReefCloud.
 select_project:
   title: MERMAID Project
   text: Select the project you want to ingest your data into
@@ -85,7 +85,9 @@ non_empty_fields:
   coralnet: |-
     {fields} cannot contain empty values. The following fields contain empty values: {list}
     Please update the data directly in CoralNet then begin the ingestion process again.
-  reefcloud: ~
+  reefcloud: |-
+    {fields} cannot contain empty values. The following fields contain empty values: {list}
+    Please update the data directly in ReefCloud then begin the ingestion process again.
 transect_number_not_integer: 'Transect Number must be an integer. The following are
   invalid: {invalid_values}'
 invalid_values: |-
@@ -109,15 +111,21 @@ auxiliary:
   placeholder: Select an auxiliary field
 auxiliary_validating:
   title: Validating fields
-  checking: Checking auxiliary fields...
+  checking: Checking values of fields...
   all_valid:
     coralnet: <p>✔ All auxiliary fields are valid! </p><p> Continue on to map CoralNet
+      labels to MERMAID attributes.</p>
+    reefcloud: <p>✔ All fields are valid! </p><p> Continue on to map ReefCloud
       labels to MERMAID attributes.</p>
   column_valid: ✔ Values of {column} are valid.
   fix:
     coralnet: <p>There are some issues with the auxiliary column values, as described
       below. You may need to fix invalid values in CoralNet, or add/edit values (Site
       or Management) in the MERMAID app to match the CoralNet annotations.</p><p>Once
+      you have made changes, please restart Easy PQT before continuing with ingestion.</p>
+    reefcloud: <p>There are some issues with the auxiliary column values, as described
+      below. You may need to fix invalid values in ReefCloud, or add/edit values (Site
+      or Management) in the MERMAID app to match the ReefCloud data.</p><p>Once
       you have made changes, please restart Easy PQT before continuing with ingestion.</p>
 mapping:
   title:

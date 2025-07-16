@@ -44,7 +44,6 @@ app_server <- auth0_server(function(input, output, session) {
   # Set up reactive values ----
   r <- shiny::reactiveValues(
     is_project_admin = FALSE,
-    auxiliary_columns_map = get_config("auxiliary_columns_map"),
     page_length = 10,
     ready_to_map_aux = FALSE,
     map_annotations_accordion_made = FALSE,
@@ -114,18 +113,21 @@ app_server <- auth0_server(function(input, output, session) {
   mod_upload_data_server("upload_data", r)
 
   # Parse annotations -----
+  # If necessary (for CoralNet), map auxiliary fields
+  # Check fields
+  # Map provider labels to MERMAID attributes
   # Map and check auxiliary fields
   # Map CoralNet labels to MERMAID attributes
-  mod_map_auxiliary_fields_server("map_auxliary_fields", r)
+  mod_parse_annotations_server("parse_annotations", r)
 
   # Reshape annotations for ingestion ----
-  mod_reshape_annotations_server("reshape_annotations", r)
+  # mod_reshape_annotations_server("reshape_annotations", r)
 
   # Preview/confirm ingestion ----
-  mod_ingestion_preview_and_confirm_server("preview_and_confirm", r)
+  # mod_ingestion_preview_and_confirm_server("preview_and_confirm", r)
 
   # Do ingestion ----
-  mod_ingestion_do_server("ingest", r)
+  # mod_ingestion_do_server("ingest", r)
 
   # Ingestion results -----
 

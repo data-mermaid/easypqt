@@ -29,7 +29,7 @@ auxiliary_columns_dev:
 - Aux4
 - Aux5
 reefcloud_template_path: reefcloud_template.csv
-auxiliary_columns_map:
+coralnet_columns_map:
   site:
     label: Site
     column: Site *
@@ -42,11 +42,27 @@ auxiliary_columns_map:
     label: Transect number
     column: Transect number *
     value: ~
-additional_columns_map:
+reefcloud_columns_map:
+  site:
+    label: Site
+    column: Site *
+    value: site_name
+  management:
+    label: Management
+    column: Management *
+    value: site_management
+  transect_number:
+    label: Transect number
+    column: Transect number *
+    value: survey_transect_number
   date:
     label: Date
     column: Date
-    value: Date
+    value: survey_start_date (UTC)
+  depth:
+    label: Depth
+    column: Depth *
+    value: survey_depth
 coralnet_labelset_id_column:
   coralnet_col: Label ID
   mermaid_join: provider_id
