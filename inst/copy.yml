@@ -130,7 +130,7 @@ auxiliary_validating:
 mapping:
   title:
     coralnet: Map CoralNet Labels to MERMAID Attributes
-    reefcloud: ~
+    reefcloud: Map ReefCloud Labels to MERMAID Attributes
   text:
     coralnet: <p>This section will help you map CoralNet labels to MERMAID Benthic
       Attributes and Growth Forms. We have pre-mapped many CoralNet labels to attributes
@@ -142,8 +142,20 @@ mapping:
       value from the dropdown list for each field. </p><p> Once all CoralNet labels
       are mapped to valid MERMAID Benthic Attributes, you can click the "Confirm"
       button to continue with the ingestion process.</p>
+    reefcloud: <p>This section will help you map ReefCloud labels to MERMAID Benthic
+      Attributes and Growth Forms. We have pre-mapped many ReefCloud labels to attributes
+      in MERMAID. If you have a ReefCloud label that is not mapped to an attribute,
+      it will appear as an empty value. </p><p> Note that Growth Form can remain empty,
+      but Benthic Attribute is a required field. Blank Benthic Attributes are highlighted
+      in red to indicate that they must be mapped before you can continue. Please
+      select the correct Benthic Attributes and/or Growth Forms by selecting the correct
+      value from the dropdown list for each field. </p><p> Once all ReefCloud labels
+      are mapped to valid MERMAID Benthic Attributes, you can click the "Confirm"
+      button to continue with the ingestion process.</p>
   not_allowed_to_confirm:
     coralnet: All CoralNet labels must be mapped to valid MERMAID Benthic Attributes
+      to continue.
+    reefcloud: All ReefCloud labels must be mapped to valid MERMAID Benthic Attributes
       to continue.
 reshaping:
   title: Reshaping data

@@ -56,7 +56,7 @@ app_ui <- function(request) {
         # Parse annotations ----
         mod_parse_annotations_ui("parse_annotations"),
         # Map labels to MERMAID ----
-        mod_map_provider_labels_to_mermaid_ui(ns("map_labels")),
+        mod_map_provider_labels_to_mermaid_ui("map_labels"),
         # Reshape annotations ----
         mod_reshape_annotations_ui("reshape_annotations"),
         # Preview/confirm ingestion ----

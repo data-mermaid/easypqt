@@ -38,7 +38,7 @@ mod_check_valid_values_server <- function(id, r) {
 
       # Iterate through and check if any values are empty
       if (r$provider == "coralnet") {
-        check_fields <- append(get_config(glue::glue("coralnet_additional_columns_map")), r$columns_map)
+        check_fields <- append(get_config(glue::glue("provider_additional_columns_map")), r$columns_map)
       } else if (r$provider == "reefcloud") {
         check_fields <- get_config("reefcloud_columns_map")
       }

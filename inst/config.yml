@@ -29,48 +29,55 @@ auxiliary_columns_dev:
 - Aux4
 - Aux5
 reefcloud_template_path: reefcloud_template.csv
-coralnet_columns_map:
-  site:
-    label: Site
-    column: Site *
-    value: ~
-  management:
-    label: Management
-    column: Management *
-    value: ~
-  transect_number:
-    label: Transect number
-    column: Transect number *
-    value: ~
-reefcloud_columns_map:
-  site:
-    label: Site
-    column: Site *
-    value: site_name
-  management:
-    label: Management
-    column: Management *
-    value: site_management
-  transect_number:
-    label: Transect number
-    column: Transect number *
-    value: survey_transect_number
-  date:
-    label: Date
-    column: Date
-    value: survey_start_date (UTC)
-  depth:
-    label: Depth
-    column: Depth *
-    value: survey_depth
-coralnet_labelset_id_column:
-  coralnet_col: Label ID
+provider_columns_map:
+  coralnet:
+    site:
+      label: Site
+      column: Site *
+      value: ~
+    management:
+      label: Management
+      column: Management *
+      value: ~
+    transect_number:
+      label: Transect number
+      column: Transect number *
+      value: ~
+  reefcloud:
+    site:
+      label: Site
+      column: Site *
+      value: site_name
+    management:
+      label: Management
+      column: Management *
+      value: site_management
+    transect_number:
+      label: Transect number
+      column: Transect number *
+      value: survey_transect_number
+    date:
+      label: Date
+      column: Date
+      value: survey_start_date (UTC)
+    depth:
+      label: Depth
+      column: Depth *
+      value: survey_depth
+labelset_id_column:
+  provider_col:
+    coralnet: Label ID
+    reefcloud: ~
   mermaid_join: provider_id
   table_label: ~
-coralnet_labelset_code_column:
-  coralnet_col: Label code
-  mermaid_join: ~
-  table_label: CoralNet label code
+labelset_code_column:
+  provider_col:
+    coralnet: Label code
+    reefclouid: ~
+  mermaid_join: provider_code
+  table_label:
+    coralnet: CoralNet label code
+    reefcloud: ~
 mermaid_attributes_columns:
   mermaid_attribute:
     table_label: MERMAID Benthic attribute
@@ -83,6 +90,6 @@ mermaid_attributes_columns:
     column: Growth form
     api_column: growth_form
 upload_data_img_path:
-  coralnet: www/coralnet-image-annotations-export.png
+  coralnet: www/provider-image-annotations-export.png
   reefcloud: ~
 logo_img_path: www/logo.png

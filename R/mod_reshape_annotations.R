@@ -24,7 +24,7 @@ mod_reshape_annotations_server <- function(id, r) {
     shiny::observe({
       # Show modal for reshaping data -> only if over a certain # of rows?
 
-      shiny::req(r$step_map_coralnet_joined_done)
+      shiny::req(r$step_map_provider_joined_done)
 
       cat("Reshaping \n")
       show_modal(
@@ -132,9 +132,9 @@ mod_reshape_annotations_server <- function(id, r) {
       shiny::removeModal()
 
       # Set back to FALSE so that any updated to mapping resets it
-      r$step_map_coralnet_joined_done <- FALSE
+      r$step_map_provider_joined_done <- FALSE
     }) %>%
-      shiny::bindEvent(r$step_map_coralnet_joined_done)
+      shiny::bindEvent(r$step_map_provider_joined_done)
   })
 }
 

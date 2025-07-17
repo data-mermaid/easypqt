@@ -31,7 +31,7 @@ mod_parse_annotations_server <- function(id, r) {
     shiny::observe({
       shiny::req(r$step_upload_valid_data_done)
 
-      r$columns_map <- get_config(glue::glue("{r$provider}_columns_map"))
+      r$columns_map <- get_config("provider_columns_map")[[r$provider]]
 
       if (r$provider == "reefcloud") {
         # For ReefCloud: No need to map fields, just need to check that fields contain valid values

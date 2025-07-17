@@ -77,7 +77,7 @@ mod_map_auxiliary_fields_server <- function(id, r) {
 
     ## Update list of mapped columns ----
     purrr::walk(
-      names(get_config("coralnet_columns_map")),
+      names(get_config("provider_columns_map")[[r$provider]]),
       \(x)
       shiny::observe({
         r$columns_map[[x]]["value"] <- list(input[[x]])

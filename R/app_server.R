@@ -57,9 +57,9 @@ app_server <- auth0_server(function(input, output, session) {
     step_upload_valid_data_done = FALSE,
     step_map_auxiliary_fields_accordion_made_done = FALSE,
     step_map_auxiliary_fields_accordion_fully_done = FALSE,
-    step_map_coralnet_labels_accordion_made_done = FALSE,
-    step_map_coralnet_labels_done = FALSE,
-    step_map_coralnet_labels_fully_done = FALSE,
+    step_map_provider_labels_accordion_made_done = FALSE,
+    step_map_provider_labels_done = FALSE,
+    step_map_provider_labels_fully_done = FALSE,
     preview_confirm_shown = 0,
     reset_confirm_counter = 0
   )
@@ -163,26 +163,26 @@ app_server <- auth0_server(function(input, output, session) {
   shiny::observe({
     shiny::req(r$step_map_auxiliary_fields_accordion_fully_done)
     # Insert panel
-    bslib::accordion_panel_insert("accordion", r$accordion_map_coralnet_labels)
+    bslib::accordion_panel_insert("accordion", r$accordion_map_provider_labels)
 
     # Open panel
-    bslib::accordion_panel_open("accordion", "map-coralnet-labels")
+    bslib::accordion_panel_open("accordion", "map-provider-labels")
 
     # Add JS to check for labels table existing, then fix its height
     shiny::insertUI("head", where = "beforeEnd", shiny::includeScript(app_sys("adjustMappingTableHeight.js")))
 
-    scroll_to_accordion("map-coralnet-labels")
+    scroll_to_accordion("map-provider-labels")
   }) %>%
     shiny::bindEvent(r$step_map_auxiliary_fields_accordion_fully_done)
 
   ### Close panel if all labels are good ----
   shiny::observe({
-    shiny::req(r$step_map_coralnet_labels_done)
-    bslib::accordion_panel_close("accordion", "map-coralnet-labels")
+    shiny::req(r$step_map_provider_labels_done)
+    bslib::accordion_panel_close("accordion", "map-provider-labels")
 
-    r$step_map_coralnet_labels_fully_done <- TRUE
+    r$step_map_provider_labels_fully_done <- TRUE
   }) %>%
-    shiny::bindEvent(r$step_map_coralnet_labels_done)
+    shiny::bindEvent(r$step_map_provider_labels_done)
 
   ## Preview/download/confirm ---
 
@@ -205,7 +205,7 @@ app_server <- auth0_server(function(input, output, session) {
 
     # Works even if the panels have not been created/added <3
     bslib::accordion_panel_remove("accordion", "map-auxiliary-fields")
-    bslib::accordion_panel_remove("accordion", "map-coralnet-labels")
+    bslib::accordion_panel_remove("accordion", "map-provider-labels")
     bslib::accordion_panel_remove("accordion", "preview-download-confirm")
   }) %>%
     shiny::bindEvent(r$reset)

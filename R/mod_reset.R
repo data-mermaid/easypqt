@@ -102,13 +102,13 @@ mod_reset_server <- function(id, r, show_ui = TRUE, show_confirm = TRUE, show_on
       r$step_map_auxiliary_fields_done <- FALSE
       r$step_map_auxiliary_fields_valid_done <- FALSE
       r$step_map_auxiliary_fields_accordion_fully_done <- FALSE
-      r$step_map_coralnet_labels_accordion_made_done <- FALSE
-      r$step_map_coralnet_labels_done <- FALSE
-      r$step_map_coralnet_labels_fully_done <- FALSE
+      r$step_map_provider_labels_accordion_made_done <- FALSE
+      r$step_map_provider_labels_done <- FALSE
+      r$step_map_provider_labels_fully_done <- FALSE
       r$preview_confirm_shown <- 0
       r$reset_confirm_counter <- 0
       r$do_ingestion <- FALSE
-      r$step_map_coralnet_joined_done <- FALSE
+      r$step_map_provider_joined_done <- FALSE
     }) %>%
       shiny::bindEvent(r$reset_confirm_counter)
 

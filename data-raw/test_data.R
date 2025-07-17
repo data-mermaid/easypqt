@@ -40,12 +40,12 @@ good_data_large <- good_data %>%
     relationship = "many-to-many"
   )
 
-coralnet_labels <- coralnet_mermaid_attributes %>%
-  select(Label = coralnet_label) %>%
+provider_labels <- provider_mermaid_attributes %>%
+  select(Label = provider_label) %>%
   sample_n(nrow(good_data_large), replace = TRUE)
 
 good_data_large <- good_data_large %>%
-  bind_cols(coralnet_labels) %>%
+  bind_cols(provider_labels) %>%
   select(-join)
 
 readr::write_csv(good_data_large, here::here("test_large.csv"))
