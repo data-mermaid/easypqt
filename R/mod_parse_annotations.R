@@ -17,8 +17,6 @@ mod_parse_annotations_ui <- function(id) {
     # TODO
     # Check valid values of fields ----
     mod_check_valid_values_ui(ns("valid_values")),
-    # Map labelsets ----
-    mod_map_coralnet_labels_to_mermaid_ui(ns("map_labels")),
     mod_reset_ui(ns("reset"))
   )
 }
@@ -46,9 +44,6 @@ mod_parse_annotations_server <- function(id, r) {
 
     # Check valid values ----
     mod_check_valid_values_server("valid_values", r)
-
-    # Map labels to MERMAID labels -----
-    mod_map_coralnet_labels_to_mermaid_server("map_labels", r)
   })
 }
 

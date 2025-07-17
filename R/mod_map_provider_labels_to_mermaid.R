@@ -1,19 +1,19 @@
-#' mod_map_coralnet_labels_to_mermaid UI Function
+#' mod_map_provider_labels_to_mermaid UI Function
 #'
 #' @description A shiny Module.
 #'
 #' @param id,input,output,session Internal parameters for {shiny}.
 #'
 #' @noRd
-mod_map_coralnet_labels_to_mermaid_ui <- function(id) {
+mod_map_provider_labels_to_mermaid_ui <- function(id) {
   ns <- NS(id)
   shiny::tagList()
 }
 
-#' mod_map_coralnet_labels_to_mermaid Server Functions
+#' mod_map_provider_labels_to_mermaid Server Functions
 #'
 #' @noRd
-mod_map_coralnet_labels_to_mermaid_server <- function(id, r) {
+mod_map_provider_labels_to_mermaid_server <- function(id, r) {
   moduleServer(id, function(input, output, session) {
     ns <- session$ns
 
