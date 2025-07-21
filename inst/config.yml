@@ -67,17 +67,23 @@ provider_columns_map:
 labelset_id_column:
   provider_col:
     coralnet: Label ID
-    reefcloud: ~
+    reefcloud:
+      derived_point_benthic_id:
+      - point_human_benthic_id
+      - point_machine_benthic_id
   mermaid_join: provider_id
   table_label: ~
 labelset_code_column:
   provider_col:
     coralnet: Label code
-    reefclouid: ~
+    reefcloud:
+      derived_point_classification:
+      - point_human_classification
+      - point_machine_classification
   mermaid_join: provider_code
   table_label:
     coralnet: CoralNet label code
-    reefcloud: ~
+    reefcloud: ReefCloud label code
 mermaid_attributes_columns:
   mermaid_attribute:
     table_label: MERMAID Benthic attribute

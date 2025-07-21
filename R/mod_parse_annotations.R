@@ -36,6 +36,7 @@ mod_parse_annotations_server <- function(id, r) {
       if (r$provider == "reefcloud") {
         # For ReefCloud: No need to map fields, just need to check that fields contain valid values
         r$step_fields_setup_done <- TRUE
+        r$annotations <- r$annotations_raw # TODO -> why does this happen twice?
       } else if (r$provider == "coralnet") {
         # For CoralNet: Need to first map auxiliary fields to MERMAID fields
         mod_map_auxiliary_fields_server("map_aux", r)

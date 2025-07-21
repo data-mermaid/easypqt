@@ -21,7 +21,10 @@ mod_map_provider_labels_to_mermaid_server <- function(id, r) {
 
     known_mapping <- shiny::reactive({
       # Get known mapping from endpoint
-      mermaidr::mermaid_get_classification_labelmappings(r$provider_full) %>%
+      # TODO -> once it includes reefcloud ones on dev
+      # mermaidr::mermaid_get_classification_labelmappings(r$provider_full) %>%
+      classification_labelmappings %>%
+        dplyr::filter(provider == r$provider_full) %>%
         dplyr::select(dplyr::all_of(c(
           get_config("labelset_id_column")[["mermaid_join"]],
           get_config("mermaid_attributes_columns") %>% purrr::map_chr("api_column")
@@ -29,32 +32,55 @@ mod_map_provider_labels_to_mermaid_server <- function(id, r) {
     })
 
     annotations_labels <- shiny::reactive({
-      r$annotations[c(
-        get_config("labelset_code_column")[["provider_col"]][[r$provider]],
-        get_config("labelset_id_column")[["provider_col"]][[r$provider]]
-      )] %>%
+      if (r$provider == "reefcloud") {
+        provider_id_cols <- get_config("labelset_id_column")[["provider_col"]][[r$provider]]
+        provider_id <- names(provider_id_cols)
+        provider_id_cols <- provider_id_cols[[provider_id]]
+
+        provider_code_cols <- get_config("labelset_code_column")[["provider_col"]][[r$provider]]
+        provider_code <- names(provider_code_cols)
+        provider_code_cols <- provider_code_cols[[provider_code]]
+
+        r$annotations <- r$annotations %>%
+          dplyr::mutate(
+            "{provider_id}" := !!quote(dplyr::coalesce(!!!dplyr::across(provider_id_cols))),
+            "{provider_code}" := !!quote(dplyr::coalesce(!!!dplyr::across(provider_code_cols)))
+          ) %>%
+          dplyr::select(-dplyr::all_of(c(provider_id_cols, provider_code_cols)))
+      } else if (r$provider == "coralnet") {
+        provider_id <- get_config("labelset_id_column")[["provider_col"]][[r$provider]]
+        provider_code <- get_config("labelset_code_column")[["provider_col"]][[r$provider]]
+        annotations <- r$annotations[c(provider_id, provider_code)]
+      }
+
+      annotations <- r$annotations[c(
+        provider_id, provider_code
+      )]
+
+      r$provider_col_id <- provider_id
+      r$provider_col_code <- provider_code
+
+      annotations %>%
         dplyr::distinct() %>%
-        dplyr::mutate(dplyr::across(get_config("labelset_id_column")[["provider_col"]][[r$provider]], as.character))
+        dplyr::mutate(dplyr::across({{ provider_id }}, as.character))
     })
 
     # Check uploaded mapping (r$provider_upload) against `provider_mermaid_attributes` ----
     provider_mermaid_mapping <- shiny::reactive({
       shiny::req(r$step_map_auxiliary_fields_accordion_fully_done)
 
-      provider_col <- get_config("labelset_id_column")[["provider_col"]][[r$provider]]
       mermaid_col <- get_config("labelset_id_column")[["mermaid_join"]]
 
       # Create table of mapping that does exist by left joining annotations' labels to the known mapping
-
       annotations_labels() %>%
-        dplyr::left_join(known_mapping(), by = setNames(mermaid_col, provider_col)) %>%
+        dplyr::left_join(known_mapping(), by = setNames(mermaid_col, r$provider_col_id)) %>%
         # Put blanks first, then arrange alphabetically
         dplyr::mutate(.is_na = is.na(mermaid_attribute)) %>%
         dplyr::arrange(
           dplyr::desc(.is_na),
           mermaid_attribute
         ) %>%
-        dplyr::select(-.is_na, -dplyr::all_of(provider_col))
+        dplyr::select(-.is_na, -dplyr::all_of(r$provider_col_id))
     }) %>%
       shiny::bindEvent(r$step_map_auxiliary_fields_accordion_fully_done)
 
@@ -219,7 +245,7 @@ mod_map_provider_labels_to_mermaid_server <- function(id, r) {
       mermaid_attributes_cols <- setNames(names(mermaid_attributes_cols), mermaid_attributes_cols)
 
       r$annotations_mapped <- r$annotations %>%
-        dplyr::left_join(r$provider_mermaid_mapping, get_config("labelset_code_column")[["provider_col"]][[r$provider]]) %>%
+        dplyr::left_join(r$provider_mermaid_mapping, r$provider_col_code) %>%
         dplyr::rename(mermaid_attributes_cols)
 
       r$step_map_provider_joined_done <- TRUE

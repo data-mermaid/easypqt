@@ -123,7 +123,7 @@ app_server <- auth0_server(function(input, output, session) {
   mod_map_provider_labels_to_mermaid_server("map_labels", r)
 
   # Reshape annotations for ingestion ----
-  # mod_reshape_annotations_server("reshape_annotations", r)
+  mod_reshape_annotations_server("reshape_annotations", r)
 
   # Preview/confirm ingestion ----
   # mod_ingestion_preview_and_confirm_server("preview_and_confirm", r)
