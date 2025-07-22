@@ -202,12 +202,19 @@ ingestion_error:
     {error}
 ingestion_success:
   title: Ingestion successful!
-  text: <p>Data was successfully ingested into MERMAID. Click the button below to
-    open the records in the MERMAID App to validate and submit records.</p> <p>You
-    will also have to fill in the following fields with their correct values:</p>
-    <ul> <li>Depth</li> <li>Transect length surveyed</li> <li>Quadrat size</li> <li>Observers</li>
-    </ul> <p>Note that the data is not successfully ingested into MERMAID until you
-    have validated and submitted the records in the MERMAID app.</p>
+  text:
+    coralnet: <p>Data was successfully ingested into MERMAID. Click the button below to
+      open the records in the MERMAID App to validate and submit records.</p> <p>You
+      will also have to fill in the following fields with their correct values:</p>
+      <ul> <li>Depth</li> <li>Transect length surveyed</li> <li>Quadrat size</li> <li>Observers</li>
+      </ul> <p>Note that the data is not successfully ingested into MERMAID until you
+      have validated and submitted the records in the MERMAID app.</p>
+    reefcloud: <p>Data was successfully ingested into MERMAID. Click the button below to
+      open the records in the MERMAID App to validate and submit records.</p> <p>You
+      will also have to fill in the following fields with their correct values:</p>
+      <ul> <li>Transect length surveyed</li> <li>Quadrat size</li> <li>Observers</li>
+      </ul> <p>Note that the data is not successfully ingested into MERMAID until you
+      have validated and submitted the records in the MERMAID app.</p>
   button: Go to the MERMAID App
   collect_url_prod: https://app.datamermaid.org/projects/{project}/collecting
   collect_url_dev: https://dev-app.datamermaid.org/projects/{project}/collecting

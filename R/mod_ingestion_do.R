@@ -52,7 +52,7 @@ mod_ingestion_do_server <- function(id, r) {
         modal_title <- title <- get_copy("ingestion_success", "title")
 
         modal_content <- shiny::tagList(
-          shiny::div(shiny::HTML(get_copy("ingestion_success", "text"))),
+          shiny::div(shiny::HTML(get_copy("ingestion_success", "text", r$provider))),
           success_button(
             ns("go_to_mermaid"),
             get_copy("ingestion_success", "button"),

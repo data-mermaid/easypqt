@@ -126,10 +126,10 @@ app_server <- auth0_server(function(input, output, session) {
   mod_reshape_annotations_server("reshape_annotations", r)
 
   # Preview/confirm ingestion ----
-  # mod_ingestion_preview_and_confirm_server("preview_and_confirm", r)
+  mod_ingestion_preview_and_confirm_server("preview_and_confirm", r)
 
   # Do ingestion ----
-  # mod_ingestion_do_server("ingest", r)
+  mod_ingestion_do_server("ingest", r)
 
   # Ingestion results -----
 
