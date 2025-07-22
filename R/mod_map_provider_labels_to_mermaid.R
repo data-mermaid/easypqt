@@ -21,10 +21,15 @@ mod_map_provider_labels_to_mermaid_server <- function(id, r) {
 
     known_mapping <- shiny::reactive({
       # Get known mapping from endpoint
-      # TODO -> once it includes reefcloud ones on dev
-      # mermaidr::mermaid_get_classification_labelmappings(r$provider_full) %>%
+
+      # Using pre-processed version for dev + ReefCloud, since dev endpoint does not contain reefcloud mapping
+
+      if (!r$prod & r$provider == "reefcloud") {
+        classification_labelmappings <- dev_reefcloud_classification_labelmappings
+      } else {
+        classification_labelmappings <- mermaidr::mermaid_get_classification_labelmappings(r$provider_full)
+      }
       classification_labelmappings %>%
-        dplyr::filter(provider == r$provider_full) %>%
         dplyr::select(dplyr::all_of(c(
           get_config("labelset_id_column")[["mermaid_join"]],
           get_config("mermaid_attributes_columns") %>% purrr::map_chr("api_column")
