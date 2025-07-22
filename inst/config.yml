@@ -107,6 +107,6 @@ reshape:
     coralnet: Name
     reefcloud: image_name
 upload_data_img_path:
-  coralnet: www/provider-image-annotations-export.png
-  reefcloud: ~
+  coralnet: www/coralnet-image-annotations-export.png
+  reefcloud: www/reefcloud-classifications-file-export.png
 logo_img_path: www/logo.png

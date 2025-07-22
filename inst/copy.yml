@@ -64,7 +64,9 @@ upload_data:
       a CoralNet project. Under "Image Actions", select "Export Annotations, CSV".
       Select "Both" for the Label format, and select the optional columns "Image metadata
       - date and auxiliary fields", as shown below.
-    reefcloud: TODO
+    reefcloud: The classifications file can be found by selecting "Export point classifications"
+      in the dashboard of a CoralNet project. De-select "Only Include Human Annotatable
+      Points", then click "Export", as shown below.
   instructions_img_alt:
     coralnet: 'A screen shot of the "Image" page in CoralNet, highlighting the "Image
       Actions" section with the Action: "Export Annotations, CSV" for these images:
@@ -72,7 +74,10 @@ upload_data:
       these images in CSV format - one row per annotation". There is a section to
       select Optional Columns, and the option "Image metadata - date and auxiliary
       fields" is checked.'
-    reefcloud: TODO
+    reefcloud: A screen shot of the "Dashboard" page in ReefCloud, highlighting the
+      "Export point classifications" button, and a screen shot of the modal that appears
+      after that button is selected, showing that "Only Include Human Annotatable
+      Points" has been unchecked, and the "Export" button is highlighted.
   missing_instructions:
     coralnet: The uploaded annotations do not contain the required columns.
     reefcloud: ~
@@ -115,8 +120,8 @@ auxiliary_validating:
   all_valid:
     coralnet: <p>✔ All auxiliary fields are valid! </p><p> Continue on to map CoralNet
       labels to MERMAID attributes.</p>
-    reefcloud: <p>✔ All fields are valid! </p><p> Continue on to map ReefCloud
-      labels to MERMAID attributes.</p>
+    reefcloud: <p>✔ All fields are valid! </p><p> Continue on to map ReefCloud labels
+      to MERMAID attributes.</p>
   column_valid: ✔ Values of {column} are valid.
   fix:
     coralnet: <p>There are some issues with the auxiliary column values, as described
@@ -125,8 +130,8 @@ auxiliary_validating:
       you have made changes, please restart Easy PQT before continuing with ingestion.</p>
     reefcloud: <p>There are some issues with the auxiliary column values, as described
       below. You may need to fix invalid values in ReefCloud, or add/edit values (Site
-      or Management) in the MERMAID app to match the ReefCloud data.</p><p>Once
-      you have made changes, please restart Easy PQT before continuing with ingestion.</p>
+      or Management) in the MERMAID app to match the ReefCloud data.</p><p>Once you
+      have made changes, please restart Easy PQT before continuing with ingestion.</p>
 mapping:
   title:
     coralnet: Map CoralNet Labels to MERMAID Attributes
@@ -203,18 +208,19 @@ ingestion_error:
 ingestion_success:
   title: Ingestion successful!
   text:
-    coralnet: <p>Data was successfully ingested into MERMAID. Click the button below to
-      open the records in the MERMAID App to validate and submit records.</p> <p>You
+    coralnet: <p>Data was successfully ingested into MERMAID. Click the button below
+      to open the records in the MERMAID App to validate and submit records.</p> <p>You
       will also have to fill in the following fields with their correct values:</p>
-      <ul> <li>Depth</li> <li>Transect length surveyed</li> <li>Quadrat size</li> <li>Observers</li>
-      </ul> <p>Note that the data is not successfully ingested into MERMAID until you
-      have validated and submitted the records in the MERMAID app.</p>
-    reefcloud: <p>Data was successfully ingested into MERMAID. Click the button below to
-      open the records in the MERMAID App to validate and submit records.</p> <p>You
+      <ul> <li>Depth</li> <li>Transect length surveyed</li> <li>Quadrat size</li>
+      <li>Observers</li> </ul> <p>Note that the data is not successfully ingested
+      into MERMAID until you have validated and submitted the records in the MERMAID
+      app.</p>
+    reefcloud: <p>Data was successfully ingested into MERMAID. Click the button below
+      to open the records in the MERMAID App to validate and submit records.</p> <p>You
       will also have to fill in the following fields with their correct values:</p>
       <ul> <li>Transect length surveyed</li> <li>Quadrat size</li> <li>Observers</li>
-      </ul> <p>Note that the data is not successfully ingested into MERMAID until you
-      have validated and submitted the records in the MERMAID app.</p>
+      </ul> <p>Note that the data is not successfully ingested into MERMAID until
+      you have validated and submitted the records in the MERMAID app.</p>
   button: Go to the MERMAID App
   collect_url_prod: https://app.datamermaid.org/projects/{project}/collecting
   collect_url_dev: https://dev-app.datamermaid.org/projects/{project}/collecting
