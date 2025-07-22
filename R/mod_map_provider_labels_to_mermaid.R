@@ -37,6 +37,7 @@ mod_map_provider_labels_to_mermaid_server <- function(id, r) {
     })
 
     annotations_labels <- shiny::reactive({
+
       if (r$provider == "reefcloud") {
         provider_id_cols <- get_config("labelset_id_column")[["provider_col"]][[r$provider]]
         provider_id <- names(provider_id_cols)

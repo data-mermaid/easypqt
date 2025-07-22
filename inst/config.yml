@@ -95,6 +95,17 @@ mermaid_attributes_columns:
     label: Growth form
     column: Growth form
     api_column: growth_form
+reshape:
+  rename:
+    reefcloud:
+      Date: survey_start_date (UTC)
+      Site *: site_name
+      Management *: site_management
+      Transect number *: survey_transect_number
+      Depth *: survey_depth
+  image_name:
+    coralnet: Name
+    reefcloud: image_name
 upload_data_img_path:
   coralnet: www/provider-image-annotations-export.png
   reefcloud: ~
