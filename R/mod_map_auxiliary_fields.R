@@ -117,7 +117,7 @@ mod_map_auxiliary_fields_server <- function(id, r) {
       )
     })
 
-     ## Once all auxiliary mapping fields have been filled out, flag them for checking non-empty/valid ----
+    ## Once all auxiliary mapping fields have been filled out, flag them for checking non-empty/valid ----
     shiny::observe({
       shiny::req(r$step_map_auxiliary_fields_accordion_made_done)
 

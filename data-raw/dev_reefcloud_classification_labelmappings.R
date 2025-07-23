@@ -35,6 +35,6 @@ labelmappings <- labelmappings %>%
 
 dev_reefcloud_classification_labelmappings <- labelmappings %>%
   rename(benthic_attribute = benthic_attribute_name, growth_form = growth_form_name) %>%
-    select(-benthic_attribute_id, -growth_form_id)
+  select(-benthic_attribute_id, -growth_form_id)
 
 usethis::use_data(dev_reefcloud_classification_labelmappings, overwrite = TRUE)

@@ -115,8 +115,8 @@ mod_reshape_annotations_server <- function(id, r) {
       ## Depth: default to 0 ----
       # Only for CoralNet -- ReefCloud actually already has depth
       if (r$provider == "coralnet") {
-      ingestion_data_with_defaults <- ingestion_data_with_defaults %>%
-        dplyr::mutate(`Depth *` = 0)
+        ingestion_data_with_defaults <- ingestion_data_with_defaults %>%
+          dplyr::mutate(`Depth *` = 0)
       }
 
       ## Transect length surveyed: default to 0 -----
