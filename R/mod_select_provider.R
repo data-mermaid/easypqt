@@ -60,7 +60,7 @@ mod_select_provider_server <- function(id, r) {
     shiny::observe({
       shinyjs::enable("provider")
 
-      shinyWidgets::updatePickerInput(
+      shinyWidgets::updateRadioGroupButtons(
         session = session,
         inputId = "provider",
         selected = character(0)
