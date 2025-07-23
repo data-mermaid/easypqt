@@ -72,13 +72,3 @@ mod_select_provider_server <- function(id, r) {
       shiny::bindEvent(r$reset)
   })
 }
-
-# Utils ----
-
-show_not_project_admin_modal <- function(r) {
-  project_role <- r$project_role
-
-
-  cat("Not admin \n")
-  show_modal(skeleton_to_text(get_copy("select_provider", "not_admin"), list(project_name = r$project_name, project_id = r$project, role = project_role)))
-}

@@ -107,7 +107,7 @@ mod_select_project_server <- function(id, r) {
 show_not_project_admin_modal <- function(r) {
   project_role <- r$project_role
 
-
   cat("Not admin \n")
-  show_modal(skeleton_to_text(get_copy("select_project", "not_admin"), list(project_name = r$project_name, project_id = r$project, role = project_role)))
+  text <- skeleton_to_text(get_copy("select_project", "not_admin"), list(project_name = r$project_name, project_id = r$project, role = project_role))
+  show_modal(text)
 }
