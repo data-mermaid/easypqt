@@ -107,6 +107,10 @@ mod_upload_data_server <- function(id, r) {
 
         if (provider == "coralnet") {
           annotations_raw <- readr::read_delim(input$annotations$datapath, show_col_types = FALSE, col_select = r$required_annotations_columns, delim = r$csv_sep)
+        } else if (provider == "reefcloud") {
+          annotations_raw <- readr::read_delim(input$annotations$datapath, show_col_types = FALSE, delim = r$csv_sep)
+          date_validation <- list(valid = TRUE, format = "ymd")
+          date_col <- get_config("provider_columns_map")[[r$provider]][["date"]][["value"]]
 
           # Check that the Date column is formatted properly - if not, show a modal that there is an issue
           date_validation <- check_valid_dates(annotations_raw[["Date"]])
@@ -116,9 +120,6 @@ mod_upload_data_server <- function(id, r) {
             # Reformat the dates to ymd
             r$annotations_raw[["Date"]] <- reformat_dates(annotations_raw[["Date"]], date_validation[["format"]])
           }
-        } else if (provider == "reefcloud") {
-          annotations_raw <- readr::read_delim(input$annotations$datapath, show_col_types = FALSE, delim = r$csv_sep)
-          date_validation <- list(valid = TRUE, format = "ymd")
         }
 
         r$annotations_raw <- annotations_raw
