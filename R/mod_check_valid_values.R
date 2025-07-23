@@ -26,8 +26,6 @@ mod_check_valid_values_server <- function(id, r) {
 
       # Check that Date, Site, Management, and Transect Number are not empty
 
-      # TODO, same with depth for reefcloud
-
       cat("Checking aux \n")
       show_modal(
         title = get_copy("auxiliary_validating", "title"),
