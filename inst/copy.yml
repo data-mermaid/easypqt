@@ -5,7 +5,7 @@ introduction: <p>Welcome to Easy PQT! Easy PQT is designed to help you ingest yo
   Benthic Photo Quadrat data exported from CoralNet or ReefCloud into MERMAID.</p>
 select_provider:
   title: Provider
-  text: Select the provider you are ingesting data from
+  text: 'Select the provider you are ingesting data from:'
   options:
   - CoralNet
   - ReefCloud
@@ -85,7 +85,10 @@ upload_data:
     coralnet: The uploaded annotations contain some invalid values for <b>Date</b>.
       Using the instructions below, please export the annotations file from CoralNet
       and upload it directly into Easy PQT without making any changes to it.
-    reefcloud: ~
+    reefcloud: The uploaded annotations contain some invalid values for <b>survey_start_date
+      (UTC)</b>. Using the instructions below, please export the image classifications
+      file from ReefCloud and upload it directly into Easy PQT without making any
+      changes to it.
 non_empty_fields:
   coralnet: |-
     {fields} cannot contain empty values. The following fields contain empty values: {list}
@@ -186,9 +189,14 @@ ingestion:
   help_link: https://datamermaid.org/contact-us
 reset:
   button: Restart Easy PQT
-  text: <p>This will reset any progress made in Easy PQT, including the selected project,
-    CoralNet annotations data uploaded, and any mappings (auxiliary fields and CoralNet
-    labels).</p> <p> Do you want to proceed with restarting Easy PQT?</p>
+  text:
+    coralnet: <p>This will reset any progress made in Easy PQT, including the selected
+      provider, project, CoralNet annotations data uploaded, and any mappings (auxiliary
+      fields and CoralNet labels).</p> <p> Do you want to proceed with restarting
+      Easy PQT?</p>
+    reefcloud: <p>This will reset any progress made in Easy PQT, including the selected
+      provider, project, ReefCloud image classification data uploaded, and any ReefCloud
+      labels mapped.</p> <p> Do you want to proceed with restarting Easy PQT?</p>
   confirm: Restart Easy PQT
   cancel: Do not restart Easy PQT
 ingestion_running:

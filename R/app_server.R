@@ -102,7 +102,7 @@ app_server <- auth0_server(function(input, output, session) {
   mod_upload_instructions_server("instructions", r)
 
   # Reset ----
-  mod_reset_server("reset", r, show_on_provider = TRUE)
+  mod_reset_server("reset", r, show_on_provider = FALSE)
 
   # Get projects ----
   # This will also get the project template/options, and flag if they are not an admin of the selected project

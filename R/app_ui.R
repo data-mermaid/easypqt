@@ -35,19 +35,20 @@ app_ui <- function(request) {
         ),
         shiny::hr()
       ),
+      left_right(
+        shiny::div(),
+        mod_reset_ui("reset")
+      ),
       large(
         spaced(
           get_copy("introduction"),
-          mod_select_provider_ui("provider"),
-          shiny::HTML("</p>")
+          shiny::hr(),
+          mod_select_provider_ui("provider")
         )
       ),
       shiny::hr(),
-      left_right(
-        # Get projects ----
-        mod_select_project_ui("select_project"),
-        mod_reset_ui("reset")
-      ),
+      # Get projects ----
+      mod_select_project_ui("select_project"),
       # Upload annotations ----
       mod_upload_data_ui("upload_data"),
       bslib::accordion(

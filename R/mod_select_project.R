@@ -32,6 +32,7 @@ mod_select_project_server <- function(id, r) {
       }
 
       shiny::div(
+        class = "project-selection",
         shiny::h2(get_copy("select_project", "title")),
         spaced(get_copy("select_project", "text")),
         shinyWidgets::pickerInput(
@@ -94,7 +95,8 @@ mod_select_project_server <- function(id, r) {
 
       r$is_project_admin <- FALSE
 
-      # TODO -> hide project selection when reset
+      # Hide project selection
+      shinyjs::hide(selector = ".project-selection")
     }) %>%
       shiny::bindEvent(r$reset)
   })

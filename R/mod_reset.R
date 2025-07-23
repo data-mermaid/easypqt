@@ -48,7 +48,7 @@ mod_reset_server <- function(id, r, show_ui = TRUE, show_confirm = TRUE, show_on
       shiny::observe({
         cat("Reset \n")
         show_modal(
-          get_copy("reset", "text"),
+          get_copy("reset", "text", r$provider),
           shiny::div(
             class = "reset-confirm-cancel",
             spaced(
@@ -96,15 +96,19 @@ mod_reset_server <- function(id, r, show_ui = TRUE, show_confirm = TRUE, show_on
       r$upload_contains_required_cols <- FALSE
       r$auxiliary_columns <- NULL
       r$required_annotations_columns <- NULL
+
       r$step_select_valid_project_done <- FALSE
       r$step_upload_valid_data_done <- FALSE
       r$step_map_auxiliary_fields_accordion_made_done <- FALSE
-      r$step_map_auxiliary_fields_done <- FALSE
-      r$step_map_auxiliary_fields_valid_done <- FALSE
       r$step_map_auxiliary_fields_accordion_fully_done <- FALSE
       r$step_map_provider_labels_accordion_made_done <- FALSE
       r$step_map_provider_labels_done <- FALSE
       r$step_map_provider_labels_fully_done <- FALSE
+      r$step_fields_setup_done <- FALSE
+      r$step_map_auxiliary_fields_done <- FALSE
+      r$step_map_auxiliary_fields_valid_done <- FALSE
+      r$step_map_provider_joined_done <- FALSE
+
       r$preview_confirm_shown <- 0
       r$reset_confirm_counter <- 0
       r$do_ingestion <- FALSE

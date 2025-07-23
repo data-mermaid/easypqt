@@ -47,7 +47,8 @@ mod_select_provider_server <- function(id, r) {
       # Once provider is selected, show the introduction for it
       shiny::req(r$provider)
 
-      shiny::div(
+      shiny::div(class = "provider-instructions",
+        shiny::hr(),
         get_copy("provider_introduction", r$provider),
         mod_upload_instructions_ui("instructions")
       )
@@ -61,9 +62,12 @@ mod_select_provider_server <- function(id, r) {
 
       shinyWidgets::updatePickerInput(
         session = session,
-        inputId = "project",
+        inputId = "provider",
         selected = character(0)
       )
+
+      # Hide the provider intro
+      shinyjs::hide(selector = ".provider-instructions")
     }) %>%
       shiny::bindEvent(r$reset)
   })
