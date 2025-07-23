@@ -190,6 +190,7 @@ ingestion:
 reset:
   button: Restart Easy PQT
   text:
+    none: Do you want to restart Easy PQT?
     coralnet: <p>This will reset any progress made in Easy PQT, including the selected
       provider, project, CoralNet annotations data uploaded, and any mappings (auxiliary
       fields and CoralNet labels).</p> <p> Do you want to proceed with restarting

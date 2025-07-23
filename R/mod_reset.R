@@ -47,8 +47,13 @@ mod_reset_server <- function(id, r, show_ui = TRUE, show_confirm = TRUE, show_on
     if (show_confirm) {
       shiny::observe({
         cat("Reset \n")
+        if (is.null(r$provider)) {
+          confirm_text <- get_copy("reset", "text", "none")
+        } else {
+          confirm_text <- get_copy("reset", "text", r$provider)
+        }
         show_modal(
-          get_copy("reset", "text", r$provider),
+          confirm_text,
           shiny::div(
             class = "reset-confirm-cancel",
             spaced(
