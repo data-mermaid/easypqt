@@ -10,7 +10,7 @@
 mod_ingestion_do_ui <- function(id) {
   ns <- NS(id)
   tagList(
-    mod_reset_ui(ns("ingestion_reset"))
+    mod_reset_ui(ns("ingestion_reset"), show_ui = FALSE)
   )
 }
 

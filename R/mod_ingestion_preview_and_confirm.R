@@ -9,7 +9,7 @@
 #' @importFrom shiny NS tagList
 mod_ingestion_preview_and_confirm_ui <- function(id) {
   ns <- NS(id)
-  mod_reset_ui(ns("reset"))
+  mod_reset_ui(ns("reset"), show_ui = FALSE)
 }
 
 #' ingestion_preview Server Functions

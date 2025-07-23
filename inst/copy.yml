@@ -50,7 +50,7 @@ select_project:
 upload_data:
   title:
     coralnet: Upload CoralNet annotations
-    reefcloud: Upload ReefCloud annotations
+    reefcloud: Upload ReefCloud point classifications
   text:
     coralnet: <p>Upload your data by clicking the "Browse..." button or by dragging
       the file directly into the upload field. </p> <p> Please ensure your data is

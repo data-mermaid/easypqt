@@ -17,7 +17,7 @@ mod_parse_annotations_ui <- function(id) {
     # TODO
     # Check valid values of fields ----
     mod_check_valid_values_ui(ns("valid_values")),
-    mod_reset_ui(ns("reset"))
+    mod_reset_ui(ns("reset"), show_ui = FALSE)
   )
 }
 
