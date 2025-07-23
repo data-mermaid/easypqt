@@ -25,7 +25,7 @@ provider_introduction:
     annotations file obtained directly from CoralNet, including the date and auxiliary
     fields columns.
   reefcloud: <p> Easy PQT will walk you through selecting a MERMAID project to ingest
-    into, uploading your ReefCloud image annotations, matching ReefCloud fields to
+    into, uploading your ReefCloud point classifications, matching ReefCloud fields to
     required MERMAID fields, and mapping ReefCloud labels to MERMAID Benthic Attributes
     and Growth Forms. We've pre-mapped most of the labels in ReefCloud to MERMAID's
     Benthic Attributes and Growth Forms in order to make the ingestion process as
@@ -80,13 +80,13 @@ upload_data:
       Points" has been unchecked, and the "Export" button is highlighted.
   missing_instructions:
     coralnet: The uploaded annotations do not contain the required columns.
-    reefcloud: ~
+    reefcloud: The uploaded point classifications do not contain the required columns.
   invalid_instructions:
     coralnet: The uploaded annotations contain some invalid values for <b>Date</b>.
       Using the instructions below, please export the annotations file from CoralNet
       and upload it directly into Easy PQT without making any changes to it.
-    reefcloud: The uploaded annotations contain some invalid values for <b>survey_start_date
-      (UTC)</b>. Using the instructions below, please export the image classifications
+    reefcloud: The uploaded point classifications contain some invalid values for <b>survey_start_date
+      (UTC)</b>. Using the instructions below, please export the point classifications
       file from ReefCloud and upload it directly into Easy PQT without making any
       changes to it.
 non_empty_fields:
@@ -98,6 +98,7 @@ non_empty_fields:
     Please update the data directly in ReefCloud then begin the ingestion process again.
 transect_number_not_integer: 'Transect Number must be an integer. The following are
   invalid: {invalid_values}'
+depth_not_integer: TODO
 invalid_values: |-
   The annotations contain invalid values of {label}. The following are invalid: {invalid_values}
   Valid values of {label} are: {valid_values}
@@ -131,10 +132,6 @@ auxiliary_validating:
       below. You may need to fix invalid values in CoralNet, or add/edit values (Site
       or Management) in the MERMAID app to match the CoralNet annotations.</p><p>Once
       you have made changes, please restart Easy PQT before continuing with ingestion.</p>
-    reefcloud: <p>There are some issues with the auxiliary column values, as described
-      below. You may need to fix invalid values in ReefCloud, or add/edit values (Site
-      or Management) in the MERMAID app to match the ReefCloud data.</p><p>Once you
-      have made changes, please restart Easy PQT before continuing with ingestion.</p>
 mapping:
   title:
     coralnet: Map CoralNet Labels to MERMAID Attributes
