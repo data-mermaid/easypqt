@@ -187,7 +187,7 @@ check_valid_values <- function(r, lookup) {
   column <- lookup[["label"]]
 
   if (!all_valid) {
-    invalid_values_skeleton <- get_copy("invalid_values")
+    invalid_values_skeleton <- get_copy("invalid_values", r$provider)
     invalid_values <- make_formatted_list(invalid_values)
     valid_values <- make_formatted_list(valid_values)
 
@@ -197,9 +197,30 @@ check_valid_values <- function(r, lookup) {
       valid_values = valid_values
     )
 
+    if (r$provider == "reefcloud") {
+      invalid_values_envir <- append(
+        invalid_values_envir,
+        list(provider_label = get_config("reshape")[["rename"]][["reefcloud"]][[lookup$column]])
+      )
+    }
+
     res <- skeleton_to_text(invalid_values_skeleton, invalid_values_envir)
   } else {
-    res <- glue::glue(get_copy("auxiliary_validating", "column_valid"))
+    valid_skeleton <- get_copy("auxiliary_validating", "column_valid", r$provider)
+    valid_envir <- list(
+      column = lookup[["label"]]
+    )
+
+    if (r$provider == "reefcloud") {
+      valid_envir <- append(
+        valid_envir,
+        list(
+          provider_column = get_config("reshape")[["rename"]][["reefcloud"]][[lookup$column]]
+        )
+      )
+    }
+
+    res <- skeleton_to_text(valid_skeleton, valid_envir)
   }
 
   list(
@@ -222,20 +243,34 @@ check_integer_values <- function(r, lookup) {
 
   invalid_values <- values_with_numeric %>%
     dplyr::filter(is.na(numeric_value) |
-      as.character(numeric_value) != value) # Handles decimals
+      as.character(numeric_value) != value) %>% # Handles decimals
+    dplyr::distinct()
 
   all_valid <- nrow(invalid_values) == 0
 
   if (!all_valid) {
     # Show the invalid ones only
-
-    transect_number_invalid_skeleton <- get_copy("transect_number_not_integer")
+    invalid_skeleton <- get_copy("not_integer", lookup, r$provider)
     invalid_values <- make_formatted_list(invalid_values[["value"]])
 
-    res <- skeleton_to_text(transect_number_invalid_skeleton, list(invalid_values = invalid_values))
+    res <- skeleton_to_text(invalid_skeleton, list(invalid_values = invalid_values))
   } else {
-    res <- glue::glue(get_copy("auxiliary_validating", "column_valid"))
-    # TODO
+    valid_skeleton <- get_copy("auxiliary_validating", "column_valid", r$provider)
+    valid_envir <- list(
+      column = lookup
+    )
+
+    if (r$provider == "reefcloud") {
+      lookup_full_name <- r$columns_map[[lookup]][["column"]]
+      valid_envir <- append(
+        valid_envir,
+        list(
+          provider_column = get_config("reshape")[["rename"]][["reefcloud"]][[lookup_full_name]]
+        )
+      )
+    }
+
+    res <- skeleton_to_text(valid_skeleton, valid_envir)
   }
 
   list(
