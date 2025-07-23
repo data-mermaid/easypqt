@@ -15,15 +15,12 @@ mod_reset_ui <- function(id) {
 #' reset Server Functions
 #'
 #' @noRd
-mod_reset_server <- function(id, r, show_ui = TRUE, show_confirm = TRUE, show_on_provider = TRUE) {
+mod_reset_server <- function(id, r, show_ui = TRUE, show_confirm = TRUE) {
   moduleServer(id, function(input, output, session) {
     ns <- session$ns
 
     # Enable only showing once they have selected a provider ---
     output$reset <- shiny::renderUI({
-      if (show_on_provider) {
-        shiny::req(r$provider)
-      }
 
       reset <- warning_button(ns("reset"), get_copy("reset", "button"))
 
