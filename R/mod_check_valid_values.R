@@ -10,7 +10,9 @@
 mod_check_valid_values_ui <- function(id) {
   ns <- NS(id)
   # No UI for this, just modals
-  tagList()
+  tagList(
+    mod_reset_ui(ns("reset"), show_ui = FALSE)
+  )
 }
 
 #' check_valid_values Server Functions
@@ -152,17 +154,11 @@ mod_check_valid_values_server <- function(id, r) {
       }
     })
 
-    # shiny::observe({
-    #   # If they are all good, then:
-    #   shiny::req(r$step_map_auxiliary_fields_valid_done)
-    #
-    #   if (r$provider == "reefcloud") {
-    #     browser()
-    #   } else if (r$provider == "coralnet") {
-    #     browser()
-    #   }
-    # }) %>%
-    #   shiny::bindEvent(r$step_map_auxiliary_fields_valid_done)
+    # Invalid -- do not require confirmation, since they can't proceed anyways
+    shiny::observe({
+      mod_reset_server("reset", r, show_ui = FALSE, show_confirm = FALSE)
+    }) %>%
+      shiny::bindEvent(input$incorrect_reset)
   })
 }
 
