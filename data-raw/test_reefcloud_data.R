@@ -71,4 +71,8 @@ x <- x %>%
 x <- x %>%
   select(all_of(names(x_raw)))
 
-write_csv(x, "test_reefcloud_aceh_larger.csv")
+# Make a couple of labels not already mapped, to test with selecting benthic attribute etc
+
+# TODO
+
+write_csv(x, "inst/extdata/test_reefcloud_aceh_larger.csv")

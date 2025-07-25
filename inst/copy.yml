@@ -65,8 +65,8 @@ upload_data:
       Select "Both" for the Label format, and select the optional columns "Image metadata
       - date and auxiliary fields", as shown below.
     reefcloud: The classifications file can be found by selecting "Export point classifications"
-      in the dashboard of a CoralNet project. De-select "Only Include Human Annotatable
-      Points", then click "Export", as shown below.
+      in the dashboard of a CoralNet project. Ensure "Only Include Human Annotatable
+      Points" is selected, then click "Export", as shown below.
   instructions_img_alt:
     coralnet: 'A screen shot of the "Image" page in CoralNet, highlighting the "Image
       Actions" section with the Action: "Export Annotations, CSV" for these images:
@@ -77,7 +77,7 @@ upload_data:
     reefcloud: A screen shot of the "Dashboard" page in ReefCloud, highlighting the
       "Export point classifications" button, and a screen shot of the modal that appears
       after that button is selected, showing that "Only Include Human Annotatable
-      Points" has been unchecked, and the "Export" button is highlighted.
+      Points" is checked, and the "Export" button is highlighted.
   missing_instructions:
     coralnet: The uploaded annotations do not contain the required columns.
     reefcloud: The uploaded point classifications do not contain the required columns.
