@@ -70,7 +70,7 @@ mod_map_provider_labels_to_mermaid_server <- function(id, r) {
         dplyr::mutate(dplyr::across({{ provider_id }}, as.character))
     })
 
-    # Check uploaded mapping (r$provider_upload) against `provider_mermaid_attributes` ----
+    # Check uploaded mapping against known mapping from API ----
     provider_mermaid_mapping <- shiny::reactive({
       shiny::req(r$step_map_auxiliary_fields_accordion_fully_done)
 
