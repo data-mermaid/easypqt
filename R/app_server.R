@@ -45,7 +45,7 @@ app_server <- auth0_server(function(input, output, session) {
   r <- shiny::reactiveValues(
     is_project_admin = FALSE,
     page_length = 10,
-    ready_to_map_aux = FALSE,
+    step_upload_valid_data_done = FALSE,
     map_annotations_accordion_made = FALSE,
     aux_mapped = FALSE,
     preview_confirm_shown = 0,
