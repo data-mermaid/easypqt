@@ -9,6 +9,7 @@ mod_upload_data_ui <- function(id) {
   ns <- NS(id)
   shiny::tagList(
     shiny::uiOutput(ns("upload")),
+    mod_upload_instructions_ui(ns("instructions_invalid_zip"), show_ui = FALSE),
     mod_upload_instructions_ui(ns("instructions_invalid"), show_ui = FALSE),
     mod_upload_instructions_ui(ns("instructions_invalid_date"), show_ui = FALSE)
   )
@@ -35,7 +36,6 @@ mod_upload_data_server <- function(id, r) {
             ),
             shiny::fileInput(ns("annotations"),
               label = NULL,
-
               accept = get_config("upload_file")[[r$provider]]
             )
           )
@@ -51,12 +51,38 @@ mod_upload_data_server <- function(id, r) {
 
     # Check the file contains the correct columns ----
     shiny::observe({
-      cols <- readr::read_csv(input$annotations$datapath, n_max = 0, show_col_types = FALSE)
+      # If the file type is zip, first unzip the file, check that it actually contains a csv, then read it in
+
+      if (get_config("upload_file")[[r$provider]] == ".zip") {
+        file_path <- input$annotations$datapath
+        upload_dir <- stringr::str_remove(file_path, basename(file_path))
+
+        # First, list the files
+        zip_files <- unzip(file_path, list = TRUE)
+
+        csv_files <- zip_files %>%
+          # Ignore any subfolders, only at top level
+          dplyr::filter(Name == basename(Name)) %>%
+          # Check for a .csv file
+          dplyr::filter(stringr::str_ends(Name, "csv"))
+
+        # If no CSV, show instructions
+        if (nrow(csv_files) != 1) {
+          mod_upload_instructions_server(ns("instructions_invalid_zip"), show_ui = FALSE)
+        } else {
+          # Otherwise, actually unzip and save the path
+          r$annotations_path <- unzip(file_path, exdir = upload_dir, files = csv_files[["Name"]])
+        }
+      } else {
+        r$annotations_path <- input$annotations$datapath
+      }
+
+      cols <- readr::read_csv(r$annotations_path, n_max = 0, show_col_types = FALSE)
 
       # Check if it is semicolon separated
       if (ncol(cols) == 1 & all(grepl(";", names(cols)))) {
         r$csv_sep <- ";"
-        cols <- readr::read_delim(input$annotations$datapath, n_max = 0, show_col_types = FALSE, delim = r$csv_sep)
+        cols <- readr::read_delim(r$annotations_path, n_max = 0, show_col_types = FALSE, delim = r$csv_sep)
       } else {
         r$csv_sep <- ","
       }
@@ -109,8 +135,8 @@ mod_upload_data_server <- function(id, r) {
         if (provider == "coralnet") {
           annotations_raw <- readr::read_delim(input$annotations$datapath, show_col_types = FALSE, col_select = r$required_annotations_columns, delim = r$csv_sep)
         } else if (provider == "reefcloud") {
-          annotations_raw <- readr::read_delim(input$annotations$datapath, show_col_types = FALSE, delim = r$csv_sep)
-          date_validation <- list(valid = TRUE, format = "ymd")
+          annotations_raw <- readr::read_delim(r$annotations_path, show_col_types = FALSE, delim = r$csv_sep)
+
           date_col <- get_config("provider_columns_map")[[r$provider]][["date"]][["value"]]
 
           # Check that the Date column is formatted properly - if not, show a modal that there is an issue
