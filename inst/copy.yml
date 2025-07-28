@@ -35,7 +35,7 @@ provider_introduction:
     quadrat, and observers. </p> <p> To begin, please make sure your project is set
     up in MERMAID (with Sites and Managements) and that your ReefCloud data Sites
     and Managements match these, as well as Transect numbers and dates for each image.
-    You will need to upload the point classifications file obtained directly from
+    You will need to upload the point classifications zip file obtained directly from
     ReefCloud.
 select_project:
   title: MERMAID Project
@@ -58,7 +58,7 @@ upload_data:
       auxiliary fields columns.
     reefcloud: <p>Upload your data by clicking the "Browse..." button or by dragging
       the zip file directly into the upload field. </p> <p> Please ensure your data
-      is the point classifications _zip file_ exported directly from ReefCloud.
+      is the point classifications <i>zip file</i> exported directly from ReefCloud.
   instructions:
     coralnet: The image annotations file can be found by navigating to "Images" within
       a CoralNet project. Under "Image Actions", select "Export Annotations, CSV".

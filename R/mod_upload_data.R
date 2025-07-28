@@ -149,13 +149,13 @@ mod_upload_data_server <- function(id, r) {
         date_col <- get_config("provider_columns_map")[[r$provider]][["date"]][["value"]]
 
         # Check that the Date column is formatted properly - if not, show a modal that there is an issue
-        date_validation <- check_valid_dates(annotations_raw[["Date"]])
+        date_validation <- check_valid_dates(annotations_raw[[date_col]])
         if (!date_validation[["valid"]]) {
           mod_upload_instructions_server("instructions_invalid_date", show_ui = FALSE, invalid = TRUE)
         } else {
           r$annotations_raw <- annotations_raw
           # Reformat the dates to ymd
-          r$annotations_raw[["Date"]] <- reformat_dates(annotations_raw[["Date"]], date_validation[["format"]])
+          r$annotations_raw[[date_col]] <- reformat_dates(annotations_raw[[date_col]], date_validation[["format"]])
         }
 
         # Disable data upload after a single upload - need to reset to change data
