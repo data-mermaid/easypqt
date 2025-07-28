@@ -92,15 +92,16 @@ mod_upload_data_server <- function(id, r) {
         annotations_raw <- readr::read_delim(input$annotations$datapath, show_col_types = FALSE, col_select = r$required_annotations_columns, delim = r$csv_sep)
 
         # Check that the Date column is formatted properly - if not, show a modal that there is an issue
-        valid_dates <- annotations_raw[["Date"]] %>%
-          unique() %>%
-          stringr::str_detect("[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]") %>%
-          all()
+        date_validation <- check_valid_dates(annotations_raw[["Date"]])
 
-        if (!valid_dates) {
+        if (!date_validation[["valid"]]) {
           mod_upload_instructions_server("instructions_invalid_date", show_ui = FALSE, invalid = TRUE)
         } else {
           r$annotations_raw <- annotations_raw
+
+          # Reformat the dates to ymd
+          r$annotations_raw[["Date"]] <- reformat_dates(annotations_raw[["Date"]], date_validation[["format"]])
+
           # Disable data upload after a single upload - need to reset to change data
           shinyjs::disable("annotations")
 
@@ -116,4 +117,55 @@ mod_upload_data_server <- function(id, r) {
     }) %>%
       shiny::bindEvent(input$annotations)
   })
+}
+
+check_valid_dates <- function(dates) {
+  # Allow for reformatting from excel -> check for ymd (coralnet version), then mdy, then dmy
+  dates <- unique(dates)
+  format <- NULL
+
+  invalid_dates <- dates %>%
+    lubridate::ymd(quiet = TRUE) %>%
+    is.na() %>%
+    any()
+
+  if (!invalid_dates) {
+    format <- "ymd"
+  } else {
+    invalid_dates <- dates %>%
+      lubridate::mdy(quiet = TRUE) %>%
+      is.na() %>%
+      any()
+  }
+
+  if (!invalid_dates) {
+    format <- "mdy"
+  } else {
+    invalid_dates <- dates %>%
+      lubridate::dmy(quiet = TRUE) %>%
+      is.na() %>%
+      any()
+
+    if (!invalid_dates) {
+      format <- "dmy"
+    } else {
+      invalid_dates <- TRUE
+    }
+  }
+
+  list(
+    valid = !invalid_dates,
+    format = format
+  )
+}
+
+reformat_dates <- function(dates, date_format) {
+  # Reformat with dates -- this is why we also do "ymd"
+  if (date_format == "ymd") {
+    lubridate::ymd(dates)
+  } else if (date_format == "mdy") {
+    lubridate::mdy(dates)
+  } else if (date_format == "dmy") {
+    lubridate::dmy(dates)
+  }
 }
