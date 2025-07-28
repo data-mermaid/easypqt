@@ -120,37 +120,25 @@ mod_upload_data_server <- function(id, r) {
 }
 
 check_valid_dates <- function(dates) {
-  # Allow for reformatting from excel -> check for ymd (coralnet version), then mdy, then dmy
   dates <- unique(dates)
-  format <- NULL
 
-  invalid_dates <- dates %>%
-    lubridate::ymd(quiet = TRUE) %>%
-    is.na() %>%
-    any()
+  # Allow for reformatting from excel -> check for ymd (coralnet version), then mdy, then dmy
+  date_formats <- c("ymd", "ymd_hms", "mdy", "mdy_hms", "dmy", "dmy_hms", "ydm", "ydm_hms")
 
-  if (!invalid_dates) {
-    format <- "ymd"
-  } else {
-    invalid_dates <- dates %>%
-      lubridate::mdy(quiet = TRUE) %>%
+  invalid_dates <- TRUE
+
+  i <- 1
+
+  while(invalid_dates & i <= length(date_formats)) {
+    format <- date_formats[[i]]
+    invalid_dates <- do.call(eval(parse(text=glue::glue("lubridate::{format}"))), list(dates, quiet = TRUE)) %>%
       is.na() %>%
       any()
+    i <- i + 1
   }
 
-  if (!invalid_dates) {
-    format <- "mdy"
-  } else {
-    invalid_dates <- dates %>%
-      lubridate::dmy(quiet = TRUE) %>%
-      is.na() %>%
-      any()
-
-    if (!invalid_dates) {
-      format <- "dmy"
-    } else {
-      invalid_dates <- TRUE
-    }
+  if (invalid_dates & (i == length(date_formats) + 1)) {
+    format <- NULL
   }
 
   list(
@@ -159,13 +147,12 @@ check_valid_dates <- function(dates) {
   )
 }
 
-reformat_dates <- function(dates, date_format) {
-  # Reformat with dates -- this is why we also do "ymd"
-  if (date_format == "ymd") {
-    lubridate::ymd(dates)
-  } else if (date_format == "mdy") {
-    lubridate::mdy(dates)
-  } else if (date_format == "dmy") {
-    lubridate::dmy(dates)
+reformat_dates <- function(dates, format) {
+  dates <- do.call(eval(parse(text=glue::glue("lubridate::{format}"))), list(dates, quiet = TRUE))
+
+  if (stringr::str_ends(format, "_hms")) {
+    dates <- as.Date(dates)
   }
+
+  dates
 }
