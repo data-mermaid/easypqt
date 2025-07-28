@@ -44,9 +44,8 @@ app_server <- auth0_server(function(input, output, session) {
   # Set up reactive values ----
   r <- shiny::reactiveValues(
     is_project_admin = FALSE,
-    auxiliary_columns_map = get_config("auxiliary_columns_map"),
     page_length = 10,
-    ready_to_map_aux = FALSE,
+    step_upload_valid_data_done = FALSE,
     map_annotations_accordion_made = FALSE,
     aux_mapped = FALSE,
     preview_confirm_shown = 0,
@@ -58,9 +57,9 @@ app_server <- auth0_server(function(input, output, session) {
     step_upload_valid_data_done = FALSE,
     step_map_auxiliary_fields_accordion_made_done = FALSE,
     step_map_auxiliary_fields_accordion_fully_done = FALSE,
-    step_map_coralnet_labels_accordion_made_done = FALSE,
-    step_map_coralnet_labels_done = FALSE,
-    step_map_coralnet_labels_fully_done = FALSE,
+    step_map_provider_labels_accordion_made_done = FALSE,
+    step_map_provider_labels_done = FALSE,
+    step_map_provider_labels_fully_done = FALSE,
     preview_confirm_shown = 0,
     reset_confirm_counter = 0
   )
@@ -96,8 +95,11 @@ app_server <- auth0_server(function(input, output, session) {
     waiter::waiter_hide()
   })
 
+  # Provider selection ----
+  mod_select_provider_server("provider", r)
+
   # Upload instructions ----
-  mod_upload_instructions_server("instructions")
+  mod_upload_instructions_server("instructions", r)
 
   # Reset ----
   mod_reset_server("reset", r)
@@ -106,14 +108,19 @@ app_server <- auth0_server(function(input, output, session) {
   # This will also get the project template/options, and flag if they are not an admin of the selected project
   mod_select_project_server("select_project", r)
 
-  # Upload CoralNet annotations ----
+  # Upload annotations ----
   # (only once confirmed that they are a project admin)
   mod_upload_data_server("upload_data", r)
 
   # Parse annotations -----
+  # If necessary (for CoralNet), map auxiliary fields
+  # Check fields
+  # Map provider labels to MERMAID attributes
   # Map and check auxiliary fields
-  # Map CoralNet labels to MERMAID attributes
-  mod_map_auxiliary_fields_server("map_auxliary_fields", r)
+  mod_parse_annotations_server("parse_annotations", r)
+
+  # Map labels to MERMAID attributes -----
+  mod_map_provider_labels_to_mermaid_server("map_labels", r)
 
   # Reshape annotations for ingestion ----
   mod_reshape_annotations_server("reshape_annotations", r)
@@ -156,26 +163,26 @@ app_server <- auth0_server(function(input, output, session) {
   shiny::observe({
     shiny::req(r$step_map_auxiliary_fields_accordion_fully_done)
     # Insert panel
-    bslib::accordion_panel_insert("accordion", r$accordion_map_coralnet_labels)
+    bslib::accordion_panel_insert("accordion", r$accordion_map_provider_labels)
 
     # Open panel
-    bslib::accordion_panel_open("accordion", "map-coralnet-labels")
+    bslib::accordion_panel_open("accordion", "map-provider-labels")
 
     # Add JS to check for labels table existing, then fix its height
     shiny::insertUI("head", where = "beforeEnd", shiny::includeScript(app_sys("adjustMappingTableHeight.js")))
 
-    scroll_to_accordion("map-coralnet-labels")
+    scroll_to_accordion("map-provider-labels")
   }) %>%
     shiny::bindEvent(r$step_map_auxiliary_fields_accordion_fully_done)
 
   ### Close panel if all labels are good ----
   shiny::observe({
-    shiny::req(r$step_map_coralnet_labels_done)
-    bslib::accordion_panel_close("accordion", "map-coralnet-labels")
+    shiny::req(r$step_map_provider_labels_done)
+    bslib::accordion_panel_close("accordion", "map-provider-labels")
 
-    r$step_map_coralnet_labels_fully_done <- TRUE
+    r$step_map_provider_labels_fully_done <- TRUE
   }) %>%
-    shiny::bindEvent(r$step_map_coralnet_labels_done)
+    shiny::bindEvent(r$step_map_provider_labels_done)
 
   ## Preview/download/confirm ---
 
@@ -198,7 +205,7 @@ app_server <- auth0_server(function(input, output, session) {
 
     # Works even if the panels have not been created/added <3
     bslib::accordion_panel_remove("accordion", "map-auxiliary-fields")
-    bslib::accordion_panel_remove("accordion", "map-coralnet-labels")
+    bslib::accordion_panel_remove("accordion", "map-provider-labels")
     bslib::accordion_panel_remove("accordion", "preview-download-confirm")
   }) %>%
     shiny::bindEvent(r$reset)
