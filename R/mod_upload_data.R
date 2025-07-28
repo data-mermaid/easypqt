@@ -92,15 +92,16 @@ mod_upload_data_server <- function(id, r) {
         annotations_raw <- readr::read_delim(input$annotations$datapath, show_col_types = FALSE, col_select = r$required_annotations_columns, delim = r$csv_sep)
 
         # Check that the Date column is formatted properly - if not, show a modal that there is an issue
-        valid_dates <- annotations_raw[["Date"]] %>%
-          unique() %>%
-          stringr::str_detect("[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]") %>%
-          all()
+        date_validation <- check_valid_dates(annotations_raw[["Date"]])
 
-        if (!valid_dates) {
+        if (!date_validation[["valid"]]) {
           mod_upload_instructions_server("instructions_invalid_date", show_ui = FALSE, invalid = TRUE)
         } else {
           r$annotations_raw <- annotations_raw
+
+          # Reformat the dates to ymd
+          r$annotations_raw[["Date"]] <- reformat_dates(annotations_raw[["Date"]], date_validation[["format"]])
+
           # Disable data upload after a single upload - need to reset to change data
           shinyjs::disable("annotations")
 
@@ -116,4 +117,42 @@ mod_upload_data_server <- function(id, r) {
     }) %>%
       shiny::bindEvent(input$annotations)
   })
+}
+
+check_valid_dates <- function(dates) {
+  dates <- unique(dates)
+
+  # Allow for reformatting from excel -> check for ymd (coralnet version), then mdy, then dmy
+  date_formats <- c("ymd", "ymd_hms", "mdy", "mdy_hms", "dmy", "dmy_hms", "ydm", "ydm_hms")
+
+  invalid_dates <- TRUE
+
+  i <- 1
+
+  while(invalid_dates & i <= length(date_formats)) {
+    format <- date_formats[[i]]
+    invalid_dates <- do.call(eval(parse(text=glue::glue("lubridate::{format}"))), list(dates, quiet = TRUE)) %>%
+      is.na() %>%
+      any()
+    i <- i + 1
+  }
+
+  if (invalid_dates & (i == length(date_formats) + 1)) {
+    format <- NULL
+  }
+
+  list(
+    valid = !invalid_dates,
+    format = format
+  )
+}
+
+reformat_dates <- function(dates, format) {
+  dates <- do.call(eval(parse(text=glue::glue("lubridate::{format}"))), list(dates, quiet = TRUE))
+
+  if (stringr::str_ends(format, "_hms")) {
+    dates <- as.Date(dates)
+  }
+
+  dates
 }

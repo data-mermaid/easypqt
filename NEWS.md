@@ -1,3 +1,7 @@
+# easypqt 0.2.1
+
+* Allow different date formats, in case file has been opened in Excel etc
+
 # easypqt 0.2.0
 
 * Require CoralNet export that returns both shortcode and ID
