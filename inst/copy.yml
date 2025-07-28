@@ -50,15 +50,15 @@ select_project:
 upload_data:
   title:
     coralnet: Upload CoralNet annotations
-    reefcloud: Upload ReefCloud point classifications
+    reefcloud: Upload ReefCloud point classifications zip file
   text:
     coralnet: <p>Upload your data by clicking the "Browse..." button or by dragging
       the file directly into the upload field. </p> <p> Please ensure your data is
       the annotations file exported directly from CoralNet, including the date and
       auxiliary fields columns.
     reefcloud: <p>Upload your data by clicking the "Browse..." button or by dragging
-      the file directly into the upload field. </p> <p> Please ensure your data is
-      the point classifications file exported directly from ReefCloud.
+      the zip file directly into the upload field. </p> <p> Please ensure your data
+      is the point classifications _zip file_ exported directly from ReefCloud.
   instructions:
     coralnet: The image annotations file can be found by navigating to "Images" within
       a CoralNet project. Under "Image Actions", select "Export Annotations, CSV".
@@ -66,7 +66,8 @@ upload_data:
       - date and auxiliary fields", as shown below.
     reefcloud: The classifications file can be found by selecting "Export point classifications"
       in the dashboard of a CoralNet project. Ensure "Only Include Human Annotatable
-      Points" is selected, then click "Export", as shown below.
+      Points" is selected, then click "Export", as shown below. You will be emailed
+      a download link for a zip file, which should then be directly uploaded.
   instructions_img_alt:
     coralnet: 'A screen shot of the "Image" page in CoralNet, highlighting the "Image
       Actions" section with the Action: "Export Annotations, CSV" for these images:

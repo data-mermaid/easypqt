@@ -1,6 +1,9 @@
 provider:
   CoralNet: coralnet
   ReefCloud: reefcloud
+upload_file:
+  coralnet: .csv
+  reefcloud: .zip
 required_annotations_columns_start:
 - Name
 - Date

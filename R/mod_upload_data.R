@@ -35,7 +35,8 @@ mod_upload_data_server <- function(id, r) {
             ),
             shiny::fileInput(ns("annotations"),
               label = NULL,
-              accept = ".csv"
+
+              accept = get_config("upload_file")[[r$provider]]
             )
           )
         } else {
