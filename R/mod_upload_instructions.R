@@ -22,7 +22,7 @@ mod_upload_instructions_ui <- function(id, show_ui = TRUE) {
 #' upload_instructions Server Functions
 #'
 #' @noRd
-mod_upload_instructions_server <- function(id, r, show_ui = TRUE, invalid = FALSE) {
+mod_upload_instructions_server <- function(id, r, show_ui = TRUE, invalid = NULL) {
   moduleServer(id, function(input, output, session) {
     ns <- session$ns
 
@@ -38,11 +38,8 @@ mod_upload_instructions_server <- function(id, r, show_ui = TRUE, invalid = FALS
       cat("Upload instructions \n")
       shiny::showModal(
         shiny::modalDialog(
-          if (!show_ui & !invalid) {
-            shiny::tags$p(get_copy("upload_data", "missing_instructions", r$provider))
-          },
-          if (invalid) {
-            shiny::tags$p(get_copy("upload_data", "invalid_instructions", r$provider))
+          if (!show_ui & !is.null(invalid)) {
+            shiny::tags$p(get_copy("upload_data", invalid, r$provider))
           },
           shiny::tags$p(get_copy("upload_data", "instructions", r$provider)),
           shiny::tags$img(

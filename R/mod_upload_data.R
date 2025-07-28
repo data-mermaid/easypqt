@@ -9,9 +9,9 @@ mod_upload_data_ui <- function(id) {
   ns <- NS(id)
   shiny::tagList(
     shiny::uiOutput(ns("upload")),
-    mod_upload_instructions_ui(ns("instructions_invalid_zip"), show_ui = FALSE),
-    mod_upload_instructions_ui(ns("instructions_invalid"), show_ui = FALSE),
-    mod_upload_instructions_ui(ns("instructions_invalid_date"), show_ui = FALSE)
+    mod_upload_instructions_ui(ns("zip"), show_ui = FALSE),
+    mod_upload_instructions_ui(ns("cols"), show_ui = FALSE),
+    mod_upload_instructions_ui(ns("date"), show_ui = FALSE)
   )
 }
 
@@ -49,7 +49,6 @@ mod_upload_data_server <- function(id, r) {
     # Upload instructions ----
     mod_upload_instructions_server("instructions", r)
 
-    # Check the file contains the correct columns ----
     shiny::observe({
       # If the file type is zip, first unzip the file, check that it actually contains a csv, then read it in
 
@@ -68,14 +67,23 @@ mod_upload_data_server <- function(id, r) {
 
         # If no CSV, show instructions
         if (nrow(csv_files) != 1) {
-          mod_upload_instructions_server(ns("instructions_invalid_zip"), show_ui = FALSE)
+          mod_upload_instructions_server("zip", r, show_ui = FALSE, invalid = "no_csv")
+          r$annotations_upload_valid <- FALSE
         } else {
           # Otherwise, actually unzip and save the path
           r$annotations_path <- unzip(file_path, exdir = upload_dir, files = csv_files[["Name"]])
+          r$annotations_upload_valid <- TRUE
         }
       } else {
         r$annotations_path <- input$annotations$datapath
+        r$annotations_upload_valid <- TRUE
       }
+    }) %>%
+      shiny::bindEvent(input$annotations)
+
+    # Check the file contains the correct columns ----
+    shiny::observe({
+      shiny::req(r$annotations_upload_valid)
 
       cols <- readr::read_csv(r$annotations_path, n_max = 0, show_col_types = FALSE)
 
@@ -127,7 +135,7 @@ mod_upload_data_server <- function(id, r) {
 
       # If it does not contain the correct columns, show a modal and do not allow them to continue
       if (!r$upload_contains_required_cols) {
-        mod_upload_instructions_server("instructions_invalid", r, show_ui = FALSE)
+        mod_upload_instructions_server("cols", r, show_ui = FALSE, invalid = "missing_columns")
       } else {
         # If it does contain the correct columns, read in the data and proceed
         # Only read in the required columns
@@ -136,20 +144,22 @@ mod_upload_data_server <- function(id, r) {
           annotations_raw <- readr::read_delim(input$annotations$datapath, show_col_types = FALSE, col_select = r$required_annotations_columns, delim = r$csv_sep)
         } else if (provider == "reefcloud") {
           annotations_raw <- readr::read_delim(r$annotations_path, show_col_types = FALSE, delim = r$csv_sep)
-
-          date_col <- get_config("provider_columns_map")[[r$provider]][["date"]][["value"]]
-
-          # Check that the Date column is formatted properly - if not, show a modal that there is an issue
-          date_validation <- check_valid_dates(annotations_raw[["Date"]])
-          if (!date_validation[["valid"]]) {
-            mod_upload_instructions_server("instructions_invalid_date", show_ui = FALSE, invalid = TRUE)
-          } else {
-            # Reformat the dates to ymd
-            r$annotations_raw[["Date"]] <- reformat_dates(annotations_raw[["Date"]], date_validation[["format"]])
-          }
         }
 
-        r$annotations_raw <- annotations_raw
+        date_col <- get_config("provider_columns_map")[[r$provider]][["date"]][["value"]]
+
+        # Check that the Date column is formatted properly - if not, show a modal that there is an issue
+        date_validation <- check_valid_dates(annotations_raw[["Date"]])
+        if (!date_validation[["valid"]]) {
+          mod_upload_instructions_server("instructions_invalid_date", show_ui = FALSE, invalid = TRUE)
+        } else {
+          r$annotations_raw <- annotations_raw
+          # Reformat the dates to ymd
+          r$annotations_raw[["Date"]] <- reformat_dates(annotations_raw[["Date"]], date_validation[["format"]])
+        }
+
+        # Disable data upload after a single upload - need to reset to change data
+        shinyjs::disable("annotations")
 
         # Disable data upload after a single upload - need to reset to change data
         shinyjs::disable("annotations")
@@ -163,7 +173,7 @@ mod_upload_data_server <- function(id, r) {
         r$step_upload_valid_data_done <- TRUE
       }
     }) %>%
-      shiny::bindEvent(input$annotations)
+      shiny::bindEvent(r$annotations_upload_valid)
   })
 }
 

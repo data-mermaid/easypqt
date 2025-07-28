@@ -93,6 +93,7 @@ mod_reset_server <- function(id, r, show_ui = TRUE, show_confirm = TRUE) {
       r$provider <- NULL
       r$provider_full <- NULL
       r$annotations_path <- NULL
+      r$annotations_upload_valid <- FALSE
       r$upload_contains_required_cols <- FALSE
       r$auxiliary_columns <- NULL
       r$required_annotations_columns <- NULL

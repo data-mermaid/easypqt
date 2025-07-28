@@ -79,10 +79,12 @@ upload_data:
       "Export point classifications" button, and a screen shot of the modal that appears
       after that button is selected, showing that "Only Include Human Annotatable
       Points" is checked, and the "Export" button is highlighted.
-  missing_instructions:
+  no_csv:
+    reefcloud: The uploaded zip file does not contain the classifications file CSV.
+  missing_columns:
     coralnet: The uploaded annotations do not contain the required columns.
-    reefcloud: The uploaded point classifications do not contain the required columns.
-  invalid_instructions:
+    reefcloud: The uploaded point classifications do not contain the required columns
+  invalid_date:
     coralnet: The uploaded annotations contain some invalid values for <b>Date</b>.
       Using the instructions below, please export the annotations file from CoralNet
       and upload it directly into Easy PQT without making any changes to it.
