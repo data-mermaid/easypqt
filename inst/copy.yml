@@ -3,15 +3,15 @@ logo_alt: MERMAID logo
 loading: Loading Easy PQT...
 introduction: |-
   <p>Welcome to Easy PQT! </p>
-  <p>A user-friendly app to import your annotated benthic photo quadrat transect (PQT) data into   MERMAID.</p>
-  <p>Easy PQT is designed to help you import your PQT data that has been annotated in <b>CoraNet  </b> or <b>ReefCloud</b> into MERMAID in just a few steps:</p>
+  <p>A user-friendly app to import your annotated benthic photo quadrat transect (PQT) data into MERMAID.</p>
+  <p>Easy PQT is designed to help you import your PQT data that has been annotated in <b>CoralNet</b> or <b>ReefCloud</b> into MERMAID in just a few steps:</p>
   <ol>
   <li><a href="https://datamermaid.org/documentation/setting-up-a-new-project" target="_blank" >Prepare your project</a> in <a href="https://app.datamermaid.org/" target="_blank">MERMAID Collect</a></li>
   <li>Export your data from CoralNet or ReefCloud</li>
   <li>Upload to Easy PQT</li>
   <li>Import into MERMAID</li>
   </ol>
-  <p>Please read our <a href="https://datamermaid.org/documentation/importing-data-easy-pqt" target="_blank">step-by-step guide to using Easy PQT</a> before starting to import your data using Easy PQT. </p>
+  <p>Please read our <a href="https://datamermaid.org/documentation/importing-data-easy-pqt" target="_blank">step-by-step guide to using Easy PQT</a> before starting to import your data using Easy PQT.</p>
 select_provider:
   title: Provider
   text: 'Select the provider you are importing data from:'
@@ -21,8 +21,8 @@ select_provider:
 provider_introduction:
   coralnet: <p> Easy PQT will walk you through selecting a MERMAID project to import
     into, uploading your CoralNet image annotations, matching CoralNet auxiliary fields
-    to required MERMAID fields, and mapping CoralNet labels to MERMAID Benthic Attributes
-    and Growth Forms. We've pre-mapped most of the labels in CoralNet to MERMAID's
+    to required MERMAID fields, and assigning CoralNet labels to MERMAID Benthic Attributes
+    and Growth Forms. We've pre-assigned most of the labels in CoralNet to MERMAID's
     Benthic Attributes and Growth Forms in order to make the import process as easy
     as possible. </p> <p> Please note that after you have successfully imported your
     data, there is still information that needs to be filled out, including the mandatory
@@ -33,18 +33,31 @@ provider_introduction:
     as Transect numbers and dates for each image. You will need to upload the image
     annotations file obtained directly from CoralNet, including the date and auxiliary
     fields columns.
-  reefcloud: <p> Easy PQT will walk you through selecting a MERMAID project to import
-    into, uploading your ReefCloud point classifications, matching ReefCloud fields
-    to required MERMAID fields, and mapping ReefCloud labels to MERMAID Benthic Attributes
-    and Growth Forms. We've pre-mapped most of the labels in ReefCloud to MERMAID's
-    Benthic Attributes and Growth Forms in order to make the import process as easy
-    as possible. </p> <p> Please note that after you have successfully imported your
-    data, there is still information that needs to be filled out, including the mandatory
-    fields of transect length surveyed, quadrat size, number of points per quadrat,
-    and observers. </p> <p> To begin, please make sure your project is set up in MERMAID
-    (with Sites and Managements) and that your ReefCloud data Sites and Managements
-    match these, as well as Transect numbers and dates for each image. You will need
-    to upload the point classifications zip file obtained directly from ReefCloud.
+  reefcloud:
+    first: |-
+      <p><b>Easy PQT will guide you through:</b></p>
+      <ul>
+      <li>Selecting a MERMAID project for your data import.</li>
+      <li>Uploading your ReefCloud point classifications.</li> <li>Matching ReefCloud fields to required MERMAID fields.</li>
+      <li>Assigning ReefCloud labels to MERMAID benthic attributes and growth forms.</li>
+      <li>For assigning labels, human classifications take priority (from the Point Human Classification column). If these are missing, we will use the Point Machine Classification labels instead. Most ReefCloud labels have already been pre‑assigned to MERMAID attributes and growth forms to make importing as easy as possible.</li>
+      </ul>
+      <p><b>Before you start, ensure that:</b></p>
+      <ul>
+      <li>Your project is set up in <a href="https://app.datamermaid.org/" target="_blank">MERMAID Collect</a>.</li>
+      <li>Sites and management regimes in your ReefCloud data match those in MERMAID.</li>
+      <li>Each photo has a transect number and sampling date.</li>
+      </ul>
+      <p><b>When ready</b>, simply upload the ZIP file exported directly from ReefCloud and let Easy PQT do the work for you.
+    second: |-
+      <p><b>After import:</b><br>
+      Go to <a href="https://app.datamermaid.org/" target="_blank">MERMAID Collect</a> and complete the missing mandatory fields in each recently imported sample unit in the Collecting page of your project:</p>
+      <ul>
+      <li>Fill in the Transect length surveyed</li>
+      <li>Fill in the Quadrat size</li>
+      <li>Fill in the Number of points per quadrat</li>
+      <li>Ensure the Observers selected is the one who collected the data. Easy PQT will assign you as the observer.</li>
+      </ul>
 select_project:
   title: MERMAID Project
   text: Select the project you want to import your data into
@@ -142,10 +155,10 @@ auxiliary_validating:
   title: Validating fields
   checking: Checking values of fields...
   all_valid:
-    coralnet: <p>✔ All auxiliary fields are valid! </p><p> Continue on to map CoralNet
+    coralnet: <p>✔ All auxiliary fields are valid! </p><p> Continue on to assign CoralNet
       labels to MERMAID attributes.</p>
-    reefcloud: <p>✔ All fields are valid! </p><p> Continue on to map ReefCloud labels
-      to MERMAID attributes.</p>
+    reefcloud: <p>✔ All fields are valid! </p><p> Continue on to assign ReefCloud
+      labels to MERMAID attributes.</p>
   column_valid:
     coralnet: ✔ Values of {column} are valid.
     reefcloud: ✔ Values of {column} (<i>{provider_column}</i>) are valid.
@@ -160,43 +173,49 @@ auxiliary_validating:
       made changes, please restart Easy PQT before continuing with import.</p>
 mapping:
   title:
-    coralnet: Map CoralNet Labels to MERMAID Attributes
-    reefcloud: Map ReefCloud Labels to MERMAID Attributes
+    coralnet: Assign CoralNet Labels to MERMAID Attributes
+    reefcloud: Assign ReefCloud Labels to MERMAID Attributes
   text:
-    coralnet: <p>This section will help you map CoralNet labels to MERMAID Benthic
-      Attributes and Growth Forms. We have pre-mapped many CoralNet labels to attributes
-      in MERMAID. If you have a CoralNet label that is not mapped to an attribute,
+    coralnet: <p>This section will help you assign CoralNet labels to MERMAID Benthic
+      Attributes and Growth Forms. We have pre-assigned many CoralNet labels to attributes
+      in MERMAID. If you have a CoralNet label that is not assigned to an attribute,
       it will appear as an empty value. </p><p> Note that Growth Form can remain empty,
       but Benthic Attribute is a required field. Blank Benthic Attributes are highlighted
-      in red to indicate that they must be mapped before you can continue. Please
+      in red to indicate that they must be assigned before you can continue. Please
       select the correct Benthic Attributes and/or Growth Forms by selecting the correct
       value from the dropdown list for each field. </p><p> Once all CoralNet labels
-      are mapped to valid MERMAID Benthic Attributes, you can click the "Confirm"
+      are assigned to valid MERMAID Benthic Attributes, you can click the "Confirm"
       button to continue with the import process.</p>
-    reefcloud: <p>This section will help you map ReefCloud labels to MERMAID Benthic
-      Attributes and Growth Forms. We have pre-mapped many ReefCloud labels to attributes
-      in MERMAID. If you have a ReefCloud label that is not mapped to an attribute,
-      it will appear as an empty value. </p><p> Note that Growth Form can remain empty,
-      but Benthic Attribute is a required field. Blank Benthic Attributes are highlighted
-      in red to indicate that they must be mapped before you can continue. Please
-      select the correct Benthic Attributes and/or Growth Forms by selecting the correct
-      value from the dropdown list for each field. </p><p> Once all ReefCloud labels
-      are mapped to valid MERMAID Benthic Attributes, you can click the "Confirm"
-      button to continue with the import process.</p>
+    reefcloud: |-
+      <p>We have pre‑assigned most ReefCloud labels to MERMAID benthic attributes and growth forms. Any unassigned ReefCloud labels will appear at the top of the table with empty values.</p>
+      <ul>
+      <li><b>Benthic Attribute (Required):</b> Every ReefCloud label must be assigned to a MERMAID benthic attribute. Unassigned attributes are highlighted in red and must be assigned before you can continue.</li>
+      <li><b>Growth Form (Optional):</b> This field may remain empty if not applicable.</li>
+      </ul>
+
+      <p><b>To complete the assigning:</b></p>
+      <ul>
+      <li>Review any unassigned ReefCloud labels.</li>
+      <li>Use the dropdown menus to select the correct benthic attribute and, if relevant, the growth form.</li>
+      <li>Once all benthic attributes are assigned, click <b>Confirm</b> to proceed with the import process.</li>
+      </ul>
   not_allowed_to_confirm:
-    coralnet: All CoralNet labels must be mapped to valid MERMAID Benthic Attributes
+    coralnet: All CoralNet labels must be assigned to valid MERMAID Benthic Attributes
       to continue.
-    reefcloud: All ReefCloud labels must be mapped to valid MERMAID Benthic Attributes
+    reefcloud: All ReefCloud labels must be assigned to valid MERMAID Benthic Attributes
       to continue.
 reshaping:
   title: Reshaping data
   text: Reshaping data into format required for MERMAID...
 preview:
   title: Preview data and confirm import
-  text: Your data is now reshaped to match the format required for import into MERMAID,
-    as shown in the table below. You can download a copy of the reformatted data by
-    clicking the "Download reshaped data" button. Check the data to confirm everything
-    is correct, either through a downloaded copy or by using the interactive table.
+  text: |-
+    <p>Your data has been reshaped to match the format required for importing into MERMAID, as shown in the table below.</p>
+    <p><b>Please review the data to ensure everything is correct.</b> You can:</p>
+    <ul>
+    <li>Inspect it directly in the interactive table, or</li>
+    <li>Download a copy by clicking "Download reshaped data".</li>
+    </ul>
   download: Download reshaped data
   file: MERMAID Easy PQT Data - {project_name}.csv
 ingestion:
@@ -204,9 +223,12 @@ ingestion:
   continue: If the data looks correct, click the "Import data" below to start importing
     your data into MERMAID.
   continue_button: Import data
-  do_not_continue: 'If the data does not look correct, select from the following options:
-    "Restart Easy PQT" to start the import process from the beginning or "Get help"
-    to have our team support you in the import process.'
+  do_not_continue: |-
+    <p>If the data doesn't look correct, you can:</p>
+    <ul>
+    <li><b>Restart the import</b> – Click <b>Restart Easy PQT</b> to start over from the beginning.</li>
+    <li><b>Get support</b> – Click <b>Get help</b> to contact our team for assistance with the import process.</li>
+    </ul>
   reset_button: Restart Easy PQT
   help_button: Get help
   help_link: https://datamermaid.org/contact-us
@@ -220,7 +242,7 @@ reset:
       Easy PQT?</p>
     reefcloud: <p>This will reset any progress made in Easy PQT, including the selected
       provider, project, ReefCloud image classification data uploaded, and any ReefCloud
-      labels mapped.</p> <p> Do you want to proceed with restarting Easy PQT?</p>
+      labels assigned.</p> <p> Do you want to proceed with restarting Easy PQT?</p>
   confirm: Restart Easy PQT
   cancel: Do not restart Easy PQT
 ingestion_running:
@@ -247,12 +269,21 @@ ingestion_success:
       <li>Observers</li> </ul> <p>Note that the data is not successfully imported
       into MERMAID until you have validated and submitted the records in the MERMAID
       app.</p>
-    reefcloud: <p>Data was successfully imported into MERMAID. Click the button below
-      to open the records in the MERMAID App to validate and submit records.</p> <p>You
-      will also have to fill in the following fields with their correct values:</p>
-      <ul> <li>Transect length surveyed</li> <li>Quadrat size</li> <li>Observers</li>
-      </ul> <p>Note that the data is not successfully imported into MERMAID until
-      you have validated and submitted the records in the MERMAID app.</p>
+    reefcloud: |-
+      <p><b>Your data has been successfully imported into MERMAID.</b></p>
+      <p>Click the button below to open the sample units in MERMAID Collect to review, validate,
+      and submit them.</p>
+      <p><b>Before submission, in each sample unit make sure to:</b></p>
+      <ul>
+      <li>Fill in the Transect length surveyed</li>
+      <li>Fill in the Quadrat size</li>
+      <li>Fill in the Number of points per quadrat</li>
+      <li>Ensure the Observers selected
+      is the one who collected the data. Easy PQT will assign you as the observer.</li>
+      </ul>
+
+      <p><b>Note:</b> The data will only be visible to all project users after you
+      have validated and submitted the sample units in MERMAID Collect.</p>
   button: Go to MERMAID Collect
   collect_url_prod: https://app.datamermaid.org/projects/{project}/collecting
   collect_url_dev: https://dev-app.datamermaid.org/projects/{project}/collecting
