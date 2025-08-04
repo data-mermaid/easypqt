@@ -34,10 +34,13 @@ mod_upload_data_server <- function(id, r) {
               mod_upload_instructions_ui(ns("instructions")),
               shiny::HTML("</p>")
             ),
-            shiny::fileInput(ns("annotations"),
+            shiny::fileInput(
+              ns("annotations"),
               label = NULL,
               accept = get_config("upload_file")[[r$provider]]
-            )
+            ),
+            shiny::hr(),
+            shiny::div()
           )
         } else {
           shiny::tagList()
