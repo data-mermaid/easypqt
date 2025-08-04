@@ -32,6 +32,15 @@ auxiliary_columns_dev:
 - Aux4
 - Aux5
 reefcloud_template_path: reefcloud_template.csv
+provider_columns_date:
+  coralnet:
+    label: Date
+    column: Date
+    value: Date
+  reefcloud:
+    label: Date
+    column: Date
+    value: survey_start_date (UTC)
 provider_columns_map:
   coralnet:
     site:

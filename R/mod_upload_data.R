@@ -149,7 +149,7 @@ mod_upload_data_server <- function(id, r) {
           annotations_raw <- readr::read_delim(r$annotations_path, show_col_types = FALSE, delim = r$csv_sep)
         }
 
-        date_col <- get_config("provider_columns_map")[[r$provider]][["date"]][["value"]]
+        date_col <- get_config("provider_columns_date")[[r$provider]][["value"]]
 
         # Check that the Date column is formatted properly - if not, show a modal that there is an issue
         date_validation <- check_valid_dates(annotations_raw[[date_col]])
