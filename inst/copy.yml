@@ -23,12 +23,12 @@ provider_introduction:
     into, uploading your CoralNet image annotations, matching CoralNet auxiliary fields
     to required MERMAID fields, and mapping CoralNet labels to MERMAID Benthic Attributes
     and Growth Forms. We've pre-mapped most of the labels in CoralNet to MERMAID's
-    Benthic Attributes and Growth Forms in order to make the import process as
-    easy as possible. </p> <p> Please note that after you have successfully imported
-    your data, there is still information that needs to be filled out, including the
-    mandatory fields of depth, transect length surveyed, quadrat size, number of points
-    per quadrat, and observers. </p> <p> To begin, please make sure your project is
-    set up in MERMAID (with Sites and Managements) and that your CoralNet data includes
+    Benthic Attributes and Growth Forms in order to make the import process as easy
+    as possible. </p> <p> Please note that after you have successfully imported your
+    data, there is still information that needs to be filled out, including the mandatory
+    fields of depth, transect length surveyed, quadrat size, number of points per
+    quadrat, and observers. </p> <p> To begin, please make sure your project is set
+    up in MERMAID (with Sites and Managements) and that your CoralNet data includes
     auxiliary fields that correspond to your MERMAID Sites and Managements, as well
     as Transect numbers and dates for each image. You will need to upload the image
     annotations file obtained directly from CoralNet, including the date and auxiliary
@@ -37,15 +37,14 @@ provider_introduction:
     into, uploading your ReefCloud point classifications, matching ReefCloud fields
     to required MERMAID fields, and mapping ReefCloud labels to MERMAID Benthic Attributes
     and Growth Forms. We've pre-mapped most of the labels in ReefCloud to MERMAID's
-    Benthic Attributes and Growth Forms in order to make the import process as
-    easy as possible. </p> <p> Please note that after you have successfully imported
-    your data, there is still information that needs to be filled out, including the
-    mandatory fields of transect length surveyed, quadrat size, number of points per
-    quadrat, and observers. </p> <p> To begin, please make sure your project is set
-    up in MERMAID (with Sites and Managements) and that your ReefCloud data Sites
-    and Managements match these, as well as Transect numbers and dates for each image.
-    You will need to upload the point classifications zip file obtained directly from
-    ReefCloud.
+    Benthic Attributes and Growth Forms in order to make the import process as easy
+    as possible. </p> <p> Please note that after you have successfully imported your
+    data, there is still information that needs to be filled out, including the mandatory
+    fields of transect length surveyed, quadrat size, number of points per quadrat,
+    and observers. </p> <p> To begin, please make sure your project is set up in MERMAID
+    (with Sites and Managements) and that your ReefCloud data Sites and Managements
+    match these, as well as Transect numbers and dates for each image. You will need
+    to upload the point classifications zip file obtained directly from ReefCloud.
 select_project:
   title: MERMAID Project
   text: Select the project you want to import your data into
@@ -59,7 +58,7 @@ select_project:
 upload_data:
   title:
     coralnet: Upload CoralNet annotations
-    reefcloud: Upload ReefCloud point classifications zip file
+    reefcloud: Upload your ReefCloud export (ZIP file format)
   text:
     coralnet: <p>Upload your data by clicking the "Browse..." button or by dragging
       the file directly into the upload field. </p> <p> Please ensure your data is
@@ -194,17 +193,17 @@ reshaping:
   text: Reshaping data into format required for MERMAID...
 preview:
   title: Preview data and confirm import
-  text: Your data is now reshaped to match the format required for import into
-    MERMAID, as shown in the table below. You can download a copy of the reformatted
-    data by clicking the "Download reshaped data" button. Check the data to confirm
-    everything is correct, either through a downloaded copy or by using the interactive
-    table.
+  text: Your data is now reshaped to match the format required for import into MERMAID,
+    as shown in the table below. You can download a copy of the reformatted data by
+    clicking the "Download reshaped data" button. Check the data to confirm everything
+    is correct, either through a downloaded copy or by using the interactive table.
   download: Download reshaped data
   file: MERMAID Easy PQT Data - {project_name}.csv
 ingestion:
-  title: Continue to import
-  continue: If the data looks correct, click the button below to continue with import
-  continue_button: Continue with import
+  title: Continue with importing data
+  continue: If the data looks correct, click the "Import data" below to start importing
+    your data into MERMAID.
+  continue_button: Import data
   do_not_continue: 'If the data does not look correct, select from the following options:
     "Restart Easy PQT" to start the import process from the beginning or "Get help"
     to have our team support you in the import process.'
@@ -254,6 +253,6 @@ ingestion_success:
       <ul> <li>Transect length surveyed</li> <li>Quadrat size</li> <li>Observers</li>
       </ul> <p>Note that the data is not successfully imported into MERMAID until
       you have validated and submitted the records in the MERMAID app.</p>
-  button: Go to the MERMAID App
+  button: Go to MERMAID Collect
   collect_url_prod: https://app.datamermaid.org/projects/{project}/collecting
   collect_url_dev: https://dev-app.datamermaid.org/projects/{project}/collecting
