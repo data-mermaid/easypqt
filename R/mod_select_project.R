@@ -46,7 +46,8 @@ mod_select_project_server <- function(id, r) {
             maxOptions = 1,
             noneSelectedText = get_copy("select_project", "placeholder")
           )
-        )
+        ),
+        shiny::hr()
       )
     })
 
