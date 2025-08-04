@@ -1,8 +1,17 @@
 title: Easy PQT
 logo_alt: MERMAID logo
 loading: Loading Easy PQT...
-introduction: <p>Welcome to Easy PQT! Easy PQT is designed to help you ingest your
-  Benthic Photo Quadrat data exported from CoralNet or ReefCloud into MERMAID.</p>
+introduction: |-
+  <p>Welcome to Easy PQT! </p>
+  <p>A user-friendly app to import your annotated benthic photo quadrat transect (PQT) data into   MERMAID.</p>
+  <p>Easy PQT is designed to help you import your PQT data that has been annotated in <b>CoraNet  </b> or <b>ReefCloud</b> into MERMAID in just a few steps:</p>
+  <ol>
+  <li><a href="https://datamermaid.org/documentation/setting-up-a-new-project" target="_blank" >Prepare your project</a> in <a href="https://app.datamermaid.org/" target="_blank">MERMAID Collect</a></li>
+  <li>Export your data from CoralNet or ReefCloud</li>
+  <li>Upload to Easy PQT</li>
+  <li>Import into MERMAID</li>
+  </ol>
+  <p>Please read our <a href="https://datamermaid.org/documentation/importing-data-easy-pqt" target="_blank">step-by-step guide to using Easy PQT</a> before starting to import your data using Easy PQT. </p>
 select_provider:
   title: Provider
   text: 'Select the provider you are ingesting data from:'
