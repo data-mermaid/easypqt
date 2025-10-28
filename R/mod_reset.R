@@ -114,6 +114,9 @@ mod_reset_server <- function(id, r, show_ui = TRUE, show_confirm = TRUE) {
       r$reset_confirm_counter <- 0
       r$do_ingestion <- FALSE
       r$step_map_provider_joined_done <- FALSE
+
+      r$provider_instructions_done <- NULL
+      r$upload_form_done <- NULL
     }) %>%
       shiny::bindEvent(r$reset_confirm_counter)
 

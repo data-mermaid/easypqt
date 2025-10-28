@@ -46,8 +46,17 @@ mod_upload_data_server <- function(id, r) {
           shiny::tagList()
         }
       })
+
+      r$upload_form_done <- TRUE
     }) %>%
       shiny::bindEvent(r$step_select_valid_project_done, r$reset)
+
+    # Scroll to upload form
+    shiny::observe({
+      shiny::req(r$upload_form_done)
+      scroll_to_section("upload-parent")
+    }) %>%
+      shiny::bindEvent(r$upload_form_done)
 
     # Upload instructions ----
     mod_upload_instructions_server("instructions", r)

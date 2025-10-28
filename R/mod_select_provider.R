@@ -60,8 +60,11 @@ mod_select_provider_server <- function(id, r) {
         )
       }
 
+      r$provider_instructions_done <- TRUE
+
       shiny::div(
         class = "provider-instructions",
+        id = "provider-instructions",
         shiny::hr(),
         left_right(
           shiny::div(),
@@ -71,6 +74,13 @@ mod_select_provider_server <- function(id, r) {
         instructions
       )
     })
+
+    # Scroll to provider instructions section
+    shiny::observe({
+      shiny::req(r$provider_instructions_done)
+      scroll_to_section("provider-instructions")
+    }) %>%
+      shiny::bindEvent(r$provider_instructions_done)
 
     # Instructions server ----
 

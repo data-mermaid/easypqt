@@ -36,7 +36,7 @@
 }
 
 html {
-  font-family: "Open Sans", "Calibri", "Arial", "sans-serif";
+  font-family: "Open Sans", "sans-serif";
   font-size: 17px !important;
   color: var(--color-base);
 }

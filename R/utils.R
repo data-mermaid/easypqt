@@ -166,16 +166,21 @@ tidy_config <- function() {
   tidy_yaml("config")
 }
 
-scroll_to_accordion <- function(id) {
-  # Add JS to check for accordion existing, then scroll to it
-  id <- glue::glue('"{id}"')
-  script <- app_sys("scrollToAccordion.js") %>%
+scroll_to_section <- function(id, accordion = FALSE) {
+  # Change ID based on if it is an accordion or not
+  if (accordion) {
+    id <- glue::glue('.accordion-item[data-value="{id}"]')
+  } else {
+    id <- glue::glue('#{id}')
+  }
+
+  # Add JS to check for section existing, then scroll to it
+  script <- app_sys("scrollToSection.js") %>%
     readLines() %>%
     paste0(collapse = "") %>%
     glue:::glue(.open = "$$$", .close = "$$$", id = id)
   t <- tempfile(fileext = ".js")
   writeLines(script, t)
-
   shiny::insertUI("head", where = "beforeEnd", shiny::includeScript(t))
 }
 

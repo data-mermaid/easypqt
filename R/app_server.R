@@ -145,7 +145,7 @@ app_server <- auth0_server(function(input, output, session) {
     # Open panel
     bslib::accordion_panel_open("accordion", "map-auxiliary-fields")
 
-    scroll_to_accordion("map-auxiliary-fields")
+    scroll_to_section("map-auxiliary-fields", accordion = TRUE)
   }) %>%
     shiny::bindEvent(r$step_map_auxiliary_fields_accordion_made_done)
 
@@ -171,7 +171,7 @@ app_server <- auth0_server(function(input, output, session) {
     # Add JS to check for labels table existing, then fix its height
     shiny::insertUI("head", where = "beforeEnd", shiny::includeScript(app_sys("adjustMappingTableHeight.js")))
 
-    scroll_to_accordion("map-provider-labels")
+    scroll_to_section("map-provider-labels", accordion = TRUE)
   }) %>%
     shiny::bindEvent(r$step_map_auxiliary_fields_accordion_fully_done)
 
@@ -194,7 +194,7 @@ app_server <- auth0_server(function(input, output, session) {
     # Open panel
     bslib::accordion_panel_open("accordion", "preview-download-confirm")
 
-    scroll_to_accordion("preview-download-confirm")
+    scroll_to_section("preview-download-confirm", accordion = TRUE)
   }) %>%
     shiny::bindEvent(r$preview_confirm_shown)
 
