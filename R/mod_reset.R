@@ -85,9 +85,7 @@ mod_reset_server <- function(id, r, show_ui = TRUE, show_confirm = TRUE) {
       }
 
       # Hide the modal
-      if (show_confirm) {
-        shiny::removeModal()
-      }
+      shiny::removeModal()
 
       # General resets
       r$provider <- NULL
