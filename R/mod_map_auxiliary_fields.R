@@ -27,48 +27,51 @@ mod_map_auxiliary_fields_server <- function(id, r) {
     # Generate dropdown UI ----
     # (Shown once annotations are uploaded)
     shiny::observe({
-      shiny::req(r$step_upload_valid_data_done)
+      shiny::req(r$provider)
+      if (r$provider == "coralnet") {
+        shiny::req(r$step_upload_valid_data_done)
 
-      aux_fields_data <- r$annotations_raw %>%
-        dplyr::select(dplyr::all_of(r$auxiliary_columns)) %>%
-        dplyr::distinct()
+        aux_fields_data <- r$annotations_raw %>%
+          dplyr::select(dplyr::all_of(r$auxiliary_columns)) %>%
+          dplyr::distinct()
 
-      output$data_preview <- aux_fields_data %>%
-        DT::datatable(
-          rownames = FALSE,
-          options = list(dom = "tp", pageLength = r$page_length),
-          selection = "none",
-          callback = DT::JS("$.fn.dataTable.ext.errMode = 'none';") # To eliminate JS popups with mismatch of cols / accordion / table updating, it's just annoying
+        output$data_preview <- aux_fields_data %>%
+          DT::datatable(
+            rownames = FALSE,
+            options = list(dom = "tp", pageLength = r$page_length),
+            selection = "none",
+            callback = DT::JS("$.fn.dataTable.ext.errMode = 'none';") # To eliminate JS popups with mismatch of cols / accordion / table updating, it's just annoying
+          ) %>%
+          DT::renderDataTable()
+
+        output$inputs <- purrr::imap(
+          r$columns_map,
+          \(x, y) {
+            make_mapping_dropdown_ui(x, y, r, ns)
+          }
         ) %>%
-        DT::renderDataTable()
+          shiny::renderUI()
 
-      output$inputs <- purrr::imap(
-        r$columns_map,
-        \(x, y) {
-          make_mapping_dropdown_ui(x, y, r, ns)
-        }
-      ) %>%
-        shiny::renderUI()
-
-      r$accordion_map_annotation_fields <- bslib::accordion_panel(
-        title = shiny::h2(get_copy("auxiliary", "title")),
-        value = "map-auxiliary-fields",
-        shiny::tagList(
-          spaced(get_copy("auxiliary", "text")),
-          shiny::hr(),
-          indent(
-            shiny::h3(get_copy("auxiliary", "preview")),
-            spaced(get_copy("auxiliary", "preview_text")),
-            DT::dataTableOutput(ns("data_preview")),
+        r$accordion_map_annotation_fields <- bslib::accordion_panel(
+          title = shiny::h2(get_copy("auxiliary", "title")),
+          value = "map-auxiliary-fields",
+          shiny::tagList(
+            spaced(get_copy("auxiliary", "text")),
             shiny::hr(),
-            shiny::h3(get_copy("auxiliary", "map")),
-            spaced(get_copy("auxiliary", "map_text")),
-            shiny::uiOutput(ns("inputs"))
+            indent(
+              shiny::h3(get_copy("auxiliary", "preview")),
+              spaced(get_copy("auxiliary", "preview_text")),
+              DT::dataTableOutput(ns("data_preview")),
+              shiny::hr(),
+              shiny::h3(get_copy("auxiliary", "map")),
+              spaced(get_copy("auxiliary", "map_text")),
+              shiny::uiOutput(ns("inputs"))
+            )
           )
         )
-      )
 
-      r$step_map_auxiliary_fields_accordion_made_done <- TRUE
+        r$step_map_auxiliary_fields_accordion_made_done <- TRUE
+      }
     }) %>%
       shiny::bindEvent(r$step_upload_valid_data_done)
 
