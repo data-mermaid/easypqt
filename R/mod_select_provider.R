@@ -63,6 +63,11 @@ mod_select_provider_server <- function(id, r) {
       shiny::div(
         class = "provider-instructions",
         shiny::hr(),
+        left_right(
+          shiny::div(),
+          mod_reset_ui("reset")
+        ),
+        shiny::br(),
         instructions
       )
     })

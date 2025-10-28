@@ -35,10 +35,6 @@ app_ui <- function(request) {
         ),
         shiny::hr()
       ),
-      left_right(
-        shiny::div(),
-        mod_reset_ui("reset")
-      ),
       large(
         spaced(
           get_copy("introduction"),
