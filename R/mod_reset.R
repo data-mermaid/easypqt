@@ -85,9 +85,7 @@ mod_reset_server <- function(id, r, show_ui = TRUE, show_confirm = TRUE) {
       }
 
       # Hide the modal
-      if (show_confirm) {
-        shiny::removeModal()
-      }
+      shiny::removeModal()
 
       # General resets
       r$provider <- NULL
@@ -99,6 +97,8 @@ mod_reset_server <- function(id, r, show_ui = TRUE, show_confirm = TRUE) {
       r$required_annotations_columns <- NULL
 
       r$step_select_valid_project_done <- FALSE
+      r$step_select_human_or_machine_annotated <- FALSE
+      r$human_annotated_only <- NULL
       r$step_upload_valid_data_done <- FALSE
       r$step_map_auxiliary_fields_accordion_made_done <- FALSE
       r$step_map_auxiliary_fields_accordion_fully_done <- FALSE
@@ -114,6 +114,9 @@ mod_reset_server <- function(id, r, show_ui = TRUE, show_confirm = TRUE) {
       r$reset_confirm_counter <- 0
       r$do_ingestion <- FALSE
       r$step_map_provider_joined_done <- FALSE
+
+      r$provider_instructions_done <- NULL
+      r$upload_form_done <- NULL
     }) %>%
       shiny::bindEvent(r$reset_confirm_counter)
 

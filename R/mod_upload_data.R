@@ -22,10 +22,13 @@ mod_upload_data_server <- function(id, r) {
   moduleServer(id, function(input, output, session) {
     ns <- session$ns
 
-    # Show upload form once confirmed they are a project admin (they have selected a valid project), and additionally on any reset ----
+    # Show upload form once they have selected human or machine annotated (reefcloud),
+    # or just once project admin / valid project confirmed (coralnet, but
+    # set step_select_human_or_machine_annotated <- TRUE in mod_select_human_or_machine_annotated),
+    # and additionally on any reset
     shiny::observe({
       output$upload <- renderUI({
-        if (r$step_select_valid_project_done) {
+        if (r$step_select_human_or_machine_annotated) {
           shiny::div(
             id = "upload-parent",
             shiny::h2(get_copy("upload_data", "title", r$provider)),
@@ -46,8 +49,17 @@ mod_upload_data_server <- function(id, r) {
           shiny::tagList()
         }
       })
+
+      r$upload_form_done <- TRUE
     }) %>%
-      shiny::bindEvent(r$step_select_valid_project_done, r$reset)
+      shiny::bindEvent(r$step_select_human_or_machine_annotated, r$reset)
+
+    # Scroll to upload form
+    shiny::observe({
+      shiny::req(r$upload_form_done)
+      scroll_to_section("upload-parent")
+    }) %>%
+      shiny::bindEvent(r$upload_form_done)
 
     # Upload instructions ----
     mod_upload_instructions_server("instructions", r)
@@ -147,6 +159,12 @@ mod_upload_data_server <- function(id, r) {
           annotations_raw <- readr::read_delim(input$annotations$datapath, show_col_types = FALSE, col_select = r$required_annotations_columns, delim = r$csv_sep)
         } else if (provider == "reefcloud") {
           annotations_raw <- readr::read_delim(r$annotations_path, show_col_types = FALSE, delim = r$csv_sep)
+
+          # Filter only human annotated columns, if necessary
+          if (r$human_annotated_only) {
+            annotations_raw <- annotations_raw %>%
+              dplyr::filter(!is.na(point_human_benthic_id))
+          }
         }
 
         date_col <- get_config("provider_columns_date")[[r$provider]][["value"]]

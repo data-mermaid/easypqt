@@ -54,6 +54,7 @@ app_server <- auth0_server(function(input, output, session) {
     reset = NULL,
     upload_contains_required_cols = FALSE,
     step_select_valid_project_done = FALSE,
+    step_select_human_or_machine_annotated = FALSE,
     step_upload_valid_data_done = FALSE,
     step_map_auxiliary_fields_accordion_made_done = FALSE,
     step_map_auxiliary_fields_accordion_fully_done = FALSE,
@@ -108,6 +109,10 @@ app_server <- auth0_server(function(input, output, session) {
   # This will also get the project template/options, and flag if they are not an admin of the selected project
   mod_select_project_server("select_project", r)
 
+  # Human or machine annotatable labels ----
+  # (only once confirmed that they are a project admin)
+  mod_select_human_or_machine_annotated_server("human_or_machine", r)
+
   # Upload annotations ----
   # (only once confirmed that they are a project admin)
   mod_upload_data_server("upload_data", r)
@@ -145,7 +150,7 @@ app_server <- auth0_server(function(input, output, session) {
     # Open panel
     bslib::accordion_panel_open("accordion", "map-auxiliary-fields")
 
-    scroll_to_accordion("map-auxiliary-fields")
+    scroll_to_section("map-auxiliary-fields", accordion = TRUE)
   }) %>%
     shiny::bindEvent(r$step_map_auxiliary_fields_accordion_made_done)
 
@@ -171,7 +176,7 @@ app_server <- auth0_server(function(input, output, session) {
     # Add JS to check for labels table existing, then fix its height
     shiny::insertUI("head", where = "beforeEnd", shiny::includeScript(app_sys("adjustMappingTableHeight.js")))
 
-    scroll_to_accordion("map-provider-labels")
+    scroll_to_section("map-provider-labels", accordion = TRUE)
   }) %>%
     shiny::bindEvent(r$step_map_auxiliary_fields_accordion_fully_done)
 
@@ -194,7 +199,7 @@ app_server <- auth0_server(function(input, output, session) {
     # Open panel
     bslib::accordion_panel_open("accordion", "preview-download-confirm")
 
-    scroll_to_accordion("preview-download-confirm")
+    scroll_to_section("preview-download-confirm", accordion = TRUE)
   }) %>%
     shiny::bindEvent(r$preview_confirm_shown)
 
