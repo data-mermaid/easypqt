@@ -78,6 +78,9 @@ select_project:
     <p>Please <a href="https://datamermaid.org/contact-project?project_id={project_id}" target="_blank">contact the project admins</a> to change your role to <i>Admin</i>.</p>
   no_projects: You do not have any MERMAID projects. In order to continue with the
     import process, please <a href="https://datamermaid.org/documentation/collect-project-set-up" target="_blank">prepare a project</a> in MERMAID with organization(s), users, data sharing policies, sites, and management regimes.
+select_human_or_machine:
+  title: Select labels used
+  text: Would you like to include human-annotated labels only?
 upload_data:
   title:
     coralnet: Upload CoralNet export (CSV file format)

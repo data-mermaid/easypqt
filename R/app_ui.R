@@ -45,6 +45,8 @@ app_ui <- function(request) {
       shiny::hr(),
       # Get projects ----
       mod_select_project_ui("select_project"),
+      # Select human or machine annotated labels
+      mod_select_human_or_machine_annotated_ui("human_or_machine"),
       # Upload annotations ----
       mod_upload_data_ui("upload_data"),
       bslib::accordion(

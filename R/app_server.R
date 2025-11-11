@@ -54,6 +54,7 @@ app_server <- auth0_server(function(input, output, session) {
     reset = NULL,
     upload_contains_required_cols = FALSE,
     step_select_valid_project_done = FALSE,
+    step_select_human_or_machine_annotated = FALSE,
     step_upload_valid_data_done = FALSE,
     step_map_auxiliary_fields_accordion_made_done = FALSE,
     step_map_auxiliary_fields_accordion_fully_done = FALSE,
@@ -107,6 +108,10 @@ app_server <- auth0_server(function(input, output, session) {
   # Get projects ----
   # This will also get the project template/options, and flag if they are not an admin of the selected project
   mod_select_project_server("select_project", r)
+
+  # Human or machine annotatable labels ----
+  # (only once confirmed that they are a project admin)
+  mod_select_human_or_machine_annotated_server("human_or_machine", r)
 
   # Upload annotations ----
   # (only once confirmed that they are a project admin)
