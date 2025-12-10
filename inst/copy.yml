@@ -25,11 +25,11 @@ provider_introduction:
       <ul>
       <li>Selecting a MERMAID project for your data import.</li>
       <li>Uploading your CoralNet image annotations.</li> <li>Matching CoralNet auxiliary fields to required MERMAID fields.</li>
-      <li>Assigning CoralNet labels to MERMAID benthic attributes and growth forms. Most CoralNet labels have already been pre‑assigned to MERMAID benthic attributes and growth forms to make importing as easy as possible.</li>
+      <li>Assigning CoralNet labels to MERMAID benthic attributes and growth forms. Most CoralNet labels have already been pre‑assigned to MERMAID benthic attributes and/or growth forms to make importing as easy as possible.</li>
       </ul>
       <p><b>Before you start, ensure that:</b></p>
       <ul>
-      <li>Your project is set up in <a href="https://app.datamermaid.org/" target="_blank">MERMAID Collect</a>, and you are an <i>Admin</i> of the project.</li>
+      <li>Your project is set up in <a href="https://app.datamermaid.org/" target="_blank">MERMAID Collect</a>, and you are an <b>Admin</b> of the project.</li>
       <li>Your CoralNet data includes auxiliary fields that has sites and management regimes that match those in MERMAID.</li>
       <li>Each photo has a transect number and sampling date.</li>
       </ul>
@@ -50,15 +50,15 @@ provider_introduction:
       <li>Selecting a MERMAID project for your data import.</li>
       <li>Uploading your ReefCloud point classifications.</li> <li>Matching ReefCloud fields to required MERMAID fields.</li>
       <li>Assigning ReefCloud labels to MERMAID benthic attributes and growth forms.</li>
-      <li>For assigning labels, human classifications take priority (from the Point Human Classification column). If these are missing, we will use the Point Machine Classification labels instead. Most ReefCloud labels have already been pre‑assigned to MERMAID attributes and growth forms to make importing as easy as possible.</li>
+      <li>For assigning labels, human classifications take priority (from the Point Human Classification column). If these are missing, we will use the Machine Classification labels (from the Point Machine Classification column) instead. Most ReefCloud labels have already been pre‑assigned to MERMAID attributes and/or growth forms to make importing as easy as possible.</li>
       </ul>
       <p><b>Before you start, ensure that:</b></p>
       <ul>
-      <li>Your project is set up in <a href="https://app.datamermaid.org/" target="_blank">MERMAID Collect</a>, and you are an <i>Admin</i> of the project.</li>
+      <li>Your project is set up in <a href="https://app.datamermaid.org/" target="_blank">MERMAID Collect</a>, and you are an <b>Admin</b> of the project.</li>
       <li>Sites and management regimes in your ReefCloud data match those in MERMAID.</li>
       <li>Each photo has a transect number and sampling date.</li>
       </ul>
-      <p><b>When ready</b>, simply upload the ZIP file exported directly from ReefCloud and let Easy PQT do the work for you.
+      <p><b>When ready</b>, simply upload the ZIP file exported directly from ReefCloud and let Easy PQT do the work for you. You can upload file with human annotatable points only or both human- and machine-annotated points.
     second: |-
       <p><b>After import:</b><br>
       Go to <a href="https://app.datamermaid.org/" target="_blank">MERMAID Collect</a> and complete the missing mandatory fields in each recently imported sample unit in the Collecting page of your project:</p>
@@ -74,15 +74,18 @@ select_project:
   placeholder: Select a project
   not_admin: |-
     <p>Unable to import into project {project_name}.</p>
-    <p>Your role in this MERMAID project is <i>{role}</i>. An <i>Admin</i> role is required to import data using Easy PQT.</p>
-    <p>Please <a href="https://datamermaid.org/contact-project?project_id={project_id}" target="_blank">contact the project admins</a> to change your role to <i>Admin</i>.</p>
+    <p>Your role in this MERMAID project is <i>{role}</i>. An <b>Admin</b> role is required to import data using Easy PQT.</p>
+    <p>Please <a href="https://datamermaid.org/contact-project?project_id={project_id}" target="_blank">contact the project admins</a> to change your role to <b>Admin</b>.</p>
   no_projects: You do not have any MERMAID projects. In order to continue with the
     import process, please <a href="https://datamermaid.org/documentation/collect-project-set-up"
     target="_blank">prepare a project</a> in MERMAID with organization(s), users,
     data sharing policies, sites, and management regimes.
 select_human_or_machine:
   title: Select labels used
-  text: Would you like to include human-annotated labels only?
+  text: |-
+    <p>You can choose to include <b>human-annotated points only</b>, or <b>human- and machine-annotated points</b>. If you choose the latter,
+    Easy PQT will <b>prioritize the human-annotated points</b>. If these are missing, Easy PQT will use the machine-annotated points in your data.</p>
+    <p>Would you like to include human-annotated points only?</p>
 upload_data:
   title:
     coralnet: Upload CoralNet export (CSV file format)
@@ -101,7 +104,8 @@ upload_data:
       Select "Both" for the Label format, and select the optional columns "Image metadata
       - date and auxiliary fields", as shown below.
     reefcloud: The classifications file can be found by selecting "Export point classifications"
-      in the dashboard of a CoralNet project. Click "Export", as shown below. You
+      in the dashboard of a CoralNet project. You can choose to include only the human annotatable points or both
+      human- and machine annotatable points. Click "Export", as shown below. You
       will be emailed a download link for a zip file, which should then be directly
       uploaded.
   instructions_img_alt:
@@ -121,11 +125,11 @@ upload_data:
     reefcloud: The uploaded point classifications do not contain the required columns
   invalid_date:
     coralnet: The uploaded annotations contain some invalid values for <b>Date</b>.
-      Using the instructions below, please export the annotations file from CoralNet
+      Using the instructions below, please export the <b>annotations</b> file from CoralNet
       and upload it directly into Easy PQT without making any changes to it.
     reefcloud: The uploaded point classifications contain some invalid values for
       <b>survey_start_date (UTC)</b>. Using the instructions below, please export
-      the point classifications file from ReefCloud and upload it directly into Easy
+      the <b>point classifications</b> file from ReefCloud and upload it directly into Easy
       PQT without making any changes to it.
 non_empty_fields:
   coralnet: |-
@@ -162,7 +166,7 @@ auxiliary:
 
       <p><b>After matching</b>, Easy PQT will ensure it matches the available options in your MERMAID project.
 
-      <p><b>If something does not match</b></p>, you will receive information on which fields that do not match.
+      <p><b>If something does not match</b>, you will receive information on which fields that do not match.
   preview: Auxiliary fields preview
   preview_text: The following table shows the auxiliary fields in your uploaded CoralNet
     annotations. Use this information to help match Site, Management regime, and Transect
@@ -189,7 +193,7 @@ auxiliary_validating:
       you have made changes, please restart Easy PQT before continuing with import.</p>
     reefcloud: <p>There are some issues with the column values, as described below.
       You may need to fix invalid values in ReefCloud, or add/edit values (Site or
-      Management) in MERMAID Collect to match the ReefCloud data.</p><p>Once you have
+      Management regime) in MERMAID Collect to match the ReefCloud data.</p><p>Once you have
       made changes, please restart Easy PQT before continuing with import.</p>
 mapping:
   title:
@@ -230,7 +234,7 @@ mapping:
       to continue.
 reshaping:
   title: Reshaping data
-  text: Reshaping data into format required for MERMAID...
+  text: Reshaping data into format required for importing into MERMAID...
 preview:
   title: Preview data and confirm import
   text: |-
@@ -240,6 +244,9 @@ preview:
     <li>Inspect it directly in the interactive table, or</li>
     <li>Download a copy by clicking "Download reshaped data".</li>
     </ul>
+    <p><b>Note:</b> The reshaped data still has missing information that needs to be completed in MERMAID Collect.
+    You can export the complete and clean version of your Data from the <b>Submitted</b> page in your project in MERMAID Collect.
+    A step-by-step guide to export data in MERMAID Collect is available in the <a href="https://datamermaid.org/documentation/collect-data-export" target="_blank">Exporting data</a> documentation.
   download: Download reshaped data
   file: MERMAID Easy PQT Data - {project_name}.csv
 ingestion:
@@ -288,7 +295,7 @@ ingestion_success:
   text:
     coralnet: |-
       <p><b>Your data has been successfully imported into MERMAID.</b></p>
-      <p>Click the button below to open the sample units in MERMAID Collect to review, validate,
+      <p>Click the button below to open the sample units in MERMAID Collect to review, complete, validate,
       and submit them.</p>
       <p><b>Before submission, in each sample unit make sure to:</b></p>
       <ul>
@@ -300,10 +307,11 @@ ingestion_success:
       </ul>
 
       <p><b>Note:</b> The data will only be visible to all project users after you
-      have validated and submitted the sample units in MERMAID Collect.</p>
+      have validated and submitted the sample units in MERMAID Collect.
+      Read more in <a href="https://datamermaid.org/documentation/collect-data-validation-submission" target="_blank">Saving, validating and submitting data</a> documentation.</p>
     reefcloud: |-
       <p><b>Your data has been successfully imported into MERMAID.</b></p>
-      <p>Click the button below to open the sample units in MERMAID Collect to review, validate,
+      <p>Click the button below to open the sample units in MERMAID Collect to review, complete, validate,
       and submit them.</p>
       <p><b>Before submission, in each sample unit make sure to:</b></p>
       <ul>
@@ -315,7 +323,8 @@ ingestion_success:
       </ul>
 
       <p><b>Note:</b> The data will only be visible to all project users after you
-      have validated and submitted the sample units in MERMAID Collect.</p>
+      have validated and submitted the sample units in MERMAID Collect.
+      Read more in <a href="https://datamermaid.org/documentation/collect-data-validation-submission" target="_blank">Saving, validating and submitting data</a> documentation.</p>
   button: Go to MERMAID Collect
   collect_url_prod: https://app.datamermaid.org/projects/{project}/collecting
   collect_url_dev: https://dev-app.datamermaid.org/projects/{project}/collecting
