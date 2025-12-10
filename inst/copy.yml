@@ -184,7 +184,7 @@ auxiliary_validating:
     reefcloud: <p>✔ All fields are valid! </p><p> Continue on to assign ReefCloud
       labels to MERMAID benthic attributes and/or growth forms.</p>
   column_valid:
-    coralnet: ✔ Values of {column} (<i>{provider_column}</i>) are valid.
+    coralnet: ✔ Values of {column} are valid.
     reefcloud: ✔ Values of {column} (<i>{provider_column}</i>) are valid.
   fix:
     coralnet: <p>There are some issues with the auxiliary column values, as described
