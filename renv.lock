@@ -109,13 +109,8 @@
     },
     "bit": {
       "Package": "bit",
-      "Version": "4.0.5",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Requirements": [
-        "R"
-      ],
-      "Hash": "d242abec29412ce988848d0294b208fd"
+      "Version": "4.6.0",
+      "Source": "Repository"
     },
     "bit64": {
       "Package": "bit64",
@@ -302,14 +297,8 @@
     },
     "digest": {
       "Package": "digest",
-      "Version": "0.6.33",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Requirements": [
-        "R",
-        "utils"
-      ],
-      "Hash": "b18a9cf3c003977b0cc49d5e76ebe48d"
+      "Version": "0.6.39",
+      "Source": "Repository"
     },
     "dplyr": {
       "Package": "dplyr",
@@ -1196,16 +1185,8 @@
     },
     "stringi": {
       "Package": "stringi",
-      "Version": "1.8.1",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Requirements": [
-        "R",
-        "stats",
-        "tools",
-        "utils"
-      ],
-      "Hash": "12bf57fdcb9b7068bea39b32f87ecac9"
+      "Version": "1.8.7",
+      "Source": "Repository"
     },
     "stringr": {
       "Package": "stringr",
