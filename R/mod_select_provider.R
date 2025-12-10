@@ -47,18 +47,11 @@ mod_select_provider_server <- function(id, r) {
       # Once provider is selected, show the introduction for it
       shiny::req(r$provider)
 
-      if (r$provider == "reefcloud") {
-        instructions <- shiny::tagList(
-          get_copy("provider_introduction", r$provider, "first"),
-          mod_upload_instructions_ui("instructions"),
-          get_copy("provider_introduction", r$provider, "second")
-        )
-      } else if (r$provider == "coralnet") {
-        instructions <- shiny::tagList(
-          get_copy("provider_introduction", r$provider),
-          mod_upload_instructions_ui("instructions")
-        )
-      }
+      instructions <- shiny::tagList(
+        get_copy("provider_introduction", r$provider, "first"),
+        mod_upload_instructions_ui("instructions"),
+        get_copy("provider_introduction", r$provider, "second")
+      )
 
       r$provider_instructions_done <- TRUE
 
