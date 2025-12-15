@@ -28,6 +28,8 @@ mod_upload_data_server <- function(id, r) {
     # set step_select_human_or_machine_annotated <- TRUE in mod_select_human_or_machine_annotated),
     # and additionally on any reset
     shiny::observe({
+      shiny::req(r$step_select_human_or_machine_annotated)
+
       output$upload <- renderUI({
         if (r$step_select_human_or_machine_annotated) {
           shiny::div(
