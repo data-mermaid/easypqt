@@ -178,7 +178,7 @@ scroll_to_section <- function(id, accordion = FALSE) {
   script <- app_sys("scrollToSection.js") %>%
     readLines() %>%
     paste0(collapse = "") %>%
-    glue:::glue(.open = "$$$", .close = "$$$", id = id)
+    glue::glue(.open = "$$$", .close = "$$$", id = id)
   t <- tempfile(fileext = ".js")
   writeLines(script, t)
   shiny::insertUI("head", where = "beforeEnd", shiny::includeScript(t))

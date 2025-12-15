@@ -29,6 +29,7 @@ Imports:
     shiny (>= 1.7.5.1),
     shinyjs,
     shinyWidgets,
+    stringr,
     usethis,
     waiter,
     yaml
