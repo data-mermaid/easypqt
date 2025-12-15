@@ -9,6 +9,7 @@ mod_upload_data_ui <- function(id) {
   ns <- NS(id)
   shiny::tagList(
     shiny::uiOutput(ns("upload")),
+    mod_upload_instructions_ui(ns("filetype"), show_ui = FALSE),
     mod_upload_instructions_ui(ns("zip"), show_ui = FALSE),
     mod_upload_instructions_ui(ns("cols"), show_ui = FALSE),
     mod_upload_instructions_ui(ns("date"), show_ui = FALSE)
@@ -27,6 +28,8 @@ mod_upload_data_server <- function(id, r) {
     # set step_select_human_or_machine_annotated <- TRUE in mod_select_human_or_machine_annotated),
     # and additionally on any reset
     shiny::observe({
+      shiny::req(r$step_select_human_or_machine_annotated)
+
       output$upload <- renderUI({
         if (r$step_select_human_or_machine_annotated) {
           shiny::div(
@@ -65,8 +68,24 @@ mod_upload_data_server <- function(id, r) {
     mod_upload_instructions_server("instructions", r)
 
     shiny::observe({
-      # If the file type is zip, first unzip the file, check that it actually contains a csv, then read it in
+      # For Reefcloud, it must be a zip--this is set in fileInput(), but they can still drag a non-zip file in
+      # And for Coralnet, it must be a CSV
+      # So check that the file type matches what is expected, otherwise error and do not allow them to continue
 
+      file_type_matches <- stringr::str_ends(input$annotations$datapath, get_config("upload_file")[[r$provider]])
+      if (!file_type_matches) {
+        mod_upload_instructions_server("filetype", r, show_ui = FALSE, invalid = "invalid_filetype")
+        r$annotations_upload_type_valid <- FALSE
+      } else {
+        r$annotations_upload_type_valid <- TRUE
+      }
+    }) %>%
+      shiny::bindEvent(input$annotations)
+
+    shiny::observe({
+      shiny::req(r$annotations_upload_type_valid)
+
+      # If the file type is zip, first unzip the file, check that it actually contains a csv, then read it in
       if (get_config("upload_file")[[r$provider]] == ".zip") {
         file_path <- input$annotations$datapath
         upload_dir <- stringr::str_remove(file_path, basename(file_path))
@@ -94,7 +113,7 @@ mod_upload_data_server <- function(id, r) {
         r$annotations_upload_valid <- TRUE
       }
     }) %>%
-      shiny::bindEvent(input$annotations)
+      shiny::bindEvent(r$annotations_upload_type_valid)
 
     # Check the file contains the correct columns ----
     shiny::observe({
@@ -172,7 +191,7 @@ mod_upload_data_server <- function(id, r) {
         # Check that the Date column is formatted properly - if not, show a modal that there is an issue
         date_validation <- check_valid_dates(annotations_raw[[date_col]])
         if (!date_validation[["valid"]]) {
-          mod_upload_instructions_server("instructions_invalid_date", show_ui = FALSE, invalid = TRUE)
+          mod_upload_instructions_server("date", r,  show_ui = FALSE, invalid = "invalid_date")
         } else {
           r$annotations_raw <- annotations_raw
           # Reformat the dates to ymd

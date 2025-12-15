@@ -23,6 +23,8 @@ mod_select_human_or_machine_annotated_server <- function(id, r) {
     # and additionally on any reset
     # For coralnet, just automatically set step_select_human_or_machine_annotated <- TRUE here
     shiny::observe({
+      shiny::req(r$step_select_valid_project_done)
+
       output$human_or_machine <- renderUI({
         shiny::req(r$provider)
         if (r$step_select_valid_project_done & r$provider == "reefcloud") {

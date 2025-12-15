@@ -104,10 +104,10 @@ upload_data:
       Select "Both" for the Label format, and select the optional columns "Image metadata
       - date and auxiliary fields", as shown below.
     reefcloud: The classifications file can be found by selecting "Export point classifications"
-      in the dashboard of a CoralNet project. You can choose to include only the human annotatable points or both
-      human- and machine annotatable points. Click "Export", as shown below. You
-      will be emailed a download link for a zip file, which should then be directly
-      uploaded.
+      in the dashboard of a CoralNet project. You can choose to include only the human
+      annotatable points or both human- and machine annotatable points. Click "Export",
+      as shown below. You will be emailed a download link for a zip file, which should
+      then be directly uploaded.
   instructions_img_alt:
     coralnet: 'A screen shot of the "Image" page in CoralNet, highlighting the "Image
       Actions" section with the Action: "Export Annotations, CSV" for these images:
@@ -125,12 +125,20 @@ upload_data:
     reefcloud: The uploaded point classifications do not contain the required columns
   invalid_date:
     coralnet: The uploaded annotations contain some invalid values for <b>Date</b>.
-      Using the instructions below, please export the <b>annotations</b> file from CoralNet
-      and upload it directly into Easy PQT without making any changes to it.
+      Using the instructions below, please export the <b>annotations</b> file from
+      CoralNet and upload it directly into Easy PQT without making any changes to
+      it.
     reefcloud: The uploaded point classifications contain some invalid values for
       <b>survey_start_date (UTC)</b>. Using the instructions below, please export
-      the <b>point classifications</b> file from ReefCloud and upload it directly into Easy
-      PQT without making any changes to it.
+      the <b>point classifications</b> file from ReefCloud and upload it directly
+      into Easy PQT without making any changes to it.
+  invalid_filetype:
+    coralnet: The uploaded annotations must be a CSV file. Using the instructions
+      below, please export the <b>annotations</b> file from CoralNet and upload it
+      directly into Easy PQT without making any changes to it.
+    reefcloud: The uploaded point classifications must be a ZIP file. Using the instructions
+      below, please export the <b>point classifications</b> file from ReefCloud and
+      upload it directly into Easy PQT without making any changes to it.
 non_empty_fields:
   coralnet: |-
     {fields} cannot contain empty values. The following fields contain empty values: {list}
@@ -184,7 +192,7 @@ auxiliary_validating:
     reefcloud: <p>✔ All fields are valid! </p><p> Continue on to assign ReefCloud
       labels to MERMAID benthic attributes and/or growth forms.</p>
   column_valid:
-    coralnet: ✔ Values of {column} (<i>{provider_column}</i>) are valid.
+    coralnet: ✔ Values of {column} are valid.
     reefcloud: ✔ Values of {column} (<i>{provider_column}</i>) are valid.
   fix:
     coralnet: <p>There are some issues with the auxiliary column values, as described
@@ -193,8 +201,8 @@ auxiliary_validating:
       you have made changes, please restart Easy PQT before continuing with import.</p>
     reefcloud: <p>There are some issues with the column values, as described below.
       You may need to fix invalid values in ReefCloud, or add/edit values (Site or
-      Management regime) in MERMAID Collect to match the ReefCloud data.</p><p>Once you have
-      made changes, please restart Easy PQT before continuing with import.</p>
+      Management regime) in MERMAID Collect to match the ReefCloud data.</p><p>Once
+      you have made changes, please restart Easy PQT before continuing with import.</p>
 mapping:
   title:
     coralnet: Assign CoralNet Labels to MERMAID benthic attributes and/or growth forms
