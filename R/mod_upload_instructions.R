@@ -36,6 +36,7 @@ mod_upload_instructions_server <- function(id, r, show_ui = TRUE, invalid = NULL
     shiny::observe({
       # If show_ui is FALSE, that means the instructions were called without the user explicitly asking, e.g. they uploaded the wrong data - so show the text that states that is the case
       cat("Upload instructions \n")
+
       shiny::showModal(
         shiny::modalDialog(
           if (!show_ui & !is.null(invalid)) {
