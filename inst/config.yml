@@ -101,12 +101,12 @@ labelset_code_column:
     reefcloud: ReefCloud label code
 mermaid_attributes_columns:
   mermaid_attribute:
-    table_label: MERMAID Benthic attribute
+    table_label: MERMAID benthic attribute
     label: Benthic attribute
     column: Benthic attribute *
     api_column: benthic_attribute
   mermaid_growth_form:
-    table_label: MERMAID Growth form
+    table_label: MERMAID growth form
     label: Growth form
     column: Growth form
     api_column: growth_form
