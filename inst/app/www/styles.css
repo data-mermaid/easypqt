@@ -233,7 +233,7 @@ hr {
 /* File upload */
 /* Hide message of successful file upload -- only show upload errors (.progress-bar-danger) */
 
-.shiny-file-input-progress.progress-bar:not(.progress-bar-danger) {
+.shiny-file-input-progress:has(.progress-bar:not(.progress-bar-danger)) {
   display: none;
 }
 
