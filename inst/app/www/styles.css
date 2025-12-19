@@ -230,6 +230,13 @@ hr {
   background-color: var(--color-grey-20);
 }
 
+/* File upload */
+/* Hide message of successful file upload -- only show upload errors (.progress-bar-danger) */
+
+.shiny-file-input-progress.progress-bar:not(.progress-bar-danger) {
+  display: none;
+}
+
 /* Small devices */
 @media (max-width: 768px) {
   /* Smaller sizing */
