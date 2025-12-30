@@ -204,8 +204,8 @@ mapping:
     coralnet: |-
       <p>We have pre‑assigned most CoralNet labels to MERMAID benthic attributes and growth forms. Any unassigned CoralNet labels will appear at the top of the table with empty values.</p>
       <ul>
-      <li><b>Benthic Attribute (Required):</b> Every CoralNet label must be assigned to a MERMAID benthic attribute. Unassigned attributes are highlighted in red and must be assigned before you can continue.</li>
-      <li><b>Growth Form (Optional):</b> This field may remain empty if not applicable.</li>
+      <li><b>Benthic attribute (required):</b> Every CoralNet label must be assigned to a MERMAID benthic attribute. Unassigned attributes are highlighted in red and must be assigned before you can continue.</li>
+      <li><b>Growth form (optional):</b> This field may remain empty if not applicable.</li>
       </ul>
 
       <p><b>To complete the assigning:</b></p>
@@ -217,8 +217,8 @@ mapping:
     reefcloud: |-
       <p>We have pre‑assigned most ReefCloud labels to MERMAID benthic attributes and growth forms. Any unassigned ReefCloud labels will appear at the top of the table with empty values.</p>
       <ul>
-      <li><b>Benthic Attribute (Required):</b> Every ReefCloud label must be assigned to a MERMAID benthic attribute. Unassigned attributes are highlighted in red and must be assigned before you can continue.</li>
-      <li><b>Growth Form (Optional):</b> This field may remain empty if not applicable.</li>
+      <li><b>Benthic attribute (required):</b> Every ReefCloud label must be assigned to a MERMAID benthic attribute. Unassigned attributes are highlighted in red and must be assigned before you can continue.</li>
+      <li><b>Growth form (optional):</b> This field may remain empty if not applicable.</li>
       </ul>
 
       <p><b>To complete the assigning:</b></p>
@@ -228,9 +228,9 @@ mapping:
       <li>Once all benthic attributes are assigned, click <b>Confirm</b> to proceed with the import process.</li>
       </ul>
   not_allowed_to_confirm:
-    coralnet: All CoralNet labels must be assigned to valid MERMAID Benthic Attributes
+    coralnet: All CoralNet labels must be assigned to valid MERMAID benthic attributes
       to continue.
-    reefcloud: All ReefCloud labels must be assigned to valid MERMAID Benthic Attributes
+    reefcloud: All ReefCloud labels must be assigned to valid MERMAID benthic attributes
       to continue.
 reshaping:
   title: Reshaping data
