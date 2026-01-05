@@ -11,7 +11,7 @@ introduction: |-
   <li>Upload to Easy PQT</li>
   <li>Import into MERMAID</li>
   </ol>
-  <p>Please read our <a href="https://datamermaid.org/documentation/mermaid-easy-pqt-data-import" target="_blank">step-by-step guide to using Easy PQT</a> before starting to import your data using Easy PQT.</p>
+  <p>Please read our <a href="https://datamermaid.org/documentation/getting-started-easypqt" target="_blank">step-by-step guide to using Easy PQT</a> before starting to import your data using MERMAID Easy PQT.</p>
 select_provider:
   title: Provider
   text: 'Select the provider you are importing data from:'
@@ -36,13 +36,14 @@ provider_introduction:
       <p><b>When ready</b>, simply upload the CSV file exported directly from CoralNet and let Easy PQT do the work for you.
     second: |-
       <p><b>After import:</b><br>
-      Go to <a href="https://app.datamermaid.org/" target="_blank">MERMAID Collect</a> and complete the missing mandatory fields in each recently imported sample unit in the Collecting page of your project:</p>
+      Go to <a href="https://app.datamermaid.org/" target="_blank">MERMAID Collect</a> and complete the missing mandatory fields in each recently imported sample unit in the <b>Collecting<b> page of your project:</p>
       <ul>
       <li>Fill in the Depth</li>
       <li>Fill in the Transect length surveyed</li>
       <li>Fill in the Quadrat size</li>
       <li>Ensure the Observers selected is the one who collected the data. Easy PQT will assign you as the observer.</li>
       </ul>
+      <p><b>Read the step-by-step guide<b> to import your CoralNet data in <a href="https://datamermaid.org/documentation/import-coralnet-data-easypqt" target="_blank">Import CoralNet data into MERMAID</a> documentation.
   reefcloud:
     first: |-
       <p><b>Easy PQT will guide you through:</b></p>
@@ -50,7 +51,7 @@ provider_introduction:
       <li>Selecting a MERMAID project for your data import.</li>
       <li>Uploading your ReefCloud point classifications.</li> <li>Matching ReefCloud fields to required MERMAID fields.</li>
       <li>Assigning ReefCloud labels to MERMAID benthic attributes and growth forms.</li>
-      <li>For assigning labels, human classifications take priority (from the Point Human Classification column). If these are missing, we will use the Machine Classification labels (from the Point Machine Classification column) instead. Most ReefCloud labels have already been pre‑assigned to MERMAID attributes and/or growth forms to make importing as easy as possible.</li>
+      <li>For assigning labels, <b>human classifications take priority<b> (from the Point Human Classification column). If these are missing, we will use the Machine Classification labels (from the Point Machine Classification column) instead. Most ReefCloud labels have already been pre‑assigned to MERMAID attributes and/or growth forms to make importing as easy as possible.</li>
       </ul>
       <p><b>Before you start, ensure that:</b></p>
       <ul>
@@ -61,13 +62,14 @@ provider_introduction:
       <p><b>When ready</b>, simply upload the ZIP file exported directly from ReefCloud and let Easy PQT do the work for you. You can upload file with human annotatable points only or both human- and machine-annotated points.
     second: |-
       <p><b>After import:</b><br>
-      Go to <a href="https://app.datamermaid.org/" target="_blank">MERMAID Collect</a> and complete the missing mandatory fields in each recently imported sample unit in the Collecting page of your project:</p>
+      Go to <a href="https://app.datamermaid.org/" target="_blank">MERMAID Collect</a> and complete the missing mandatory fields in each recently imported sample unit in the <b>Collecting<b> page of your project:</p>
       <ul>
       <li>Fill in the Depth</li>
       <li>Fill in the Transect length surveyed</li>
       <li>Fill in the Quadrat size</li>
       <li>Ensure the Observers selected is the one who collected the data. Easy PQT will assign you as the observer.</li>
       </ul>
+      <p><b>Read the step-by-step guide<b> to import your ReefCloud data in <a href="https://datamermaid.org/documentation/import-reefcloud-easypqt" target="_blank">Import ReefCloud data into MERMAID</a> documentation.
 select_project:
   title: MERMAID Project
   text: Select the project you want to import your data into
@@ -205,15 +207,14 @@ auxiliary_validating:
       you have made changes, please restart Easy PQT before continuing with import.</p>
 mapping:
   title:
-    coralnet: Assign CoralNet Labels to MERMAID benthic attributes and/or growth forms
-    reefcloud: Assign ReefCloud Labels to MERMAID benthic attributes and/or growth
-      forms
+    coralnet: Assign CoralNet labels to MERMAID benthic attributes and/or growth forms
+    reefcloud: Assign ReefCloud labels to MERMAID benthic attributes and/or growth forms
   text:
     coralnet: |-
       <p>We have pre‑assigned most CoralNet labels to MERMAID benthic attributes and growth forms. Any unassigned CoralNet labels will appear at the top of the table with empty values.</p>
       <ul>
-      <li><b>Benthic Attribute (Required):</b> Every CoralNet label must be assigned to a MERMAID benthic attribute. Unassigned attributes are highlighted in red and must be assigned before you can continue.</li>
-      <li><b>Growth Form (Optional):</b> This field may remain empty if not applicable.</li>
+      <li><b>Benthic attribute (required):</b> Every CoralNet label must be assigned to a MERMAID benthic attribute. Unassigned attributes are highlighted in red and must be assigned before you can continue.</li>
+      <li><b>Growth form (optional):</b> This field may remain empty if not applicable.</li>
       </ul>
 
       <p><b>To complete the assigning:</b></p>
@@ -225,8 +226,8 @@ mapping:
     reefcloud: |-
       <p>We have pre‑assigned most ReefCloud labels to MERMAID benthic attributes and growth forms. Any unassigned ReefCloud labels will appear at the top of the table with empty values.</p>
       <ul>
-      <li><b>Benthic Attribute (Required):</b> Every ReefCloud label must be assigned to a MERMAID benthic attribute. Unassigned attributes are highlighted in red and must be assigned before you can continue.</li>
-      <li><b>Growth Form (Optional):</b> This field may remain empty if not applicable.</li>
+      <li><b>Benthic attribute (required):</b> Every ReefCloud label must be assigned to a MERMAID benthic attribute. Unassigned attributes are highlighted in red and must be assigned before you can continue.</li>
+      <li><b>Growth form (optional):</b> This field may remain empty if not applicable.</li>
       </ul>
 
       <p><b>To complete the assigning:</b></p>
@@ -236,9 +237,9 @@ mapping:
       <li>Once all benthic attributes are assigned, click <b>Confirm</b> to proceed with the import process.</li>
       </ul>
   not_allowed_to_confirm:
-    coralnet: All CoralNet labels must be assigned to valid MERMAID Benthic Attributes
+    coralnet: All CoralNet labels must be assigned to valid MERMAID benthic attributes
       to continue.
-    reefcloud: All ReefCloud labels must be assigned to valid MERMAID Benthic Attributes
+    reefcloud: All ReefCloud labels must be assigned to valid MERMAID benthic attributes
       to continue.
 reshaping:
   title: Reshaping data
@@ -276,7 +277,7 @@ reset:
   text:
     none: Do you want to restart Easy PQT?
     coralnet: <p>This will reset any progress made in Easy PQT, including the selected
-      provider, project, CoralNet annotations data uploaded, and any mappings (auxiliary
+      provider, project, CoralNet annotations data uploaded, and any assignings (auxiliary
       fields and CoralNet labels assigned).</p> <p> Do you want to proceed with restarting
       Easy PQT?</p>
     reefcloud: <p>This will reset any progress made in Easy PQT, including the selected
@@ -311,7 +312,7 @@ ingestion_success:
       <li>Fill in the Transect length surveyed</li>
       <li>Fill in the Quadrat size</li>
       <li>Ensure the Observers selected
-      is the one who collected the data. Easy PQT will assign you as the observer.</li>
+      is the one who collected the data. Easy PQT will assign you as the observer by default.</li>
       </ul>
 
       <p><b>Note:</b> The data will only be visible to all project users after you
@@ -327,7 +328,7 @@ ingestion_success:
       <li>Fill in the Transect length surveyed</li>
       <li>Fill in the Quadrat size</li>
       <li>Ensure the Observers selected
-      is the one who collected the data. Easy PQT will assign you as the observer.</li>
+      is the one who collected the data. Easy PQT will assign you as the observer by default.</li>
       </ul>
 
       <p><b>Note:</b> The data will only be visible to all project users after you
