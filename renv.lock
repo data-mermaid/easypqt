@@ -2086,8 +2086,8 @@
       "RemoteHost": "api.github.com",
       "RemoteRepo": "mermaidr",
       "RemoteUsername": "data-mermaid",
-      "RemoteRef": "HEAD",
-      "RemoteSha": "f03df4a2c54f6057b1a911d1f8d8c9d83cac2af5",
+      "RemoteRef": "dev",
+      "RemoteSha": "a5422c49a8e26c3247908b0bfb3f15b93197e7b4",
       "NeedsCompilation": "no",
       "Author": "Sharla Gelfand [aut, cre], Wildlife Conservation Society [cph, fnd]",
       "Maintainer": "Sharla Gelfand <sharla.gelfand@gmail.com>"
