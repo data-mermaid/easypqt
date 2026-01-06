@@ -24,7 +24,8 @@ provider_introduction:
       <p><b>Easy PQT will guide you through:</b></p>
       <ul>
       <li>Selecting a MERMAID project for your data import.</li>
-      <li>Uploading your CoralNet image annotations.</li> <li>Matching CoralNet auxiliary fields to required MERMAID fields.</li>
+      <li>Uploading your CoralNet image annotations.</li>
+      <li>Matching CoralNet auxiliary fields to required MERMAID fields.</li>
       <li>Assigning CoralNet labels to MERMAID benthic attributes and growth forms. Most CoralNet labels have already been pre‑assigned to MERMAID benthic attributes and/or growth forms to make importing as easy as possible.</li>
       </ul>
       <p><b>Before you start, ensure that:</b></p>
@@ -36,22 +37,23 @@ provider_introduction:
       <p><b>When ready</b>, simply upload the CSV file exported directly from CoralNet and let Easy PQT do the work for you.
     second: |-
       <p><b>After import:</b><br>
-      Go to <a href="https://app.datamermaid.org/" target="_blank">MERMAID Collect</a> and complete the missing mandatory fields in each recently imported sample unit in the <b>Collecting<b> page of your project:</p>
+      Go to <a href="https://app.datamermaid.org/" target="_blank">MERMAID Collect</a> and complete the missing mandatory fields in each recently imported sample unit in the <b>Collecting</b> page of your project:</p>
       <ul>
       <li>Fill in the Depth</li>
       <li>Fill in the Transect length surveyed</li>
       <li>Fill in the Quadrat size</li>
       <li>Ensure the Observers selected is the one who collected the data. Easy PQT will assign you as the observer.</li>
       </ul>
-      <p><b>Read the step-by-step guide<b> to import your CoralNet data in <a href="https://datamermaid.org/documentation/import-coralnet-data-easypqt" target="_blank">Import CoralNet data into MERMAID</a> documentation.
+      <p><b>Read the step-by-step guide</b> to import your CoralNet data in <a href="https://datamermaid.org/documentation/import-coralnet-data-easypqt" target="_blank">Import CoralNet data into MERMAID</a> documentation.
   reefcloud:
     first: |-
       <p><b>Easy PQT will guide you through:</b></p>
       <ul>
       <li>Selecting a MERMAID project for your data import.</li>
-      <li>Uploading your ReefCloud point classifications.</li> <li>Matching ReefCloud fields to required MERMAID fields.</li>
+      <li>Uploading your ReefCloud point classifications.</li>
+      <li>Matching ReefCloud fields to required MERMAID fields.</li>
       <li>Assigning ReefCloud labels to MERMAID benthic attributes and growth forms.</li>
-      <li>For assigning labels, <b>human classifications take priority<b> (from the Point Human Classification column). If these are missing, we will use the Machine Classification labels (from the Point Machine Classification column) instead. Most ReefCloud labels have already been pre‑assigned to MERMAID attributes and/or growth forms to make importing as easy as possible.</li>
+      <li>For assigning labels, <b>human classifications take priority</b> (from the Point Human Classification column). If these are missing, we will use the Machine Classification labels (from the Point Machine Classification column) instead. Most ReefCloud labels have already been pre‑assigned to MERMAID attributes and/or growth forms to make importing as easy as possible.</li>
       </ul>
       <p><b>Before you start, ensure that:</b></p>
       <ul>
@@ -62,14 +64,14 @@ provider_introduction:
       <p><b>When ready</b>, simply upload the ZIP file exported directly from ReefCloud and let Easy PQT do the work for you. You can upload file with human annotatable points only or both human- and machine-annotated points.
     second: |-
       <p><b>After import:</b><br>
-      Go to <a href="https://app.datamermaid.org/" target="_blank">MERMAID Collect</a> and complete the missing mandatory fields in each recently imported sample unit in the <b>Collecting<b> page of your project:</p>
+      Go to <a href="https://app.datamermaid.org/" target="_blank">MERMAID Collect</a> and complete the missing mandatory fields in each recently imported sample unit in the <b>Collecting</b> page of your project:</p>
       <ul>
       <li>Fill in the Depth</li>
       <li>Fill in the Transect length surveyed</li>
       <li>Fill in the Quadrat size</li>
       <li>Ensure the Observers selected is the one who collected the data. Easy PQT will assign you as the observer.</li>
       </ul>
-      <p><b>Read the step-by-step guide<b> to import your ReefCloud data in <a href="https://datamermaid.org/documentation/import-reefcloud-easypqt" target="_blank">Import ReefCloud data into MERMAID</a> documentation.
+      <p><b>Read the step-by-step guide</b> to import your ReefCloud data in <a href="https://datamermaid.org/documentation/import-reefcloud-easypqt" target="_blank">Import ReefCloud data into MERMAID</a> documentation.
 select_project:
   title: MERMAID Project
   text: Select the project you want to import your data into
