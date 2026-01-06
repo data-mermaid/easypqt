@@ -1,6 +1,6 @@
 Package: easypqt
 Title: Import Bethic Photo Quadrat data from CoralNet and Reefcloud into MERMAID
-Version: 0.2.1
+Version: 0.3.0
 Authors@R: 
     c(person(given = "Sharla",
            family = "Gelfand",
