@@ -171,7 +171,7 @@ scroll_to_section <- function(id, accordion = FALSE) {
   if (accordion) {
     id <- glue::glue('.accordion-item[data-value="{id}"]')
   } else {
-    id <- glue::glue('#{id}')
+    id <- glue::glue("#{id}")
   }
 
   # Add JS to check for section existing, then scroll to it

@@ -191,7 +191,7 @@ mod_upload_data_server <- function(id, r) {
         # Check that the Date column is formatted properly - if not, show a modal that there is an issue
         date_validation <- check_valid_dates(annotations_raw[[date_col]])
         if (!date_validation[["valid"]]) {
-          mod_upload_instructions_server("date", r,  show_ui = FALSE, invalid = "invalid_date")
+          mod_upload_instructions_server("date", r, show_ui = FALSE, invalid = "invalid_date")
         } else {
           r$annotations_raw <- annotations_raw
           # Reformat the dates to ymd
@@ -227,9 +227,9 @@ check_valid_dates <- function(dates) {
 
   i <- 1
 
-  while(invalid_dates & i <= length(date_formats)) {
+  while (invalid_dates & i <= length(date_formats)) {
     format <- date_formats[[i]]
-    invalid_dates <- do.call(eval(parse(text=glue::glue("lubridate::{format}"))), list(dates, quiet = TRUE)) %>%
+    invalid_dates <- do.call(eval(parse(text = glue::glue("lubridate::{format}"))), list(dates, quiet = TRUE)) %>%
       is.na() %>%
       any()
     i <- i + 1
@@ -246,7 +246,7 @@ check_valid_dates <- function(dates) {
 }
 
 reformat_dates <- function(dates, format) {
-  dates <- do.call(eval(parse(text=glue::glue("lubridate::{format}"))), list(dates, quiet = TRUE))
+  dates <- do.call(eval(parse(text = glue::glue("lubridate::{format}"))), list(dates, quiet = TRUE))
 
   if (stringr::str_ends(format, "_hms")) {
     dates <- as.Date(dates)
