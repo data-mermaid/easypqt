@@ -39,8 +39,13 @@ mod_reset_server <- function(id, r, show_ui = TRUE, show_confirm = TRUE) {
     if (show_confirm) {
       shiny::observe({
         cat("Reset \n")
+        if (is.null(r$provider)) {
+          confirm_text <- get_copy("reset", "text", "none")
+        } else {
+          confirm_text <- get_copy("reset", "text", r$provider)
+        }
         show_modal(
-          get_copy("reset", "text"),
+          confirm_text,
           shiny::div(
             class = "reset-confirm-cancel",
             spaced(
@@ -80,28 +85,39 @@ mod_reset_server <- function(id, r, show_ui = TRUE, show_confirm = TRUE) {
       }
 
       # Hide the modal
-      if (show_confirm) {
-        shiny::removeModal()
-      }
+      shiny::removeModal()
 
       # General resets
+      r$provider <- NULL
+      r$provider_full <- NULL
+      r$annotations_path <- NULL
+      r$annotations_upload_valid <- FALSE
+      r$annotations_upload_type_valid <- FALSE
       r$upload_contains_required_cols <- FALSE
-      r$auxiliary_columns_map <- get_config("auxiliary_columns_map")
       r$auxiliary_columns <- NULL
       r$required_annotations_columns <- NULL
+
       r$step_select_valid_project_done <- FALSE
+      r$step_select_human_or_machine_annotated <- FALSE
+      r$human_annotated_only <- NULL
       r$step_upload_valid_data_done <- FALSE
       r$step_map_auxiliary_fields_accordion_made_done <- FALSE
+      r$step_map_auxiliary_fields_accordion_fully_done <- FALSE
+      r$step_map_provider_labels_accordion_made_done <- FALSE
+      r$step_map_provider_labels_done <- FALSE
+      r$step_map_provider_labels_fully_done <- FALSE
+      r$step_fields_setup_done <- FALSE
       r$step_map_auxiliary_fields_done <- FALSE
       r$step_map_auxiliary_fields_valid_done <- FALSE
-      r$step_map_auxiliary_fields_accordion_fully_done <- FALSE
-      r$step_map_coralnet_labels_accordion_made_done <- FALSE
-      r$step_map_coralnet_labels_done <- FALSE
-      r$step_map_coralnet_labels_fully_done <- FALSE
+      r$step_map_provider_joined_done <- FALSE
+
       r$preview_confirm_shown <- 0
       r$reset_confirm_counter <- 0
       r$do_ingestion <- FALSE
-      r$step_map_coralnet_joined_done <- FALSE
+      r$step_map_provider_joined_done <- FALSE
+
+      r$provider_instructions_done <- NULL
+      r$upload_form_done <- NULL
     }) %>%
       shiny::bindEvent(r$reset_confirm_counter)
 

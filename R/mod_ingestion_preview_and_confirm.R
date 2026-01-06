@@ -22,7 +22,7 @@ mod_ingestion_preview_and_confirm_server <- function(id, r) {
     # Preview and download reshaped data ----
 
     output$table <- DT::renderDataTable(server = TRUE, {
-      shiny::req(r$step_map_coralnet_labels_fully_done)
+      shiny::req(r$step_map_provider_labels_fully_done)
 
       # Make asterisks in table red to match collect app
       ingestion_data_table <- r$ingestion_data
@@ -32,7 +32,7 @@ mod_ingestion_preview_and_confirm_server <- function(id, r) {
     })
 
     shiny::observe({
-      shiny::req(r$step_map_coralnet_labels_fully_done)
+      shiny::req(r$step_map_provider_labels_fully_done)
       # Only do this once, not every time the mapping is updated/confirmed
       shiny::req(r$preview_confirm_shown == 0)
 

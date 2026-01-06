@@ -2,12 +2,16 @@ get_config <- function(key) {
   yaml::read_yaml(app_sys("config.yml"))[[key]]
 }
 
-get_copy <- function(key, secondary_key = NULL) {
+get_copy <- function(key, secondary_key = NULL, tertiary_key = NULL) {
   copy <- yaml::read_yaml(app_sys("copy.yml"))
-  if (is.null(secondary_key)) {
-    copy <- copy[[key]]
-  } else {
-    copy <- copy[[key]][[secondary_key]]
+
+  copy <- copy[[key]]
+  if (!is.null(secondary_key)) {
+    copy <- copy[[secondary_key]]
+  }
+
+  if (!is.null(tertiary_key)) {
+    copy <- copy[[tertiary_key]]
   }
 
   shiny::HTML(copy)
@@ -162,16 +166,21 @@ tidy_config <- function() {
   tidy_yaml("config")
 }
 
-scroll_to_accordion <- function(id) {
-  # Add JS to check for accordion existing, then scroll to it
-  id <- glue::glue('"{id}"')
-  script <- app_sys("scrollToAccordion.js") %>%
+scroll_to_section <- function(id, accordion = FALSE) {
+  # Change ID based on if it is an accordion or not
+  if (accordion) {
+    id <- glue::glue('.accordion-item[data-value="{id}"]')
+  } else {
+    id <- glue::glue("#{id}")
+  }
+
+  # Add JS to check for section existing, then scroll to it
+  script <- app_sys("scrollToSection.js") %>%
     readLines() %>%
     paste0(collapse = "") %>%
-    glue:::glue(.open = "$$$", .close = "$$$", id = id)
+    glue::glue(.open = "$$$", .close = "$$$", id = id)
   t <- tempfile(fileext = ".js")
   writeLines(script, t)
-
   shiny::insertUI("head", where = "beforeEnd", shiny::includeScript(t))
 }
 

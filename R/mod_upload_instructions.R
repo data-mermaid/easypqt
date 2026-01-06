@@ -22,7 +22,7 @@ mod_upload_instructions_ui <- function(id, show_ui = TRUE) {
 #' upload_instructions Server Functions
 #'
 #' @noRd
-mod_upload_instructions_server <- function(id, show_ui = TRUE, invalid = FALSE) {
+mod_upload_instructions_server <- function(id, r, show_ui = TRUE, invalid = NULL) {
   moduleServer(id, function(input, output, session) {
     ns <- session$ns
 
@@ -36,18 +36,16 @@ mod_upload_instructions_server <- function(id, show_ui = TRUE, invalid = FALSE) 
     shiny::observe({
       # If show_ui is FALSE, that means the instructions were called without the user explicitly asking, e.g. they uploaded the wrong data - so show the text that states that is the case
       cat("Upload instructions \n")
+
       shiny::showModal(
         shiny::modalDialog(
-          if (!show_ui & !invalid) {
-            shiny::tags$p(get_copy("upload_data", "missing_instructions"))
+          if (!show_ui & !is.null(invalid)) {
+            shiny::tags$p(get_copy("upload_data", invalid, r$provider))
           },
-          if (invalid) {
-            shiny::tags$p(get_copy("upload_data", "invalid_instructions"))
-          },
-          shiny::tags$p(get_copy("upload_data", "instructions")),
+          shiny::tags$p(get_copy("upload_data", "instructions", r$provider)),
           shiny::tags$img(
-            src = get_config("upload_data_img_path"),
-            alt = get_copy("upload_data", "instructions_img_alt"),
+            src = get_config("upload_data_img_path")[[r$provider]],
+            alt = get_copy("upload_data", "instructions_img_alt", r$provider),
             style = "width: 100%"
           ),
           footer = close_button,

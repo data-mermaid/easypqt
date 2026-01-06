@@ -1,6 +1,6 @@
 Package: easypqt
-Title: Import Bethic Photo Quadrat data from CoralNet into MERMAID
-Version: 0.2.1
+Title: Import Bethic Photo Quadrat data from CoralNet and Reefcloud into MERMAID
+Version: 0.3.0
 Authors@R: 
     c(person(given = "Sharla",
            family = "Gelfand",
@@ -8,7 +8,7 @@ Authors@R:
            email = "sharla.gelfand@gmail.com"),
       person(given = "Wildlife Conservation Society",
              role = c("cph", "fnd")))
-Description: Easily import Benthic Photo Quadrat from CoralNet into MERMAID
+Description: Easily import Benthic Photo Quadrat from CoralNet and Reefcloud into MERMAID
 License: MIT + file LICENSE
 Imports: 
     auth0,
@@ -29,6 +29,7 @@ Imports:
     shiny (>= 1.7.5.1),
     shinyjs,
     shinyWidgets,
+    stringr,
     usethis,
     waiter,
     yaml

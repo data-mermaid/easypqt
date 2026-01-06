@@ -1,136 +1,300 @@
 title: Easy PQT
 logo_alt: MERMAID logo
 loading: Loading Easy PQT...
-preamble: <p>Welcome to Easy PQT! Easy PQT is designed to help you ingest your Benthic
-  Photo Quadrat data exported from CoralNet into MERMAID.</p> <p> Easy PQT will walk
-  you through selecting a MERMAID project to ingest into, uploading your CoralNet
-  image annotations, matching CoralNet auxiliary fields to required MERMAID fields,
-  and mapping CoralNet labels to MERMAID Benthic Attributes and Growth Forms. We've
-  pre-mapped most of the labels in CoralNet to MERMAID's Benthic Attributes and Growth
-  Forms in order to make the ingestion process as easy as possible. </p> <p> Please
-  note that after you have successfully ingested your data, there is still information
-  that needs to be filled out, including the mandatory fields of depth, transect length
-  surveyed, quadrat size, number of points per quadrat, and observers. </p> <p> To
-  begin, please make sure your project is set up in MERMAID (with Sites and Managements)
-  and that your CoralNet data includes auxiliary fields that correspond to your MERMAID
-  Sites and Managements, as well as Transect numbers and dates for each image. You
-  will need to upload the image annotations file obtained directly from CoralNet,
-  including the date and auxiliary fields columns.
+introduction: |-
+  <p>Welcome to Easy PQT! </p>
+  <p>A user-friendly app to import your annotated benthic photo quadrat transect (PQT) data into MERMAID.</p>
+  <p>Easy PQT is designed to help you import your PQT data that has been annotated in <b>CoralNet</b> or <b>ReefCloud</b> into MERMAID in just a few steps:</p>
+  <ol>
+  <li><a href="https://datamermaid.org/documentation/collect-project-set-up" target="_blank" >Prepare your project</a> in <a href="https://app.datamermaid.org/" target="_blank">MERMAID Collect</a></li>
+  <li>Export your data from CoralNet or ReefCloud</li>
+  <li>Upload to Easy PQT</li>
+  <li>Import into MERMAID</li>
+  </ol>
+  <p>Please read our <a href="https://datamermaid.org/documentation/getting-started-easypqt" target="_blank">step-by-step guide to using Easy PQT</a> before starting to import your data using MERMAID Easy PQT.</p>
+select_provider:
+  title: Provider
+  text: 'Select the provider you are importing data from:'
+  options:
+  - CoralNet
+  - ReefCloud
+provider_introduction:
+  coralnet:
+    first: |-
+      <p><b>Easy PQT will guide you through:</b></p>
+      <ul>
+      <li>Selecting a MERMAID project for your data import.</li>
+      <li>Uploading your CoralNet image annotations.</li>
+      <li>Matching CoralNet auxiliary fields to required MERMAID fields.</li>
+      <li>Assigning CoralNet labels to MERMAID benthic attributes and growth forms. Most CoralNet labels have already been pre‑assigned to MERMAID benthic attributes and/or growth forms to make importing as easy as possible.</li>
+      </ul>
+      <p><b>Before you start, ensure that:</b></p>
+      <ul>
+      <li>Your project is set up in <a href="https://app.datamermaid.org/" target="_blank">MERMAID Collect</a>, and you are an <b>Admin</b> of the project.</li>
+      <li>Your CoralNet data includes auxiliary fields that has sites and management regimes that match those in MERMAID.</li>
+      <li>Each photo has a transect number and sampling date.</li>
+      </ul>
+      <p><b>When ready</b>, simply upload the CSV file exported directly from CoralNet and let Easy PQT do the work for you.
+    second: |-
+      <p><b>After import:</b><br>
+      Go to <a href="https://app.datamermaid.org/" target="_blank">MERMAID Collect</a> and complete the missing mandatory fields in each recently imported sample unit in the <b>Collecting</b> page of your project:</p>
+      <ul>
+      <li>Fill in the Depth</li>
+      <li>Fill in the Transect length surveyed</li>
+      <li>Fill in the Quadrat size</li>
+      <li>Ensure the Observers selected is the one who collected the data. Easy PQT will assign you as the observer.</li>
+      </ul>
+      <p><b>Read the step-by-step guide</b> to import your CoralNet data in <a href="https://datamermaid.org/documentation/import-coralnet-data-easypqt" target="_blank">Import CoralNet data into MERMAID</a> documentation.
+  reefcloud:
+    first: |-
+      <p><b>Easy PQT will guide you through:</b></p>
+      <ul>
+      <li>Selecting a MERMAID project for your data import.</li>
+      <li>Uploading your ReefCloud point classifications.</li>
+      <li>Matching ReefCloud fields to required MERMAID fields.</li>
+      <li>Assigning ReefCloud labels to MERMAID benthic attributes and growth forms.</li>
+      <li>For assigning labels, <b>human classifications take priority</b> (from the Point Human Classification column). If these are missing, we will use the Machine Classification labels (from the Point Machine Classification column) instead. Most ReefCloud labels have already been pre‑assigned to MERMAID attributes and/or growth forms to make importing as easy as possible.</li>
+      </ul>
+      <p><b>Before you start, ensure that:</b></p>
+      <ul>
+      <li>Your project is set up in <a href="https://app.datamermaid.org/" target="_blank">MERMAID Collect</a>, and you are an <b>Admin</b> of the project.</li>
+      <li>Sites and management regimes in your ReefCloud data match those in MERMAID.</li>
+      <li>Each photo has a transect number and sampling date.</li>
+      </ul>
+      <p><b>When ready</b>, simply upload the ZIP file exported directly from ReefCloud and let Easy PQT do the work for you. You can upload file with human annotatable points only or both human- and machine-annotated points.
+    second: |-
+      <p><b>After import:</b><br>
+      Go to <a href="https://app.datamermaid.org/" target="_blank">MERMAID Collect</a> and complete the missing mandatory fields in each recently imported sample unit in the <b>Collecting</b> page of your project:</p>
+      <ul>
+      <li>Fill in the Depth</li>
+      <li>Fill in the Transect length surveyed</li>
+      <li>Fill in the Quadrat size</li>
+      <li>Ensure the Observers selected is the one who collected the data. Easy PQT will assign you as the observer.</li>
+      </ul>
+      <p><b>Read the step-by-step guide</b> to import your ReefCloud data in <a href="https://datamermaid.org/documentation/import-reefcloud-easypqt" target="_blank">Import ReefCloud data into MERMAID</a> documentation.
 select_project:
   title: MERMAID Project
-  text: Select the project you want to ingest your data into
+  text: Select the project you want to import your data into
   placeholder: Select a project
   not_admin: |-
-    <p>Unable to ingest into project {project_name}.</p>
-    <p>You role in this MERMAID project is <i>{role}</i>, but the Admin role is required to use Easy PQT.</p>
-    <p>Please <a href="https://datamermaid.org/contact-project?project_id={project_id}" target="_blank">contact the project administrators</a> to change your role to Admin.</p>
+    <p>Unable to import into project {project_name}.</p>
+    <p>Your role in this MERMAID project is <i>{role}</i>. An <b>Admin</b> role is required to import data using Easy PQT.</p>
+    <p>Please <a href="https://datamermaid.org/contact-project?project_id={project_id}" target="_blank">contact the project admins</a> to change your role to <b>Admin</b>.</p>
   no_projects: You do not have any MERMAID projects. In order to continue with the
-    ingestion process, please create a project in MERMAID with Sites and Managements.
+    import process, please <a href="https://datamermaid.org/documentation/collect-project-set-up"
+    target="_blank">prepare a project</a> in MERMAID with organization(s), users,
+    data sharing policies, sites, and management regimes.
+select_human_or_machine:
+  title: Select labels used
+  text: |-
+    <p>You can choose to include <b>human-annotated points only</b>, or <b>human- and machine-annotated points</b>. If you choose the latter,
+    Easy PQT will <b>prioritize the human-annotated points</b>. If these are missing, Easy PQT will use the machine-annotated points in your data.</p>
+    <p>Would you like to include human-annotated points only?</p>
 upload_data:
-  title: Upload CoralNet annotations
-  text: <p>Upload your data by clicking the "Browse..." button or by dragging the
-    file directly into the upload field. </p> <p> Please ensure your data is the annotations
-    file exported directly from CoralNet, including the date and auxiliary fields
-    columns.
-  instructions: The image annotations file can be found by navigating to "Images"
-    within a CoralNet project. Under "Image Actions", select "Export Annotations,
-    CSV". Select "Both" for the Label format, and select the optional columns "Image
-    metadata - date and auxiliary fields", as shown below.
-  instructions_img_alt: 'A screen shot of the "Image" page in CoralNet, highlighting
-    the "Image Actions" section with the Action: "Export Annotations, CSV" for these
-    images: "All N image results" selected. The instructions read "Export annotations
-    for these images in CSV format - one row per annotation". There is a section to
-    select Optional Columns, and the option "Image metadata - date and auxiliary fields"
-    is checked.'
-  missing_instructions: The uploaded annotations do not contain the required columns.
-  invalid_instructions: The uploaded annotations contain some invalid values for <b>Date</b>.
-    Using the instructions below, please export the annotations file from CoralNet
-    and upload it directly into Easy PQT without making any changes to it.
-non_empty_fields: |-
-  {fields} cannot contain empty values. The following fields contain empty values: {list}
-  Please update the data directly in CoralNet then begin the ingestion process again.
-transect_number_not_integer: 'Transect Number must be an integer. The following are
-  invalid: {invalid_values}'
-invalid_values: |-
-  The annotations contain invalid values of {label}. The following are invalid: {invalid_values}
-  Valid values of {label} are: {valid_values}
+  title:
+    coralnet: Upload CoralNet export (CSV file format)
+    reefcloud: Upload your ReefCloud export (ZIP file format)
+  text:
+    coralnet: <p>Upload your data by clicking the "Browse..." button or by dragging
+      the csv file directly into the upload field. </p> <p> Please ensure your data
+      is the annotations <i>csv file</i> exported directly from CoralNet, including
+      the short codes, ID numbers, sampling date and auxiliary fields columns.
+    reefcloud: <p>Upload your data by clicking the "Browse..." button or by dragging
+      the zip file directly into the upload field. </p> <p> Please ensure your data
+      is the point classifications <i>zip file</i> exported directly from ReefCloud.
+  instructions:
+    coralnet: The image annotations file can be found by navigating to "Images" within
+      a CoralNet project. Under "Image Actions", select "Export Annotations, CSV".
+      Select "Both" for the Label format, and select the optional columns "Image metadata
+      - date and auxiliary fields", as shown below.
+    reefcloud: The classifications file can be found by selecting "Export point classifications"
+      in the dashboard of a CoralNet project. You can choose to include only the human
+      annotatable points or both human- and machine annotatable points. Click "Export",
+      as shown below. You will be emailed a download link for a zip file, which should
+      then be directly uploaded.
+  instructions_img_alt:
+    coralnet: 'A screen shot of the "Image" page in CoralNet, highlighting the "Image
+      Actions" section with the Action: "Export Annotations, CSV" for these images:
+      "All N image results" selected. The instructions read "Export annotations for
+      these images in CSV format - one row per annotation". There is a section to
+      select Optional Columns, and the option "Image metadata - date and auxiliary
+      fields" is checked.'
+    reefcloud: A screen shot of the "Dashboard" page in ReefCloud, highlighting the
+      "Export point classifications" button, and a screen shot of the modal that appears
+      after that button is selected, showing that the "Export" button is highlighted.
+  no_csv:
+    reefcloud: The uploaded zip file does not contain the classifications file CSV.
+  missing_columns:
+    coralnet: The uploaded annotations do not contain the required columns.
+    reefcloud: The uploaded point classifications do not contain the required columns
+  invalid_date:
+    coralnet: The uploaded annotations contain some invalid values for <b>Date</b>.
+      Using the instructions below, please export the <b>annotations</b> file from
+      CoralNet and upload it directly into Easy PQT without making any changes to
+      it.
+    reefcloud: The uploaded point classifications contain some invalid values for
+      <b>survey_start_date (UTC)</b>. Using the instructions below, please export
+      the <b>point classifications</b> file from ReefCloud and upload it directly
+      into Easy PQT without making any changes to it.
+  invalid_filetype:
+    coralnet: The uploaded annotations must be a CSV file. Using the instructions
+      below, please export the <b>annotations</b> file from CoralNet and upload it
+      directly into Easy PQT without making any changes to it.
+    reefcloud: The uploaded point classifications must be a ZIP file. Using the instructions
+      below, please export the <b>point classifications</b> file from ReefCloud and
+      upload it directly into Easy PQT without making any changes to it.
+non_empty_fields:
+  coralnet: |-
+    {fields} cannot contain empty values. The following fields contain empty values: {list}
+    Please update the data directly in CoralNet then begin the import process again.
+  reefcloud: |-
+    {fields} cannot contain empty values. The following fields contain empty values: {list}
+    Please update the data directly in ReefCloud then begin the import process again.
+not_integer:
+  depth:
+    reefcloud: 'Depth (<i>survey_depth</i>) must be an integer. The following are
+      invalid: {invalid_values}'
+  transect_number:
+    coralnet: 'Transect number must be an integer. The following are invalid: {invalid_values}'
+    reefcloud: 'Transect number (<i>survey_transect_number</i>) must be an integer.
+      The following are invalid: {invalid_values}'
+invalid_values:
+  coralnet: |-
+    The annotations contain invalid values of {label}. The following are invalid: {invalid_values}
+    Valid values of {label} in MERMAID are: {valid_values}
+  reefcloud: |-
+    The annotations contain invalid values of {label} (<i>{provider_label}</i>). The following are invalid: {invalid_values}
+    Valid values of {label} in MERMAID are: {valid_values}
 auxiliary:
   title: Match CoralNet auxiliary fields
-  text: In this section, you will match the auxiliary fields in your CoralNet annotations
-    to the fields that are required to ingest your data to MERMAID. Select the auxiliary
-    fields that correspond to Site, Management, and Transect number. After matching
-    columns, Easy PQT will validate the data to ensure it matches the available options
-    in your MERMAID project. If it does not, you will receive information on which
-    fields do not match,
+  text: |-
+    In this section, match the auxiliary fields in your CoralNet data to the fields that are required to import you data to MERMAID Collect by selecting the column
+    that corresponds to:
+      <ul>
+      <li>Site</li>
+      <li>Management regime</li>
+      <li>Transect number</li>
+      </ul>
+
+      <p><b>After matching</b>, Easy PQT will ensure it matches the available options in your MERMAID project.
+
+      <p><b>If something does not match</b>, you will receive information on which fields that do not match.
   preview: Auxiliary fields preview
   preview_text: The following table shows the auxiliary fields in your uploaded CoralNet
-    annotations. Use this information to help match Site, Management, and Transect
+    annotations. Use this information to help match Site, Management regime, and Transect
     number to auxiliary fields, below.
   map: Match auxiliary fields
-  map_text: Choose the auxiliary field for Site, Management, and Transect number using
-    the inputs below.
+  map_text: Choose the auxiliary field for Site, Management regime, and Transect number
+    using the inputs below.
   placeholder: Select an auxiliary field
 auxiliary_validating:
   title: Validating fields
-  checking: Checking auxiliary fields...
-  all_valid: <p>✔ All auxiliary fields are valid! </p><p> Continue on to map CoralNet
-    labels to MERMAID attributes.</p>
-  column_valid: ✔ Values of {column} are valid.
-  fix: <p>There are some issues with the auxiliary column values, as described below.
-    You may need to fix invalid values in CoralNet, or add/edit values (Site or Management)
-    in the MERMAID app to match the CoralNet annotations.</p><p>Once you have made
-    changes, please restart Easy PQT before continuing with ingestion.</p>
+  checking: Checking values of fields...
+  all_valid:
+    coralnet: <p>✔ All auxiliary fields are valid! </p><p> Continue on to assign CoralNet
+      labels to MERMAID benthic attributes and/or growth forms.</p>
+    reefcloud: <p>✔ All fields are valid! </p><p> Continue on to assign ReefCloud
+      labels to MERMAID benthic attributes and/or growth forms.</p>
+  column_valid:
+    coralnet: ✔ Values of {column} are valid.
+    reefcloud: ✔ Values of {column} (<i>{provider_column}</i>) are valid.
+  fix:
+    coralnet: <p>There are some issues with the auxiliary column values, as described
+      below. You may need to fix invalid values in CoralNet, or add/edit values (Site
+      or Management regime) in MERMAID Collect to match the CoralNet annotations.</p><p>Once
+      you have made changes, please restart Easy PQT before continuing with import.</p>
+    reefcloud: <p>There are some issues with the column values, as described below.
+      You may need to fix invalid values in ReefCloud, or add/edit values (Site or
+      Management regime) in MERMAID Collect to match the ReefCloud data.</p><p>Once
+      you have made changes, please restart Easy PQT before continuing with import.</p>
 mapping:
-  title: Map CoralNet Labels to MERMAID Attributes
-  text: <p>This section will help you map CoralNet labels to MERMAID Benthic Attributes
-    and Growth Forms. We have pre-mapped many CoralNet labels to attributes in MERMAID.
-    If you have a CoralNet label that is not mapped to an attribute, it will appear
-    as an empty value. </p><p> Note that Growth Form can remain empty, but Benthic
-    Attribute is a required field. Blank Benthic Attributes are highlighted in red
-    to indicate that they must be mapped before you can continue. Please select the
-    correct Benthic Attributes and/or Growth Forms by selecting the correct value
-    from the dropdown list for each field. </p><p> Once all CoralNet labels are mapped
-    to valid MERMAID Benthic Attributes, you can click the "Confirm" button to continue
-    with the ingestion process.</p>
-  not_allowed_to_confirm: All CoralNet labels must be mapped to valid MERMAID Benthic
-    Attributes to continue.
+  title:
+    coralnet: Assign CoralNet labels to MERMAID benthic attributes and/or growth forms
+    reefcloud: Assign ReefCloud labels to MERMAID benthic attributes and/or growth forms
+  text:
+    coralnet: |-
+      <p>We have pre‑assigned most CoralNet labels to MERMAID benthic attributes and growth forms. Any unassigned CoralNet labels will appear at the top of the table with empty values.</p>
+      <ul>
+      <li><b>Benthic attribute (required):</b> Every CoralNet label must be assigned to a MERMAID benthic attribute. Unassigned attributes are highlighted in red and must be assigned before you can continue.</li>
+      <li><b>Growth form (optional):</b> This field may remain empty if not applicable.</li>
+      </ul>
+
+      <p><b>To complete the assigning:</b></p>
+      <ul>
+      <li>Review any unassigned CoralNet labels.</li>
+      <li>Use the dropdown menus to select the correct benthic attribute and, if relevant, the growth form.</li>
+      <li>Once all benthic attributes are assigned, click <b>Confirm</b> to proceed with the import process.</li>
+      </ul>
+    reefcloud: |-
+      <p>We have pre‑assigned most ReefCloud labels to MERMAID benthic attributes and growth forms. Any unassigned ReefCloud labels will appear at the top of the table with empty values.</p>
+      <ul>
+      <li><b>Benthic attribute (required):</b> Every ReefCloud label must be assigned to a MERMAID benthic attribute. Unassigned attributes are highlighted in red and must be assigned before you can continue.</li>
+      <li><b>Growth form (optional):</b> This field may remain empty if not applicable.</li>
+      </ul>
+
+      <p><b>To complete the assigning:</b></p>
+      <ul>
+      <li>Review any unassigned ReefCloud labels.</li>
+      <li>Use the dropdown menus to select the correct benthic attribute and, if relevant, the growth form.</li>
+      <li>Once all benthic attributes are assigned, click <b>Confirm</b> to proceed with the import process.</li>
+      </ul>
+  not_allowed_to_confirm:
+    coralnet: All CoralNet labels must be assigned to valid MERMAID benthic attributes
+      to continue.
+    reefcloud: All ReefCloud labels must be assigned to valid MERMAID benthic attributes
+      to continue.
 reshaping:
   title: Reshaping data
-  text: Reshaping data into format required for MERMAID...
+  text: Reshaping data into format required for importing into MERMAID...
 preview:
-  title: Preview data and confirm ingestion
-  text: Your data is now reshaped to match the format required for ingestion into
-    MERMAID, as shown in the table below. You can download a copy of the reformatted
-    data by clicking the "Download reshaped data" button. Check the data to confirm
-    everything is correct, either through a downloaded copy or by using the interactive
-    table.
+  title: Preview data and confirm import
+  text: |-
+    <p>Your data has been reshaped to match the format required for importing into MERMAID, as shown in the table below.</p>
+    <p><b>Please review the data to ensure everything is correct.</b> You can:</p>
+    <ul>
+    <li>Inspect it directly in the interactive table, or</li>
+    <li>Download a copy by clicking "Download reshaped data".</li>
+    </ul>
+    <p><b>Note:</b> The reshaped data still has missing information that needs to be completed in MERMAID Collect.
+    You can export the complete and clean version of your Data from the <b>Submitted</b> page in your project in MERMAID Collect.
+    A step-by-step guide to export data in MERMAID Collect is available in the <a href="https://datamermaid.org/documentation/collect-data-export" target="_blank">Exporting data</a> documentation.
   download: Download reshaped data
   file: MERMAID Easy PQT Data - {project_name}.csv
 ingestion:
-  title: Continue to ingestion
-  continue: If the data looks correct, click the button below to continue with ingestion
-  continue_button: Continue with ingestion
-  do_not_continue: 'If the data does not look correct, select from the following options:
-    "Restart Easy PQT" to start the ingestion process from the beginning or "Get help"
-    to have our team support you in the ingestion process.'
+  title: Continue with importing data
+  continue: If the data looks correct, click the "Import data" below to start importing
+    your data into MERMAID.
+  continue_button: Import data
+  do_not_continue: |-
+    <p>If the data doesn't look correct, you can:</p>
+    <ul>
+    <li><b>Restart the import</b> – Click <b>Restart Easy PQT</b> to start over from the beginning.</li>
+    <li><b>Get support</b> – Click <b>Get help</b> to contact our team for assistance with the import process.</li>
+    </ul>
   reset_button: Restart Easy PQT
   help_button: Get help
   help_link: https://datamermaid.org/contact-us
 reset:
   button: Restart Easy PQT
-  text: <p>This will reset any progress made in Easy PQT, including the selected project,
-    CoralNet annotations data uploaded, and any mappings (auxiliary fields and CoralNet
-    labels).</p> <p> Do you want to proceed with restarting Easy PQT?</p>
+  text:
+    none: Do you want to restart Easy PQT?
+    coralnet: <p>This will reset any progress made in Easy PQT, including the selected
+      provider, project, CoralNet annotations data uploaded, and any assignings (auxiliary
+      fields and CoralNet labels assigned).</p> <p> Do you want to proceed with restarting
+      Easy PQT?</p>
+    reefcloud: <p>This will reset any progress made in Easy PQT, including the selected
+      provider, project, ReefCloud image classification data uploaded, and any ReefCloud
+      labels assigned.</p> <p> Do you want to proceed with restarting Easy PQT?</p>
   confirm: Restart Easy PQT
   cancel: Do not restart Easy PQT
 ingestion_running:
-  title: Ingesting data into MERMAID....
+  title: Importing data into MERMAID....
 ingestion_error:
-  title: Error ingesting data
+  title: Error importing data
   text: |-
-    <p>There was an error ingesting the data.
+    <p>There was an error importing the data.
     </p><p>
-    Please <a href="https://datamermaid.org/contact-us" target="_blank">contact us</a> with the subject "Easy PQT ingestion error", and paste the following into the message body:</p>'
+    Please <a href="https://datamermaid.org/contact-us" target="_blank">contact us</a> with the subject "Easy PQT import error", and paste the following into the message body:</p>'
   error: |-
     project_id:<br>
     {project}
@@ -138,13 +302,40 @@ ingestion_error:
     Error message:<br>
     {error}
 ingestion_success:
-  title: Ingestion successful!
-  text: <p>Data was successfully ingested into MERMAID. Click the button below to
-    open the records in the MERMAID App to validate and submit records.</p> <p>You
-    will also have to fill in the following fields with their correct values:</p>
-    <ul> <li>Depth</li> <li>Transect length surveyed</li> <li>Quadrat size</li> <li>Observers</li>
-    </ul> <p>Note that the data is not successfully ingested into MERMAID until you
-    have validated and submitted the records in the MERMAID app.</p>
-  button: Go to the MERMAID App
+  title: Import successful!
+  text:
+    coralnet: |-
+      <p><b>Your data has been successfully imported into MERMAID.</b></p>
+      <p>Click the button below to open the sample units in MERMAID Collect to review, complete, validate,
+      and submit them.</p>
+      <p><b>Before submission, in each sample unit make sure to:</b></p>
+      <ul>
+      <li>Fill in the Depth</li>
+      <li>Fill in the Transect length surveyed</li>
+      <li>Fill in the Quadrat size</li>
+      <li>Ensure the Observers selected
+      is the one who collected the data. Easy PQT will assign you as the observer by default.</li>
+      </ul>
+
+      <p><b>Note:</b> The data will only be visible to all project users after you
+      have validated and submitted the sample units in MERMAID Collect.
+      Read more in <a href="https://datamermaid.org/documentation/collect-data-validation-submission" target="_blank">Saving, validating and submitting data</a> documentation.</p>
+    reefcloud: |-
+      <p><b>Your data has been successfully imported into MERMAID.</b></p>
+      <p>Click the button below to open the sample units in MERMAID Collect to review, complete, validate,
+      and submit them.</p>
+      <p><b>Before submission, in each sample unit make sure to:</b></p>
+      <ul>
+      <li>Fill in the Depth</li>
+      <li>Fill in the Transect length surveyed</li>
+      <li>Fill in the Quadrat size</li>
+      <li>Ensure the Observers selected
+      is the one who collected the data. Easy PQT will assign you as the observer by default.</li>
+      </ul>
+
+      <p><b>Note:</b> The data will only be visible to all project users after you
+      have validated and submitted the sample units in MERMAID Collect.
+      Read more in <a href="https://datamermaid.org/documentation/collect-data-validation-submission" target="_blank">Saving, validating and submitting data</a> documentation.</p>
+  button: Go to MERMAID Collect
   collect_url_prod: https://app.datamermaid.org/projects/{project}/collecting
   collect_url_dev: https://dev-app.datamermaid.org/projects/{project}/collecting

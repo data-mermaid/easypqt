@@ -9,22 +9,7 @@
 mod_select_project_ui <- function(id) {
   ns <- NS(id)
 
-  shiny::div(
-    shiny::h2(get_copy("select_project", "title")),
-    spaced(get_copy("select_project", "text")),
-    shinyWidgets::pickerInput(
-      ns("project"),
-      label = NULL,
-      multiple = TRUE,
-      choices = NULL,
-      options = shinyWidgets::pickerOptions(
-        liveSearch = TRUE,
-        size = 10,
-        maxOptions = 1,
-        noneSelectedText = get_copy("select_project", "placeholder")
-      )
-    )
-  )
+  shiny::uiOutput(ns("select_project"))
 }
 
 #' select_project Server Functions
@@ -34,22 +19,37 @@ mod_select_project_server <- function(id, r) {
   moduleServer(id, function(input, output, session) {
     ns <- session$ns
 
-    # Update project selection dropdown based on user's projects ----
+    # Show project selection once they have selected a provider ----
+    output$select_project <- shiny::renderUI({
+      shiny::req(r$provider)
 
-    shiny::observe({
+      # Use users' projects to make dropdown
       projects <- setNames(r$projects$id, r$projects$name)
 
       # If they have no projects, show a modal with this information - they need a project in order to use easyPQT!
       if (length(projects) == 0) {
         show_modal(get_copy("select_project", "no_projects"))
-      } else {
-        shinyWidgets::updatePickerInput(
-          session = session,
-          inputId = "project", choices = projects, selected = character(0)
-        )
       }
-    }) %>%
-      shiny::bindEvent(r$projects)
+
+      shiny::div(
+        class = "project-selection",
+        shiny::h2(get_copy("select_project", "title")),
+        spaced(get_copy("select_project", "text")),
+        shinyWidgets::pickerInput(
+          ns("project"),
+          label = NULL,
+          multiple = TRUE,
+          choices = projects,
+          options = shinyWidgets::pickerOptions(
+            liveSearch = TRUE,
+            size = 10,
+            maxOptions = 1,
+            noneSelectedText = get_copy("select_project", "placeholder")
+          )
+        ),
+        shiny::hr()
+      )
+    })
 
     shiny::observe({
       # Update r$project with selected project ----
@@ -79,12 +79,12 @@ mod_select_project_server <- function(id, r) {
 
     # Disable project selection once data is uploaded and valid
     shiny::observe({
-      shiny::req(r$ready_to_map_aux)
+      shiny::req(r$step_upload_valid_data_done)
       disable_picker_input(ns("project"))
     }) %>%
-      shiny::bindEvent(r$ready_to_map_aux)
+      shiny::bindEvent(r$step_upload_valid_data_done)
 
-    # Reset and re-enable project selection on refresh ----
+    # Reset, re-enable, and hide project selection on refresh ----
     shiny::observe({
       enable_picker_input(ns("project"))
 
@@ -95,6 +95,9 @@ mod_select_project_server <- function(id, r) {
       )
 
       r$is_project_admin <- FALSE
+
+      # Hide project selection
+      shinyjs::hide(selector = ".project-selection")
     }) %>%
       shiny::bindEvent(r$reset)
   })
@@ -105,7 +108,7 @@ mod_select_project_server <- function(id, r) {
 show_not_project_admin_modal <- function(r) {
   project_role <- r$project_role
 
-
   cat("Not admin \n")
-  show_modal(skeleton_to_text(get_copy("select_project", "not_admin"), list(project_name = r$project_name, project_id = r$project, role = project_role)))
+  text <- skeleton_to_text(get_copy("select_project", "not_admin"), list(project_name = r$project_name, project_id = r$project, role = project_role))
+  show_modal(text)
 }

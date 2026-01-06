@@ -36,7 +36,7 @@
 }
 
 html {
-  font-family: "Open Sans", "Calibri", "Arial", "sans-serif";
+  font-family: "Open Sans", "sans-serif";
   font-size: 17px !important;
   color: var(--color-base);
 }
@@ -228,6 +228,13 @@ hr {
   padding: 1rem;
   font-family: "Lucida Console", "Courier New", monospace;
   background-color: var(--color-grey-20);
+}
+
+/* File upload */
+/* Hide message of successful file upload -- only show upload errors (.progress-bar-danger) */
+
+.shiny-file-input-progress:has(.progress-bar:not(.progress-bar-danger)) {
+  display: none;
 }
 
 /* Small devices */

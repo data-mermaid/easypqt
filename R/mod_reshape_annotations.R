@@ -24,7 +24,7 @@ mod_reshape_annotations_server <- function(id, r) {
     shiny::observe({
       # Show modal for reshaping data -> only if over a certain # of rows?
 
-      shiny::req(r$step_map_coralnet_joined_done)
+      shiny::req(r$step_map_provider_joined_done)
 
       cat("Reshaping \n")
       show_modal(
@@ -36,11 +36,20 @@ mod_reshape_annotations_server <- function(id, r) {
 
       ingestion_data <- r$annotations_mapped
 
+      # If ReefCloud, map date, site, management, transect number, and depth to new column names
+      # If CoralNet, already done when auxiliary columns were mapped
+      if (r$provider == "reefcloud") {
+        ingestion_data <- ingestion_data %>%
+          dplyr::rename(get_config("reshape")[["rename"]][[r$provider]] %>%
+            unlist())
+      }
+
       ## Site: already mapped ----
 
       ## Management: already mapped ----
 
       ## Sample date: split date into Year, Month, Day ----
+
       ingestion_data <- ingestion_data %>%
         dplyr::mutate(
           `Sample date: Year *` = lubridate::year(Date),
@@ -61,13 +70,14 @@ mod_reshape_annotations_server <- function(id, r) {
         dplyr::group_by()
 
       ### Identify unique quadrats (images) with an SU ----
+      img_name <- get_config("reshape")[["image_name"]][[r$provider]]
 
       ingestion_data <- ingestion_data %>%
-        dplyr::distinct(...su, Name) %>%
+        dplyr::distinct(dplyr::across(c("...su", img_name))) %>%
         dplyr::group_by(...su) %>%
         dplyr::mutate(`Quadrat *` = dplyr::row_number()) %>%
         dplyr::ungroup() %>%
-        dplyr::left_join(ingestion_data, by = c("...su", "Name"))
+        dplyr::left_join(ingestion_data, by = c("...su", img_name))
 
       ## Number of quadrats: determined by count of quadrats in SU ----
       ingestion_data <- ingestion_data %>%
@@ -86,8 +96,9 @@ mod_reshape_annotations_server <- function(id, r) {
         dplyr::add_count(...su, `Quadrat *`, `Benthic attribute *`, `Growth form`, name = "Number of points *")
 
       ## Sample unit notes: image name ----
+      img_name <- setNames(img_name, "Sample unit notes")
       ingestion_data <- ingestion_data %>%
-        dplyr::rename(`Sample unit notes` = Name)
+        dplyr::rename(img_name)
 
       # Select only relevant fields ----
       r$ingestion_data <- ingestion_data %>%
@@ -102,8 +113,11 @@ mod_reshape_annotations_server <- function(id, r) {
       ingestion_data_with_defaults <- r$ingestion_data
 
       ## Depth: default to 0 ----
-      ingestion_data_with_defaults <- ingestion_data_with_defaults %>%
-        dplyr::mutate(`Depth *` = 0)
+      # Only for CoralNet -- ReefCloud actually already has depth
+      if (r$provider == "coralnet") {
+        ingestion_data_with_defaults <- ingestion_data_with_defaults %>%
+          dplyr::mutate(`Depth *` = 0)
+      }
 
       ## Transect length surveyed: default to 0 -----
       ingestion_data_with_defaults <- ingestion_data_with_defaults %>%
@@ -132,9 +146,9 @@ mod_reshape_annotations_server <- function(id, r) {
       shiny::removeModal()
 
       # Set back to FALSE so that any updated to mapping resets it
-      r$step_map_coralnet_joined_done <- FALSE
+      r$step_map_provider_joined_done <- FALSE
     }) %>%
-      shiny::bindEvent(r$step_map_coralnet_joined_done)
+      shiny::bindEvent(r$step_map_provider_joined_done)
   })
 }
 

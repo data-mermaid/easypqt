@@ -37,24 +37,25 @@ app_ui <- function(request) {
       ),
       large(
         spaced(
-          get_copy("preamble"),
-          mod_upload_instructions_ui("instructions"),
-          shiny::HTML("</p>")
+          get_copy("introduction"),
+          shiny::hr(),
+          mod_select_provider_ui("provider")
         )
       ),
       shiny::hr(),
-      left_right(
-        # Get projects ----
-        mod_select_project_ui("select_project"),
-        mod_reset_ui("reset")
-      ),
-      # Upload CoralNet annotations ----
+      # Get projects ----
+      mod_select_project_ui("select_project"),
+      # Select human or machine annotated labels
+      mod_select_human_or_machine_annotated_ui("human_or_machine"),
+      # Upload annotations ----
       mod_upload_data_ui("upload_data"),
-      # Parse CoralNet annotations ----
       bslib::accordion(
         id = "accordion",
         multiple = TRUE,
-        mod_map_auxiliary_fields_ui("map_auxliary_fields"),
+        # Parse annotations ----
+        mod_parse_annotations_ui("parse_annotations"),
+        # Map labels to MERMAID ----
+        mod_map_provider_labels_to_mermaid_ui("map_labels"),
         # Reshape annotations ----
         mod_reshape_annotations_ui("reshape_annotations"),
         # Preview/confirm ingestion ----

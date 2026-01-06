@@ -1,6 +1,6 @@
 $(document).ready(function () {
   function adjustMappingTableHeight() {
-    var table = document.getElementById("map_auxliary_fields-map_coralnet_labels-mapping_table");
+    var table = document.getElementById("map_labels-mapping_table");
     console.log("checking for table");
 
     if (table) {
