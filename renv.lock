@@ -2087,7 +2087,7 @@
       "RemoteRepo": "mermaidr",
       "RemoteUsername": "data-mermaid",
       "RemoteRef": "dev",
-      "RemoteSha": "a5422c49a8e26c3247908b0bfb3f15b93197e7b4",
+      "RemoteSha": "f40c68acdc00c8b3afae14bcdaa2457006d8cefe",
       "NeedsCompilation": "no",
       "Author": "Sharla Gelfand [aut, cre], Wildlife Conservation Society [cph, fnd]",
       "Maintainer": "Sharla Gelfand <sharla.gelfand@gmail.com>"
