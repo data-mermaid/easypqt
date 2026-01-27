@@ -1,3 +1,7 @@
+# easypqt 0.3.1
+
+* Fix bug in checking ReefCloud upload columns
+
 # easypqt 0.3.0
 
 * Add ReefCloud integration

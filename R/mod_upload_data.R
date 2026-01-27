@@ -160,7 +160,7 @@ mod_upload_data_server <- function(id, r) {
         reefcloud_template <- readr::read_csv(app_sys(get_config("reefcloud_template_path")), n_max = 0, show_col_types = FALSE)
         reefcloud_cols <- names(reefcloud_template)
 
-        if (identical(cols, reefcloud_cols)) {
+        if (all(reefcloud_cols %in% cols)) {
           r$upload_contains_required_cols <- TRUE
         } else {
           r$upload_contains_required_cols <- FALSE
