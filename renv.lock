@@ -2038,7 +2038,7 @@
     },
     "mermaidr": {
       "Package": "mermaidr",
-      "Version": "1.2.7",
+      "Version": "1.2.8",
       "Source": "GitHub",
       "Title": "Interface to the 'MERMAID' API",
       "Authors@R": "c(person(given = \"Sharla\", family = \"Gelfand\", role = c(\"aut\", \"cre\"), email = \"sharla.gelfand@gmail.com\"), person(given = \"Wildlife Conservation Society\", role = c(\"cph\", \"fnd\")))",
@@ -2073,7 +2073,7 @@
         "snakecase",
         "readxl"
       ],
-      "RoxygenNote": "7.3.2",
+      "RoxygenNote": "7.3.3",
       "Suggests": [
         "testthat (>= 2.1.0)",
         "knitr",
@@ -2087,7 +2087,7 @@
       "RemoteRepo": "mermaidr",
       "RemoteUsername": "data-mermaid",
       "RemoteRef": "HEAD",
-      "RemoteSha": "f03df4a2c54f6057b1a911d1f8d8c9d83cac2af5",
+      "RemoteSha": "af1f66ff10891ea0bce0786a14527c0e980a34ed",
       "NeedsCompilation": "no",
       "Author": "Sharla Gelfand [aut, cre], Wildlife Conservation Society [cph, fnd]",
       "Maintainer": "Sharla Gelfand <sharla.gelfand@gmail.com>"
