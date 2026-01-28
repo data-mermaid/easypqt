@@ -64,7 +64,6 @@ provider_introduction:
       <p><b>After import:</b><br>
       Go to <a href="https://app.datamermaid.org/" target="_blank">MERMAID Collect</a> and complete the missing mandatory fields in each recently imported sample unit in the <b>Collecting<b> page of your project:</p>
       <ul>
-      <li>Fill in the Depth</li>
       <li>Fill in the Transect length surveyed</li>
       <li>Fill in the Quadrat size</li>
       <li>Ensure the Observers selected is the one who collected the data. Easy PQT will assign you as the observer.</li>
@@ -316,7 +315,6 @@ ingestion_success:
       and submit them.</p>
       <p><b>Before submission, in each sample unit make sure to:</b></p>
       <ul>
-      <li>Fill in the Depth</li>
       <li>Fill in the Transect length surveyed</li>
       <li>Fill in the Quadrat size</li>
       <li>Ensure the Observers selected
