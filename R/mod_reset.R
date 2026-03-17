@@ -88,9 +88,6 @@ mod_reset_server <- function(id, r, show_ui = TRUE, show_confirm = TRUE) {
       shiny::removeModal()
 
       # General resets
-
-      # # What is in r$ that is not in the reset file?
-      # # Does that affect things? Ideally, we should reset everything
       reset_reactiveValues(r)
     }) %>%
       shiny::bindEvent(r$reset_confirm_counter)

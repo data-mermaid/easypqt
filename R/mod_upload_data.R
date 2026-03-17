@@ -76,6 +76,9 @@ mod_upload_data_server <- function(id, r) {
       if (!file_type_matches) {
         mod_upload_instructions_server("filetype", r, show_ui = FALSE, invalid = "invalid_filetype")
         r$annotations_upload_type_valid <- FALSE
+
+        # Enable them to reupload
+        r$enable_reupload <- TRUE
       } else {
         r$annotations_upload_type_valid <- TRUE
       }
@@ -103,6 +106,9 @@ mod_upload_data_server <- function(id, r) {
         if (nrow(csv_files) != 1) {
           mod_upload_instructions_server("zip", r, show_ui = FALSE, invalid = "no_csv")
           r$annotations_upload_valid <- FALSE
+
+          # Enable them to reupload
+          r$enable_reupload <- TRUE
         } else {
           # Otherwise, actually unzip and save the path
           r$annotations_path <- unzip(file_path, exdir = upload_dir, files = csv_files[["Name"]])
@@ -170,6 +176,9 @@ mod_upload_data_server <- function(id, r) {
       # If it does not contain the correct columns, show a modal and do not allow them to continue
       if (!r$upload_contains_required_cols) {
         mod_upload_instructions_server("cols", r, show_ui = FALSE, invalid = "missing_columns")
+
+        # Enable them to reupload
+        r$enable_reupload <- TRUE
       } else {
         # If it does contain the correct columns, read in the data and proceed
         # Only read in the required columns
@@ -192,6 +201,9 @@ mod_upload_data_server <- function(id, r) {
         date_validation <- check_valid_dates(annotations_raw[[date_col]])
         if (!date_validation[["valid"]]) {
           mod_upload_instructions_server("date", r, show_ui = FALSE, invalid = "invalid_date")
+
+          # Enable them to reupload
+          r$enable_reupload <- TRUE
         } else {
           r$annotations_raw <- annotations_raw
           # Reformat the dates to ymd
@@ -205,14 +217,39 @@ mod_upload_data_server <- function(id, r) {
 
         # Disable data upload after a single upload - need to reset to change data
         shinyjs::disable("annotations")
-
-        # Pointer etc of disabling
-        # Disable pointer events on actual button, add style
-        # Not allowed cursor on parent div, add style
-        shinyjs::runjs("document.getElementById('upload-parent').getElementsByClassName('input-group')[0].style.pointerEvents = 'none'; document.getElementById('upload-parent').style.cursor = 'not-allowed';")
-      }
+        }
     }) %>%
       shiny::bindEvent(r$annotations_upload_valid)
+
+    # Enable reupload, if necessary ----
+    shiny::observe({
+      shiny::req(r$enable_reupload)
+
+      # Enabling involves:
+      # Clearing all of the reactive flags related to the upload:
+      r$annotations_upload_type_valid <- NULL
+      r$annotations_upload_valid <- NULL
+      r$upload_contains_required_cols <- NULL
+
+      # Clearing the reactive DATA related to the upload:
+      r$annotations_path <- NULL
+      r$auxiliary_columns <- NULL
+      r$required_annotations_columns <- NULL
+
+      # Clear the file from the input, which also re-enables it and resets the JS
+      shinyjs::reset("annotations")
+
+      # Scrolling to the upload parent again
+      scroll_to_section("upload-parent")
+
+      # Reset enable_reupload
+      r$enable_reupload <- NULL
+
+      # Reset modal calls, only call on the first one
+      r$modal_call <- 0
+      r$show_help <- 0
+    }) %>%
+      shiny::bindEvent(r$enable_reupload)
   })
 }
 
