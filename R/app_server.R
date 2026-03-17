@@ -41,29 +41,12 @@ auth0_server <- function(server, info) {
 app_server <- auth0_server(function(input, output, session) {
   authenticated <- shiny::reactiveVal(FALSE)
 
+  rv <- read_reactiveValues() %>%
+    purrr::keep(\(x) "initial" %in% names(x)) %>%
+    purrr::map("initial")
+
   # Set up reactive values ----
-  r <- shiny::reactiveValues(
-    is_project_admin = FALSE,
-    page_length = 10,
-    step_upload_valid_data_done = FALSE,
-    map_annotations_accordion_made = FALSE,
-    aux_mapped = FALSE,
-    preview_confirm_shown = 0,
-    dev = FALSE,
-    prod = FALSE,
-    reset = NULL,
-    upload_contains_required_cols = FALSE,
-    step_select_valid_project_done = FALSE,
-    step_select_human_or_machine_annotated = FALSE,
-    step_upload_valid_data_done = FALSE,
-    step_map_auxiliary_fields_accordion_made_done = FALSE,
-    step_map_auxiliary_fields_accordion_fully_done = FALSE,
-    step_map_provider_labels_accordion_made_done = FALSE,
-    step_map_provider_labels_done = FALSE,
-    step_map_provider_labels_fully_done = FALSE,
-    preview_confirm_shown = 0,
-    reset_confirm_counter = 0
-  )
+  r <- do.call(shiny::reactiveValues, rv)
 
   # Get login info and hit initial endpoints ----
   shiny::observe(priority = 9999, {

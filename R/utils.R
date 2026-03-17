@@ -17,6 +17,10 @@ get_copy <- function(key, secondary_key = NULL, tertiary_key = NULL) {
   shiny::HTML(copy)
 }
 
+read_reactiveValues <- function() {
+  yaml::read_yaml(app_sys("reactiveValues.yml"))
+}
+
 close_button <- shiny::modalButton("Close") # TODO copy
 
 modal <- function(..., title = NULL, footer, size = "m", disable_footer = FALSE) {

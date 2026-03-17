@@ -1,0 +1,36 @@
+is_project_admin:
+  initial: false
+page_length:
+  initial: 10
+map_annotations_accordion_made:
+  initial: false
+aux_mapped:
+  initial: false
+dev:
+  initial: false
+prod:
+  initial: false
+reset:
+  initial: null
+upload_contains_required_cols:
+  initial: false
+step_select_valid_project_done:
+  initial: false
+step_select_human_or_machine_annotated:
+  initial: false
+step_upload_valid_data_done:
+  initial: false
+step_map_auxiliary_fields_accordion_made_done:
+  initial: false
+step_map_auxiliary_fields_accordion_fully_done:
+  initial: false
+step_map_provider_labels_accordion_made_done:
+  initial: false
+step_map_provider_labels_done:
+  initial: false
+step_map_provider_labels_fully_done:
+  initial: false
+preview_confirm_shown:
+  initial: 0
+reset_confirm_counter:
+  initial: 0
