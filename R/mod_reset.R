@@ -88,36 +88,10 @@ mod_reset_server <- function(id, r, show_ui = TRUE, show_confirm = TRUE) {
       shiny::removeModal()
 
       # General resets
-      r$provider <- NULL
-      r$provider_full <- NULL
-      r$annotations_path <- NULL
-      r$annotations_upload_valid <- FALSE
-      r$annotations_upload_type_valid <- FALSE
-      r$upload_contains_required_cols <- FALSE
-      r$auxiliary_columns <- NULL
-      r$required_annotations_columns <- NULL
 
-      r$step_select_valid_project_done <- FALSE
-      r$step_select_human_or_machine_annotated <- FALSE
-      r$human_annotated_only <- NULL
-      r$step_upload_valid_data_done <- FALSE
-      r$step_map_auxiliary_fields_accordion_made_done <- FALSE
-      r$step_map_auxiliary_fields_accordion_fully_done <- FALSE
-      r$step_map_provider_labels_accordion_made_done <- FALSE
-      r$step_map_provider_labels_done <- FALSE
-      r$step_map_provider_labels_fully_done <- FALSE
-      r$step_fields_setup_done <- FALSE
-      r$step_map_auxiliary_fields_done <- FALSE
-      r$step_map_auxiliary_fields_valid_done <- FALSE
-      r$step_map_provider_joined_done <- FALSE
-
-      r$preview_confirm_shown <- 0
-      r$reset_confirm_counter <- 0
-      r$do_ingestion <- FALSE
-      r$step_map_provider_joined_done <- FALSE
-
-      r$provider_instructions_done <- NULL
-      r$upload_form_done <- NULL
+      # # What is in r$ that is not in the reset file?
+      # # Does that affect things? Ideally, we should reset everything
+      reset_reactiveValues(r)
     }) %>%
       shiny::bindEvent(r$reset_confirm_counter)
 

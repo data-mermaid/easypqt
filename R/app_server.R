@@ -41,12 +41,8 @@ auth0_server <- function(server, info) {
 app_server <- auth0_server(function(input, output, session) {
   authenticated <- shiny::reactiveVal(FALSE)
 
-  rv <- read_reactiveValues() %>%
-    purrr::keep(\(x) "initial" %in% names(x)) %>%
-    purrr::map("initial")
-
   # Set up reactive values ----
-  r <- do.call(shiny::reactiveValues, rv)
+  r <- initialize_reactiveValues()
 
   # Get login info and hit initial endpoints ----
   shiny::observe(priority = 9999, {
@@ -126,6 +122,7 @@ app_server <- auth0_server(function(input, output, session) {
   ## Map auxiliary fields ----
   shiny::observe({
     shiny::req(r$step_map_auxiliary_fields_accordion_made_done)
+    browser()
 
     # Insert panel
     bslib::accordion_panel_insert("accordion", r$accordion_map_annotation_fields)

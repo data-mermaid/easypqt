@@ -21,6 +21,32 @@ read_reactiveValues <- function() {
   yaml::read_yaml(app_sys("reactiveValues.yml"))
 }
 
+alphebatize_reactiveValues <- function() {
+  rv <- yaml::read_yaml(app_sys("reactiveValues.yml"))
+  rv_names <- names(rv)
+  rv <- rv[sort(rv_names)]
+
+  yaml::write_yaml(rv, app_sys("reactiveValues.yml"))
+}
+
+initialize_reactiveValues <- function() {
+  rv <- read_reactiveValues() %>%
+    purrr::keep(\(x) "initial" %in% names(x)) %>%
+    purrr::map("initial")
+
+  r <- do.call(shiny::reactiveValues, rv)
+}
+
+reset_reactiveValues <- function(r) {
+  rv <- read_reactiveValues() %>%
+    purrr::keep(\(x) "reset" %in% names(x)) %>%
+    purrr::map("reset")
+
+  for (key in names(rv)) {
+    r[[key]] <- rv[[key]]
+  }
+}
+
 close_button <- shiny::modalButton("Close") # TODO copy
 
 modal <- function(..., title = NULL, footer, size = "m", disable_footer = FALSE) {
