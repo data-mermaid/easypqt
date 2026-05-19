@@ -22,7 +22,7 @@ mod_upload_instructions_ui <- function(id, show_ui = TRUE) {
 #' upload_instructions Server Functions
 #'
 #' @noRd
-mod_upload_instructions_server <- function(id, r, show_ui = TRUE, invalid = NULL) {
+mod_upload_instructions_server <- function(id, r, show_ui = TRUE) {
   moduleServer(id, function(input, output, session) {
     ns <- session$ns
 
@@ -30,22 +30,25 @@ mod_upload_instructions_server <- function(id, r, show_ui = TRUE, invalid = NULL
     if (!show_ui) {
       shiny::observe({
         shinyjs::click("help")
-      })
+      }) %>%
+        shiny::bindEvent(r$show_help_module)
     }
 
     shiny::observe({
-
-    }) %>%
-      shiny::bindEvent(input$help)
-
-    shiny::observe({
-      # If show_ui is FALSE, that means the instructions were called without the user explicitly asking, e.g. they uploaded the wrong data - so show the text that states that is the case
-      cat("Upload instructions \n")
+      # If show_ui is FALSE, that means the instructions were called without the user explicitly asking,
+      # e.g. they uploaded the wrong data - so show the text that states that is the case
+      cat(
+        "Upload instructions --",
+        {
+          if (show_ui) "instructions" else r$help_module_invalid
+        },
+        " \n"
+      )
 
       shiny::showModal(
         shiny::modalDialog(
-          if (!show_ui & !is.null(invalid)) {
-            shiny::tags$p(get_copy("upload_data", invalid, r$provider))
+          if (!show_ui & !is.null(r$help_module_invalid)) {
+            shiny::tags$p(get_copy("upload_data", r$help_module_invalid, r$provider))
           },
           shiny::tags$p(get_copy("upload_data", "instructions", r$provider)),
           shiny::tags$img(
@@ -58,9 +61,6 @@ mod_upload_instructions_server <- function(id, r, show_ui = TRUE, invalid = NULL
           easyClose = TRUE
         )
       )
-
-      # Reset input, until it is actually clicked again
-      # shiny::updateActionLink()
     }) %>%
       shiny::bindEvent(input$help)
   })

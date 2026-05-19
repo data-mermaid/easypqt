@@ -10,9 +10,7 @@ mod_upload_data_ui <- function(id) {
   shiny::tagList(
     shiny::uiOutput(ns("upload")),
     mod_upload_instructions_ui(ns("filetype"), show_ui = FALSE),
-    mod_upload_instructions_ui(ns("zip"), show_ui = FALSE),
-    mod_upload_instructions_ui(ns("cols"), show_ui = FALSE),
-    mod_upload_instructions_ui(ns("date"), show_ui = FALSE)
+    mod_upload_instructions_ui(ns("data_issue"), show_ui = FALSE)
   )
 }
 
@@ -66,6 +64,11 @@ mod_upload_data_server <- function(id, r) {
 
     # Upload instructions ----
     mod_upload_instructions_server("instructions", r)
+    # Set up all upload instructions, but internally, only flag them when there is a data issue
+    # Rather than running e.g. mod_upload_instructions_server("date") multiple times
+    # Which spawns multiple servers
+    # Actually only need one server, not multiple
+    mod_upload_instructions_server("data_issue", r, show_ui = FALSE)
 
     shiny::observe({
       # For Reefcloud, it must be a zip--this is set in fileInput(), but they can still drag a non-zip file in
@@ -74,7 +77,8 @@ mod_upload_data_server <- function(id, r) {
 
       file_type_matches <- stringr::str_ends(input$annotations$datapath, get_config("upload_file")[[r$provider]])
       if (!file_type_matches) {
-        mod_upload_instructions_server("filetype", r, show_ui = FALSE, invalid = "invalid_filetype")
+        r$show_help_module <- "filetype"
+        r$help_module_invalid <- "invalid_filetype"
         r$annotations_upload_type_valid <- FALSE
 
         # Enable them to reupload
@@ -104,7 +108,9 @@ mod_upload_data_server <- function(id, r) {
 
         # If no CSV, show instructions
         if (nrow(csv_files) != 1) {
-          mod_upload_instructions_server("zip", r, show_ui = FALSE, invalid = "no_csv")
+          r$show_help_module <- "zip"
+          r$help_module_invalid <- "no_csv"
+
           r$annotations_upload_valid <- FALSE
 
           # Enable them to reupload
@@ -175,7 +181,8 @@ mod_upload_data_server <- function(id, r) {
 
       # If it does not contain the correct columns, show a modal and do not allow them to continue
       if (!r$upload_contains_required_cols) {
-        mod_upload_instructions_server("cols", r, show_ui = FALSE, invalid = "missing_columns")
+        r$show_help_module <- "cols"
+        r$help_module_invalid <- "missing_columns"
 
         # Enable them to reupload
         r$enable_reupload <- TRUE
@@ -200,7 +207,8 @@ mod_upload_data_server <- function(id, r) {
         # Check that the Date column is formatted properly - if not, show a modal that there is an issue
         date_validation <- check_valid_dates(annotations_raw[[date_col]])
         if (!date_validation[["valid"]]) {
-          mod_upload_instructions_server("date", r, show_ui = FALSE, invalid = "invalid_date")
+          r$show_help_module <- "date"
+          r$help_module_invalid <- "invalid_date"
 
           # Enable them to reupload
           r$enable_reupload <- TRUE

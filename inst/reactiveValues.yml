@@ -19,6 +19,10 @@ do_ingestion:
 enable_reupload:
   reset: no
   reupload: no
+help_module_invalid:
+  initial: ~
+  reset: ~
+  reupload: ~
 human_annotated_only:
   reset: ~
 is_project_admin:
@@ -49,9 +53,10 @@ reset:
 reset_confirm_counter:
   initial: 0
   reset: 0
-show_help:
-  reset: 0
-  reupload: 0
+show_help_module:
+  initial: ~
+  reset: ~
+  reupload: ~
 step_fields_setup_done:
   reset: no
 step_map_auxiliary_fields_accordion_fully_done:
