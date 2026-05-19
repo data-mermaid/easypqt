@@ -196,6 +196,8 @@ mod_upload_data_server <- function(id, r) {
           r$annotations_raw <- annotations_raw
           # Reformat the dates to ymd
           r$annotations_raw[[date_col]] <- reformat_dates(annotations_raw[[date_col]], date_validation[["format"]])
+          # Flag that valid data has been uploaded
+          r$step_upload_valid_data_done <- TRUE
         }
 
         # Disable data upload after a single upload - need to reset to change data
@@ -208,9 +210,6 @@ mod_upload_data_server <- function(id, r) {
         # Disable pointer events on actual button, add style
         # Not allowed cursor on parent div, add style
         shinyjs::runjs("document.getElementById('upload-parent').getElementsByClassName('input-group')[0].style.pointerEvents = 'none'; document.getElementById('upload-parent').style.cursor = 'not-allowed';")
-
-        # Flag that valid data has been uploaded
-        r$step_upload_valid_data_done <- TRUE
       }
     }) %>%
       shiny::bindEvent(r$annotations_upload_valid)
