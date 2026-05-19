@@ -160,15 +160,21 @@ mod_map_auxiliary_fields_server <- function(id, r) {
     }) %>%
       shiny::bindEvent(r$step_map_auxiliary_fields_valid_done)
 
-    # Show date/site/management, confirm and continue ----
-    # TODO
-
     ## Restart if needed ----
     shiny::observe({
       shiny::removeModal()
       mod_reset_server("reset", r, show_ui = FALSE, show_confirm = FALSE)
     }) %>%
       shiny::bindEvent(input$incorrect_reset)
+
+    # Reset auxiliary field inputs on reset ----
+    shiny::observe({
+      purrr::walk(
+        names(r$columns_map),
+        \(x)  shinyWidgets::updatePickerInput(session, inputId = x, selected = character(0))
+      )
+    }) %>%
+      shiny::bindEvent(r$reset)
   })
 }
 

@@ -122,7 +122,6 @@ app_server <- auth0_server(function(input, output, session) {
   ## Map auxiliary fields ----
   shiny::observe({
     shiny::req(r$step_map_auxiliary_fields_accordion_made_done)
-    browser()
 
     # Insert panel
     bslib::accordion_panel_insert("accordion", r$accordion_map_annotation_fields)
