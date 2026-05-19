@@ -213,8 +213,16 @@ mod_upload_data_server <- function(id, r) {
 
           # Disable data upload after a single upload - need to reset to change data
           shinyjs::disable("annotations")
+
+          # Pointer etc of disabling
+          # Disable pointer events on actual button, add style
+          # Not allowed cursor on parent div, add style
+          shinyjs::runjs(
+            "document.getElementById('upload-parent').getElementsByClassName('input-group')[0].style.pointerEvents = 'none';
+                         document.getElementById('upload-parent').style.cursor = 'not-allowed';"
+          )
         }
-        }
+      }
     }) %>%
       shiny::bindEvent(r$annotations_upload_valid)
 
@@ -234,7 +242,6 @@ mod_upload_data_server <- function(id, r) {
 
       # Scrolling to the upload parent again
       scroll_to_section("upload-parent")
-
     }) %>%
       shiny::bindEvent(r$enable_reupload)
   })
