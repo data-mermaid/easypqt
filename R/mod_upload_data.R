@@ -210,13 +210,10 @@ mod_upload_data_server <- function(id, r) {
           r$annotations_raw[[date_col]] <- reformat_dates(annotations_raw[[date_col]], date_validation[["format"]])
           # Flag that valid data has been uploaded
           r$step_upload_valid_data_done <- TRUE
+
+          # Disable data upload after a single upload - need to reset to change data
+          shinyjs::disable("annotations")
         }
-
-        # Disable data upload after a single upload - need to reset to change data
-        shinyjs::disable("annotations")
-
-        # Disable data upload after a single upload - need to reset to change data
-        shinyjs::disable("annotations")
         }
     }) %>%
       shiny::bindEvent(r$annotations_upload_valid)
@@ -226,15 +223,11 @@ mod_upload_data_server <- function(id, r) {
       shiny::req(r$enable_reupload)
 
       # Enabling involves:
-      # Clearing all of the reactive flags related to the upload:
-      r$annotations_upload_type_valid <- NULL
-      r$annotations_upload_valid <- NULL
-      r$upload_contains_required_cols <- NULL
-
-      # Clearing the reactive DATA related to the upload:
-      r$annotations_path <- NULL
-      r$auxiliary_columns <- NULL
-      r$required_annotations_columns <- NULL
+      # Clearing all of the reactive flags related to the upload,
+      # Clearing the reactive DATA related to the upload,
+      # Reset enable_reupload,
+      # Reset modal calls, only call on the first one
+      reset_reactiveValues_for_upload_renabled(r)
 
       # Clear the file from the input, which also re-enables it and resets the JS
       shinyjs::reset("annotations")
@@ -242,12 +235,6 @@ mod_upload_data_server <- function(id, r) {
       # Scrolling to the upload parent again
       scroll_to_section("upload-parent")
 
-      # Reset enable_reupload
-      r$enable_reupload <- NULL
-
-      # Reset modal calls, only call on the first one
-      r$modal_call <- 0
-      r$show_help <- 0
     }) %>%
       shiny::bindEvent(r$enable_reupload)
   })

@@ -47,6 +47,16 @@ reset_reactiveValues <- function(r) {
   }
 }
 
+reset_reactiveValues_for_upload_renabled <- function(r)  {
+  rv <- read_reactiveValues() %>%
+    purrr::keep(\(x) "reupload" %in% names(x)) %>%
+    purrr::map("reupload")
+
+  for (key in names(rv)) {
+    r[[key]] <- rv[[key]]
+  }
+}
+
 close_button <- shiny::modalButton("Close") # TODO copy
 
 modal <- function(..., title = NULL, footer, size = "m", disable_footer = FALSE) {

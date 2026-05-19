@@ -60,7 +60,7 @@ mod_upload_instructions_server <- function(id, r, show_ui = TRUE, invalid = NULL
       )
 
       # Reset input, until it is actually clicked again
-      shiny::updateActionLink()
+      # shiny::updateActionLink()
     }) %>%
       shiny::bindEvent(input$help)
   })
