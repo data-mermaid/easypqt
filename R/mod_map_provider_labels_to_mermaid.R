@@ -91,6 +91,8 @@ mod_map_provider_labels_to_mermaid_server <- function(id, r) {
 
     # Create an editable table to be shown -----
     output$mapping_table <- rhandsontable::renderRHandsontable({
+      shiny::req(r$step_map_auxiliary_fields_accordion_fully_done)
+
       # List of possible dropdown values for benthic attribute and growth form
 
       # For benthic attribute, the levels are the known mapping + anything in `benthic_attributes` that isn't in the known mapping
