@@ -28,7 +28,7 @@ mod_upload_data_server <- function(id, r) {
     shiny::observe({
       shiny::req(r$step_select_human_or_machine_annotated)
 
-      output$upload <- renderUI({
+      output$upload <- shiny::renderUI({
         if (r$step_select_human_or_machine_annotated) {
           shiny::div(
             id = "upload-parent",

@@ -25,7 +25,7 @@ mod_select_human_or_machine_annotated_server <- function(id, r) {
     shiny::observe({
       shiny::req(r$step_select_valid_project_done)
 
-      output$human_or_machine <- renderUI({
+      output$human_or_machine <- shiny::renderUI({
         shiny::req(r$provider)
         if (r$step_select_valid_project_done & r$provider == "reefcloud") {
           shiny::div(

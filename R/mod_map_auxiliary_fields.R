@@ -207,6 +207,7 @@ make_mapping_dropdown_ui <- function(auxiliary_column_map, auxiliary_column, r, 
           noneSelectedText = get_copy("auxiliary", "placeholder")
         )
       )
-    ) %>% tagAppendAttributes(class = "constrained-col")
+    ) %>%
+      shiny::tagAppendAttributes(class = "constrained-col")
   )
 }
