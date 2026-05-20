@@ -47,7 +47,7 @@ reset_reactiveValues <- function(r) {
   }
 }
 
-reset_reactiveValues_for_upload_renabled <- function(r)  {
+reset_reactiveValues_for_upload_renabled <- function(r) {
   rv <- read_reactiveValues() %>%
     purrr::keep(\(x) "reupload" %in% names(x)) %>%
     purrr::map("reupload")
