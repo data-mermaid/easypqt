@@ -167,7 +167,7 @@ invalid_values:
 auxiliary:
   title: Match CoralNet auxiliary fields
   text: |-
-    In this section, match the auxiliary fields in your CoralNet data to the fields that are required to import you data to MERMAID Collect by selecting the column
+    In this section, match the auxiliary fields in your CoralNet data to the fields that are required to import your data to MERMAID Collect by selecting the column
     that corresponds to:
       <ul>
       <li>Site</li>
