@@ -42,28 +42,7 @@ app_server <- auth0_server(function(input, output, session) {
   authenticated <- shiny::reactiveVal(FALSE)
 
   # Set up reactive values ----
-  r <- shiny::reactiveValues(
-    is_project_admin = FALSE,
-    page_length = 10,
-    step_upload_valid_data_done = FALSE,
-    map_annotations_accordion_made = FALSE,
-    aux_mapped = FALSE,
-    preview_confirm_shown = 0,
-    dev = FALSE,
-    prod = TRUE,
-    reset = NULL,
-    upload_contains_required_cols = FALSE,
-    step_select_valid_project_done = FALSE,
-    step_select_human_or_machine_annotated = FALSE,
-    step_upload_valid_data_done = FALSE,
-    step_map_auxiliary_fields_accordion_made_done = FALSE,
-    step_map_auxiliary_fields_accordion_fully_done = FALSE,
-    step_map_provider_labels_accordion_made_done = FALSE,
-    step_map_provider_labels_done = FALSE,
-    step_map_provider_labels_fully_done = FALSE,
-    preview_confirm_shown = 0,
-    reset_confirm_counter = 0
-  )
+  r <- initialize_reactiveValues()
 
   # Get login info and hit initial endpoints ----
   shiny::observe(priority = 9999, {
@@ -177,6 +156,8 @@ app_server <- auth0_server(function(input, output, session) {
     shiny::insertUI("head", where = "beforeEnd", shiny::includeScript(app_sys("adjustMappingTableHeight.js")))
 
     scroll_to_section("map-provider-labels", accordion = TRUE)
+
+    r$step_map_auxiliary_fields_accordion_opened <- TRUE
   }) %>%
     shiny::bindEvent(r$step_map_auxiliary_fields_accordion_fully_done)
 

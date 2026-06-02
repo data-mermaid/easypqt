@@ -1,3 +1,13 @@
+# easypqt 0.4.0
+
+* Improve code around reactive values, streamlines resetting flow and reduces bugs.
+* Validate that number of points per quadrat is consistent for ReefCloud data.
+* Fix bug with mapping ReefCloud labels to MERMAID labels when human code is present, but human ID is not.
+* Fix bug with enabling "Confirm" button in label mapping, add slight delay to account for stricter rendering in Safari.
+* Fix bug with showing data validation modal multiple times if app is reset.
+* Allow replacing of uploaded data if there are data validation issues.
+* Fix bug where auxiliary fields are already mapped (but mapping is not shown) when app is restarted.
+
 # easypqt 0.3.1
 
 * Fix bug in checking ReefCloud upload columns

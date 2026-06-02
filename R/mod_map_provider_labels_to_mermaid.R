@@ -46,12 +46,31 @@ mod_map_provider_labels_to_mermaid_server <- function(id, r) {
         provider_code <- names(provider_code_cols)
         provider_code_cols <- provider_code_cols[[provider_code]]
 
+        # There can be a slight issue here, when there is a human code but no human ID
+        # Then, it falls back to the machine ID
+        # But, it should not fall back -- they have chosen not to use the machine info
+        # Even worse, it can be the case that multiple human codes replaced multiple machine codes
+        # And the machine IDs will then differ, which makes it seem like there are multiple IDs per code
+        # Which is not possible !
+
+        # For now, hardcode the col names -- having issues with data masking etc
+
         r$annotations <- r$annotations %>%
           dplyr::mutate(
-            "{provider_id}" := !!quote(dplyr::coalesce(!!!dplyr::across(provider_id_cols))),
-            "{provider_code}" := !!quote(dplyr::coalesce(!!!dplyr::across(provider_code_cols)))
+            derived_point_classification = dplyr::coalesce(point_human_classification, point_machine_classification),
+            derived_point_benthic_id = ifelse(derived_point_classification == point_machine_classification,
+              point_machine_benthic_id,
+              point_human_benthic_id
+            )
           ) %>%
           dplyr::select(-dplyr::all_of(c(provider_id_cols, provider_code_cols)))
+
+        # r$annotations <- r$annotations %>%
+        #   dplyr::mutate(
+        #     "{provider_id}" := !!quote(dplyr::coalesce(!!!dplyr::across(provider_id_cols))),
+        #     "{provider_code}" := !!quote(dplyr::coalesce(!!!dplyr::across(provider_code_cols)))
+        #   ) %>%
+        #   dplyr::select(-dplyr::all_of(c(provider_id_cols, provider_code_cols)))
       } else if (r$provider == "coralnet") {
         provider_id <- get_config("labelset_id_column")[["provider_col"]][[r$provider]]
         provider_code <- get_config("labelset_code_column")[["provider_col"]][[r$provider]]
@@ -91,6 +110,8 @@ mod_map_provider_labels_to_mermaid_server <- function(id, r) {
 
     # Create an editable table to be shown -----
     output$mapping_table <- rhandsontable::renderRHandsontable({
+      shiny::req(r$step_map_auxiliary_fields_accordion_fully_done)
+
       # List of possible dropdown values for benthic attribute and growth form
 
       # For benthic attribute, the levels are the known mapping + anything in `benthic_attributes` that isn't in the known mapping
@@ -188,7 +209,8 @@ mod_map_provider_labels_to_mermaid_server <- function(id, r) {
     # If none of `mermaid_attribute` are NA, then enable exiting the widget
     # Flag that the mapping is valid, and save the final mapping
     shiny::observe({
-      shiny::req(r$step_map_provider_labels_accordion_made_done)
+      shiny::req(r$step_map_auxiliary_fields_accordion_opened)
+
       # The data in the table is named after the output, so it's input$mapping_table
       # Need to convert it to an R data frame using rhandsontable::hot_to_r()
 
@@ -209,14 +231,19 @@ mod_map_provider_labels_to_mermaid_server <- function(id, r) {
       mapping_valid <- no_empty_mapping & all_valid_mapping
 
       if (mapping_valid) {
-        shinyjs::hide("confirm-disabled", asis = TRUE)
-        shinyjs::enable("save_mapping")
+        # Add a slight delay, since when the accordion is created this might happen too fast
+        # Helps specifically in Safari
+        shinyjs::delay(400, {
+          shinyjs::hide("confirm-disabled", asis = TRUE)
+          shinyjs::enable("save_mapping")
+        })
       } else {
         shinyjs::show("confirm-disabled", asis = TRUE)
         shinyjs::disable("save_mapping")
         r$provider_mermaid_mapping <- NULL
       }
-    })
+    }) %>%
+      shiny::observeEvent(r$step_map_auxiliary_fields_accordion_opened)
 
     # When the label mapping has been confirmed ----
     shiny::observe({

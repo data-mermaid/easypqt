@@ -25,7 +25,7 @@ mod_select_human_or_machine_annotated_server <- function(id, r) {
     shiny::observe({
       shiny::req(r$step_select_valid_project_done)
 
-      output$human_or_machine <- renderUI({
+      output$human_or_machine <- shiny::renderUI({
         shiny::req(r$provider)
         if (r$step_select_valid_project_done & r$provider == "reefcloud") {
           shiny::div(
@@ -56,9 +56,8 @@ mod_select_human_or_machine_annotated_server <- function(id, r) {
     # Scroll to selection
     shiny::observe({
       shiny::req(r$human_or_machine_ui_done)
-      if (r$provider == "reefcloud") {
-        scroll_to_section("select-human-machine")
-      }
+      shiny::req(r$provider == "reefcloud")
+      scroll_to_section("select-human-machine")
     }) %>%
       shiny::bindEvent(r$human_or_machine_ui_done)
 

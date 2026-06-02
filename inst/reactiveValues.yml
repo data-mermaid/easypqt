@@ -1,0 +1,100 @@
+annotations_path:
+  reset: ~
+  reupload: ~
+annotations_upload_type_valid:
+  reset: no
+  reupload: no
+annotations_upload_valid:
+  reset: no
+  reupload: no
+aux_mapped:
+  initial: no
+auxiliary_columns:
+  reset: no
+  reupload: no
+dev:
+  initial: no
+do_ingestion:
+  reset: no
+enable_reupload:
+  reset: no
+  reupload: no
+help_module_invalid:
+  initial: ~
+  reset: ~
+  reupload: ~
+human_annotated_only:
+  reset: ~
+is_project_admin:
+  initial: no
+map_annotations_accordion_made:
+  initial: no
+modal_call:
+  reset: 0
+  reupload: 0
+page_length:
+  initial: 10
+preview_confirm_shown:
+  initial: 0
+  reset: no
+prod:
+  initial: yes
+provider:
+  reset: ~
+provider_full:
+  reset: ~
+provider_instructions_done:
+  reset: no
+required_annotations_columns:
+  reset: no
+  reupload: no
+reset:
+  initial: ~
+reset_confirm_counter:
+  initial: 0
+  reset: 0
+show_help_module:
+  initial: ~
+  reset: ~
+  reupload: ~
+step_fields_setup_done:
+  reset: no
+step_map_auxiliary_fields_accordion_fully_done:
+  initial: no
+  reset: no
+step_map_auxiliary_fields_accordion_made_done:
+  initial: no
+  reset: no
+step_map_auxiliary_fields_accordion_opened:
+  initial: no
+  reset: no
+step_map_auxiliary_fields_done:
+  reset: no
+step_map_auxiliary_fields_valid_done:
+  reset: no
+step_map_provider_joined_done:
+  reset: no
+step_map_provider_labels_accordion_made_done:
+  initial: no
+  reset: no
+step_map_provider_labels_done:
+  initial: no
+  reset: no
+step_map_provider_labels_fully_done:
+  initial: no
+  reset: no
+step_select_human_or_machine_annotated:
+  initial: no
+  reset: no
+step_select_valid_project_done:
+  initial: no
+  reset: no
+step_upload_valid_data_done:
+  initial: no
+  reset: no
+upload_contains_required_cols:
+  initial: no
+  reset: no
+  reupload: no
+upload_form_done:
+  reset: no

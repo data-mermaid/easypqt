@@ -10,9 +10,7 @@ mod_upload_data_ui <- function(id) {
   shiny::tagList(
     shiny::uiOutput(ns("upload")),
     mod_upload_instructions_ui(ns("filetype"), show_ui = FALSE),
-    mod_upload_instructions_ui(ns("zip"), show_ui = FALSE),
-    mod_upload_instructions_ui(ns("cols"), show_ui = FALSE),
-    mod_upload_instructions_ui(ns("date"), show_ui = FALSE)
+    mod_upload_instructions_ui(ns("data_issue"), show_ui = FALSE)
   )
 }
 
@@ -30,7 +28,7 @@ mod_upload_data_server <- function(id, r) {
     shiny::observe({
       shiny::req(r$step_select_human_or_machine_annotated)
 
-      output$upload <- renderUI({
+      output$upload <- shiny::renderUI({
         if (r$step_select_human_or_machine_annotated) {
           shiny::div(
             id = "upload-parent",
@@ -66,6 +64,11 @@ mod_upload_data_server <- function(id, r) {
 
     # Upload instructions ----
     mod_upload_instructions_server("instructions", r)
+    # Set up all upload instructions, but internally, only flag them when there is a data issue
+    # Rather than running e.g. mod_upload_instructions_server("date") multiple times
+    # Which spawns multiple servers
+    # Actually only need one server, not multiple
+    mod_upload_instructions_server("data_issue", r, show_ui = FALSE)
 
     shiny::observe({
       # For Reefcloud, it must be a zip--this is set in fileInput(), but they can still drag a non-zip file in
@@ -74,8 +77,12 @@ mod_upload_data_server <- function(id, r) {
 
       file_type_matches <- stringr::str_ends(input$annotations$datapath, get_config("upload_file")[[r$provider]])
       if (!file_type_matches) {
-        mod_upload_instructions_server("filetype", r, show_ui = FALSE, invalid = "invalid_filetype")
+        r$show_help_module <- "filetype"
+        r$help_module_invalid <- "invalid_filetype"
         r$annotations_upload_type_valid <- FALSE
+
+        # Enable them to reupload
+        r$enable_reupload <- TRUE
       } else {
         r$annotations_upload_type_valid <- TRUE
       }
@@ -101,8 +108,13 @@ mod_upload_data_server <- function(id, r) {
 
         # If no CSV, show instructions
         if (nrow(csv_files) != 1) {
-          mod_upload_instructions_server("zip", r, show_ui = FALSE, invalid = "no_csv")
+          r$show_help_module <- "zip"
+          r$help_module_invalid <- "no_csv"
+
           r$annotations_upload_valid <- FALSE
+
+          # Enable them to reupload
+          r$enable_reupload <- TRUE
         } else {
           # Otherwise, actually unzip and save the path
           r$annotations_path <- unzip(file_path, exdir = upload_dir, files = csv_files[["Name"]])
@@ -169,7 +181,11 @@ mod_upload_data_server <- function(id, r) {
 
       # If it does not contain the correct columns, show a modal and do not allow them to continue
       if (!r$upload_contains_required_cols) {
-        mod_upload_instructions_server("cols", r, show_ui = FALSE, invalid = "missing_columns")
+        r$show_help_module <- "cols"
+        r$help_module_invalid <- "missing_columns"
+
+        # Enable them to reupload
+        r$enable_reupload <- TRUE
       } else {
         # If it does contain the correct columns, read in the data and proceed
         # Only read in the required columns
@@ -191,29 +207,51 @@ mod_upload_data_server <- function(id, r) {
         # Check that the Date column is formatted properly - if not, show a modal that there is an issue
         date_validation <- check_valid_dates(annotations_raw[[date_col]])
         if (!date_validation[["valid"]]) {
-          mod_upload_instructions_server("date", r, show_ui = FALSE, invalid = "invalid_date")
+          r$show_help_module <- "date"
+          r$help_module_invalid <- "invalid_date"
+
+          # Enable them to reupload
+          r$enable_reupload <- TRUE
         } else {
           r$annotations_raw <- annotations_raw
           # Reformat the dates to ymd
           r$annotations_raw[[date_col]] <- reformat_dates(annotations_raw[[date_col]], date_validation[["format"]])
+          # Flag that valid data has been uploaded
+          r$step_upload_valid_data_done <- TRUE
+
+          # Disable data upload after a single upload - need to reset to change data
+          shinyjs::disable("annotations")
+
+          # Pointer etc of disabling
+          # Disable pointer events on actual button, add style
+          # Not allowed cursor on parent div, add style
+          shinyjs::runjs(
+            "document.getElementById('upload-parent').getElementsByClassName('input-group')[0].style.pointerEvents = 'none';
+                         document.getElementById('upload-parent').style.cursor = 'not-allowed';"
+          )
         }
-
-        # Disable data upload after a single upload - need to reset to change data
-        shinyjs::disable("annotations")
-
-        # Disable data upload after a single upload - need to reset to change data
-        shinyjs::disable("annotations")
-
-        # Pointer etc of disabling
-        # Disable pointer events on actual button, add style
-        # Not allowed cursor on parent div, add style
-        shinyjs::runjs("document.getElementById('upload-parent').getElementsByClassName('input-group')[0].style.pointerEvents = 'none'; document.getElementById('upload-parent').style.cursor = 'not-allowed';")
-
-        # Flag that valid data has been uploaded
-        r$step_upload_valid_data_done <- TRUE
       }
     }) %>%
       shiny::bindEvent(r$annotations_upload_valid)
+
+    # Enable reupload, if necessary ----
+    shiny::observe({
+      shiny::req(r$enable_reupload)
+
+      # Enabling involves:
+      # Clearing all of the reactive flags related to the upload,
+      # Clearing the reactive DATA related to the upload,
+      # Reset enable_reupload,
+      # Reset modal calls, only call on the first one
+      reset_reactiveValues_for_upload_renabled(r)
+
+      # Clear the file from the input, which also re-enables it and resets the JS
+      shinyjs::reset("annotations")
+
+      # Scrolling to the upload parent again
+      scroll_to_section("upload-parent")
+    }) %>%
+      shiny::bindEvent(r$enable_reupload)
   })
 }
 

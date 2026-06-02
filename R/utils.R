@@ -17,6 +17,46 @@ get_copy <- function(key, secondary_key = NULL, tertiary_key = NULL) {
   shiny::HTML(copy)
 }
 
+read_reactiveValues <- function() {
+  yaml::read_yaml(app_sys("reactiveValues.yml"))
+}
+
+alphebatize_reactiveValues <- function() {
+  rv <- yaml::read_yaml(app_sys("reactiveValues.yml"))
+  rv_names <- names(rv)
+  rv <- rv[sort(rv_names)]
+
+  yaml::write_yaml(rv, app_sys("reactiveValues.yml"))
+}
+
+initialize_reactiveValues <- function() {
+  rv <- read_reactiveValues() %>%
+    purrr::keep(\(x) "initial" %in% names(x)) %>%
+    purrr::map("initial")
+
+  r <- do.call(shiny::reactiveValues, rv)
+}
+
+reset_reactiveValues <- function(r) {
+  rv <- read_reactiveValues() %>%
+    purrr::keep(\(x) "reset" %in% names(x)) %>%
+    purrr::map("reset")
+
+  for (key in names(rv)) {
+    r[[key]] <- rv[[key]]
+  }
+}
+
+reset_reactiveValues_for_upload_renabled <- function(r) {
+  rv <- read_reactiveValues() %>%
+    purrr::keep(\(x) "reupload" %in% names(x)) %>%
+    purrr::map("reupload")
+
+  for (key in names(rv)) {
+    r[[key]] <- rv[[key]]
+  }
+}
+
 close_button <- shiny::modalButton("Close") # TODO copy
 
 modal <- function(..., title = NULL, footer, size = "m", disable_footer = FALSE) {
@@ -34,8 +74,8 @@ modal <- function(..., title = NULL, footer, size = "m", disable_footer = FALSE)
   )
 }
 
-show_modal <- function(..., footer = close_button) {
-  modal(..., footer = footer)
+show_modal <- function(..., footer = close_button, size = "m") {
+  modal(..., footer = footer, size = size)
 }
 
 make_formatted_list <- function(x) {

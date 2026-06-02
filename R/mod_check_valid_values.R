@@ -110,16 +110,19 @@ mod_check_valid_values_server <- function(id, r) {
       transect_number_ui <- check_integer_values(r, "transect_number")
 
       # Check depth is an integer ----
+      # Check if number of points per quadrat is consistent across SU
       if (r$provider == "reefcloud") {
         depth_ui <- check_integer_values(r, "depth")
+        num_points_ui <- check_num_points_per_quadrat_valid(r, output, session)
       } else if (r$provider == "coralnet") {
         depth_ui <- list(valid = TRUE, ui = NULL)
+        num_points_ui <- list(valid = TRUE, ui = NULL)
       }
 
       # Hide checking modal
       shiny::removeModal()
 
-      if (site_ui[["valid"]] & management_ui[["valid"]] & transect_number_ui[["valid"]] & depth_ui[["valid"]]) {
+      if (site_ui[["valid"]] & management_ui[["valid"]] & transect_number_ui[["valid"]] & depth_ui[["valid"]] & num_points_ui[["valid"]]) {
         r$step_map_auxiliary_fields_valid_done <- TRUE
 
         # Show modal that all is good
@@ -132,24 +135,19 @@ mod_check_valid_values_server <- function(id, r) {
         )
       } else {
         cat("Issues with aux \n")
+
+
+        modal_ui <- list(site_ui, management_ui, transect_number_ui, depth_ui, num_points_ui) %>%
+          purrr::keep(\(x) !x[["valid"]]) %>%
+          purrr::map(\(x) shiny::tagList(shiny::hr(), x[["ui"]])) %>%
+          tagList()
+
         show_modal(
           title = get_copy("auxiliary_validating", "title"),
           shiny::div(class = "validating-aux", get_copy("auxiliary_validating", "fix", r$provider)),
-          shiny::hr(),
-          site_ui[["ui"]],
-          shiny::hr(),
-          management_ui[["ui"]],
-          shiny::hr(),
-          transect_number_ui[["ui"]],
-          {
-            if (r$provider == "reefcloud") {
-              tagList(
-                shiny::hr(),
-                depth_ui[["ui"]]
-              )
-            }
-          },
-          footer = warning_button(ns("incorrect_reset"), get_copy("ingestion", "reset_button"))
+          modal_ui,
+          footer = warning_button(ns("incorrect_reset"), get_copy("ingestion", "reset_button")),
+          size = ifelse(!num_points_ui[["valid"]], "xl", "m")
         )
       }
     })
@@ -276,5 +274,80 @@ check_integer_values <- function(r, lookup) {
         shiny::h3(r$columns_map[[lookup]][["label"]]),
         shiny::div(class = "validating-aux", res)
       )
+  )
+}
+
+check_num_points_per_quadrat_valid <- function(r, output, session) {
+  ns <- session$ns
+
+  # The number of points per quadrat needs to be the same
+  # This might not be the case if they have opted to only include human annotation data,
+  # and have not annotated all points
+
+  annotations_with_temp_su <- r$annotations_raw %>%
+    dplyr::rowwise() %>%
+    dplyr::mutate(...su = glue::glue_collapse(c(site_name, `survey_start_date (UTC)`, site_management, survey_transect_number), sep = "******")) %>%
+    dplyr::ungroup()
+
+  points_per_quadrat <- annotations_with_temp_su %>%
+    dplyr::select(...su, image_name, point_num) %>%
+    dplyr::group_by(...su, image_name) %>%
+    dplyr::summarise(
+      n_points = dplyr::n_distinct(point_num),
+      max_point_num = max(point_num),
+      n_points_not_max = n_points != max_point_num,
+      .groups = "drop"
+    )
+
+  su_with_issue <- points_per_quadrat %>%
+    dplyr::group_by(...su, image_name) %>%
+    dplyr::mutate(expected_n_points = max(c(n_points, max_point_num))) %>%
+    dplyr::group_by(...su, image_name, expected_n_points) %>%
+    dplyr::summarise(
+      n_points_differ = dplyr::n_distinct(n_points) > 1,
+      max_points_discrepancy = any(n_points_not_max),
+      .groups = "drop"
+    ) %>%
+    dplyr::filter(n_points_differ | max_points_discrepancy)
+
+  if (nrow(su_with_issue) == 0) {
+    return(
+      list(
+        valid = TRUE,
+        issues = NULL
+      )
+    )
+  }
+
+  points_per_quadrat_issues <- su_with_issue %>%
+    dplyr::left_join(points_per_quadrat, by = c("...su", "image_name")) %>%
+    dplyr::select(...su, image_name, expected_n_points, n_points) %>%
+    dplyr::filter(expected_n_points != n_points) %>%
+    dplyr::left_join(annotations_with_temp_su %>% dplyr::distinct(...su, image_name, site_name, `survey_start_date (UTC)`),
+      by = c("...su", "image_name")
+    ) %>%
+    dplyr::select(-...su) %>%
+    dplyr::distinct() %>%
+    dplyr::arrange(site_name, `survey_start_date (UTC)`, image_name) %>%
+    dplyr::select(`Expected quadrat points` = expected_n_points, `Actual points` = n_points, Site = site_name, Date = `survey_start_date (UTC)`, Image = image_name)
+
+  issues_table <- DT::datatable(points_per_quadrat_issues, rownames = FALSE, options = list(dom = "tp"), selection = "none", escape = FALSE)
+
+  output$num_points_table <- renderUI({
+    shiny::tagList(issues_table)
+  })
+
+  ui <- shiny::tagList(
+    shiny::h3(get_copy("num_points_validating", "title")),
+    shiny::div(
+      class = "validating-aux",
+      get_copy("num_points_validating", "fix"),
+      uiOutput(ns("num_points_table")) # ns() ensures no ID collision
+    )
+  )
+
+  list(
+    valid = FALSE,
+    ui = ui
   )
 }

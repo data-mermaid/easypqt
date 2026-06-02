@@ -167,7 +167,7 @@ invalid_values:
 auxiliary:
   title: Match CoralNet auxiliary fields
   text: |-
-    In this section, match the auxiliary fields in your CoralNet data to the fields that are required to import you data to MERMAID Collect by selecting the column
+    In this section, match the auxiliary fields in your CoralNet data to the fields that are required to import your data to MERMAID Collect by selecting the column
     that corresponds to:
       <ul>
       <li>Site</li>
@@ -206,10 +206,19 @@ auxiliary_validating:
       You may need to fix invalid values in ReefCloud, or add/edit values (Site or
       Management regime) in MERMAID Collect to match the ReefCloud data.</p><p>Once
       you have made changes, please restart Easy PQT before continuing with import.</p>
+num_points_validating:
+  title: Points per quadrat
+  fix: <p>There are inconsistencies with the number of points per quadrat, likely
+    due to choosing to include human-annotated points only. The table below shows
+    the issues, including the expected number of points versus the actual number of
+    points.</p><p>To continue, please restart EasyPQT and choose to include both human-
+    and machine-annotated points, or return to ReefCloud and do additional human
+    annotation so that the points are correctly flagged.</p>
 mapping:
   title:
     coralnet: Assign CoralNet labels to MERMAID benthic attributes and/or growth forms
-    reefcloud: Assign ReefCloud labels to MERMAID benthic attributes and/or growth forms
+    reefcloud: Assign ReefCloud labels to MERMAID benthic attributes and/or growth
+      forms
   text:
     coralnet: |-
       <p>We have pre‑assigned most CoralNet labels to MERMAID benthic attributes and growth forms. Any unassigned CoralNet labels will appear at the top of the table with empty values.</p>
@@ -278,7 +287,7 @@ reset:
   text:
     none: Do you want to restart Easy PQT?
     coralnet: <p>This will reset any progress made in Easy PQT, including the selected
-      provider, project, CoralNet annotations data uploaded, and any assignings (auxiliary
+      provider, project, CoralNet annotations data uploaded, and any assignments (auxiliary
       fields and CoralNet labels assigned).</p> <p> Do you want to proceed with restarting
       Easy PQT?</p>
     reefcloud: <p>This will reset any progress made in Easy PQT, including the selected
