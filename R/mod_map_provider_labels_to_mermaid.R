@@ -46,12 +46,31 @@ mod_map_provider_labels_to_mermaid_server <- function(id, r) {
         provider_code <- names(provider_code_cols)
         provider_code_cols <- provider_code_cols[[provider_code]]
 
+        # There can be a slight issue here, when there is a human code but no human ID
+        # Then, it falls back to the machine ID
+        # But, it should not fall back -- they have chosen not to use the machine info
+        # Even worse, it can be the case that multiple human codes replaced multiple machine codes
+        # And the machine IDs will then differ, which makes it seem like there are multiple IDs per code
+        # Which is not possible !
+
+        # For now, hardcode the col names -- having issues with data masking etc
+
         r$annotations <- r$annotations %>%
           dplyr::mutate(
-            "{provider_id}" := !!quote(dplyr::coalesce(!!!dplyr::across(provider_id_cols))),
-            "{provider_code}" := !!quote(dplyr::coalesce(!!!dplyr::across(provider_code_cols)))
+            derived_point_classification = dplyr::coalesce(point_human_classification, point_machine_classification),
+            derived_point_benthic_id = ifelse(derived_point_classification == point_machine_classification,
+              point_machine_benthic_id,
+              point_human_benthic_id
+            )
           ) %>%
           dplyr::select(-dplyr::all_of(c(provider_id_cols, provider_code_cols)))
+
+        # r$annotations <- r$annotations %>%
+        #   dplyr::mutate(
+        #     "{provider_id}" := !!quote(dplyr::coalesce(!!!dplyr::across(provider_id_cols))),
+        #     "{provider_code}" := !!quote(dplyr::coalesce(!!!dplyr::across(provider_code_cols)))
+        #   ) %>%
+        #   dplyr::select(-dplyr::all_of(c(provider_id_cols, provider_code_cols)))
       } else if (r$provider == "coralnet") {
         provider_id <- get_config("labelset_id_column")[["provider_col"]][[r$provider]]
         provider_code <- get_config("labelset_code_column")[["provider_col"]][[r$provider]]
