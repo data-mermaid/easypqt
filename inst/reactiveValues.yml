@@ -65,6 +65,9 @@ step_map_auxiliary_fields_accordion_fully_done:
 step_map_auxiliary_fields_accordion_made_done:
   initial: no
   reset: no
+step_map_auxiliary_fields_accordion_opened:
+  initial: no
+  reset: no
 step_map_auxiliary_fields_done:
   reset: no
 step_map_auxiliary_fields_valid_done:

@@ -209,7 +209,8 @@ mod_map_provider_labels_to_mermaid_server <- function(id, r) {
     # If none of `mermaid_attribute` are NA, then enable exiting the widget
     # Flag that the mapping is valid, and save the final mapping
     shiny::observe({
-      shiny::req(r$step_map_provider_labels_accordion_made_done)
+      shiny::req(r$step_map_auxiliary_fields_accordion_opened)
+
       # The data in the table is named after the output, so it's input$mapping_table
       # Need to convert it to an R data frame using rhandsontable::hot_to_r()
 
@@ -230,14 +231,19 @@ mod_map_provider_labels_to_mermaid_server <- function(id, r) {
       mapping_valid <- no_empty_mapping & all_valid_mapping
 
       if (mapping_valid) {
-        shinyjs::hide("confirm-disabled", asis = TRUE)
-        shinyjs::enable("save_mapping")
+        # Add a slight delay, since when the accordion is created this might happen too fast
+        # Helps specifically in Safari
+        shinyjs::delay(400, {
+          shinyjs::hide("confirm-disabled", asis = TRUE)
+          shinyjs::enable("save_mapping")
+        })
       } else {
         shinyjs::show("confirm-disabled", asis = TRUE)
         shinyjs::disable("save_mapping")
         r$provider_mermaid_mapping <- NULL
       }
-    })
+    }) %>%
+      shiny::observeEvent(r$step_map_auxiliary_fields_accordion_opened)
 
     # When the label mapping has been confirmed ----
     shiny::observe({

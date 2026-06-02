@@ -156,6 +156,8 @@ app_server <- auth0_server(function(input, output, session) {
     shiny::insertUI("head", where = "beforeEnd", shiny::includeScript(app_sys("adjustMappingTableHeight.js")))
 
     scroll_to_section("map-provider-labels", accordion = TRUE)
+
+    r$step_map_auxiliary_fields_accordion_opened <- TRUE
   }) %>%
     shiny::bindEvent(r$step_map_auxiliary_fields_accordion_fully_done)
 
