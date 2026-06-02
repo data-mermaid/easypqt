@@ -74,8 +74,8 @@ modal <- function(..., title = NULL, footer, size = "m", disable_footer = FALSE)
   )
 }
 
-show_modal <- function(..., footer = close_button) {
-  modal(..., footer = footer)
+show_modal <- function(..., footer = close_button, size = "m") {
+  modal(..., footer = footer, size = size)
 }
 
 make_formatted_list <- function(x) {
