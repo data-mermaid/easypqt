@@ -334,7 +334,7 @@ check_num_points_per_quadrat_valid <- function(r, output, session) {
   issues_table <- DT::datatable(points_per_quadrat_issues, rownames = FALSE, options = list(dom = "tp"), selection = "none", escape = FALSE)
 
   output$num_points_table <- renderUI({
-    htmltools::tagList(issues_table)
+    shiny::tagList(issues_table)
   })
 
   ui <- shiny::tagList(

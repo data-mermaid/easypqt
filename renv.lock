@@ -2052,7 +2052,7 @@
       "BugReports": "https://github.com/data-mermaid/mermaidr/issues",
       "Encoding": "UTF-8",
       "Depends": [
-        "R (>= 4.1.0)"
+        "R (>= 2.10)"
       ],
       "Imports": [
         "httr",
@@ -2086,15 +2086,14 @@
         "tidyverse"
       ],
       "VignetteBuilder": "knitr",
+      "Author": "Sharla Gelfand [aut, cre], Wildlife Conservation Society [cph, fnd]",
+      "Maintainer": "Sharla Gelfand <sharla.gelfand@gmail.com>",
       "RemoteType": "github",
       "RemoteHost": "api.github.com",
       "RemoteRepo": "mermaidr",
       "RemoteUsername": "data-mermaid",
       "RemoteRef": "dev",
-      "RemoteSha": "8fa66485d2ad453100fa80d648449a34d47e7395",
-      "NeedsCompilation": "no",
-      "Author": "Sharla Gelfand [aut, cre], Wildlife Conservation Society [cph, fnd]",
-      "Maintainer": "Sharla Gelfand <sharla.gelfand@gmail.com>"
+      "RemoteSha": "8fa66485d2ad453100fa80d648449a34d47e7395"
     },
     "mime": {
       "Package": "mime",
