@@ -38,7 +38,7 @@ preview_confirm_shown:
   initial: 0
   reset: no
 prod:
-  initial: no
+  initial: yes
 provider:
   reset: ~
 provider_full:
