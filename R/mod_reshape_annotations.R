@@ -66,8 +66,7 @@ mod_reshape_annotations_server <- function(id, r) {
       ingestion_data <- ingestion_data %>%
         dplyr::rowwise() %>%
         dplyr::mutate(...su = glue::glue_collapse(c(`Site *`, Date, `Management *`, `Transect number *`), sep = "******")) %>%
-        dplyr::ungroup() %>%
-        dplyr::group_by()
+        dplyr::ungroup()
 
       ### Identify unique quadrats (images) with an SU ----
       img_name <- get_config("reshape")[["image_name"]][[r$provider]]
